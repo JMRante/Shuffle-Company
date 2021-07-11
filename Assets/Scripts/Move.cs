@@ -31,4 +31,12 @@ public class Move
             action.Undo();
         }
     }
+
+    public void Render(float timer)
+    {
+        foreach (IAction action in actions)
+        {
+            action.Render(timer);
+        }
+    }
 }

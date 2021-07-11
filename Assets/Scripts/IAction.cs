@@ -7,4 +7,5 @@ public interface IAction
     public int GetActionCode();
     public void Do();
     public void Undo();
+    public void Render(float timer);
 }
