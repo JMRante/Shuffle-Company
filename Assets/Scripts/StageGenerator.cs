@@ -17,18 +17,23 @@ public class StageGenerator : MonoBehaviour
         1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
         1, 0, 0, 1, 1, 1, 0, 1, 0, 1,
         1, 0, 1, 0, 0, 0, 0, 1, 0, 1,
-        1, 0, 1, 1, 1, 0, 0, 1, 0, 1,
+        1, 0, 1, 1, 1, 0, 2, 1, 0, 1,
         1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     };
 
-    void Start() {
-        for (int i = 0; i < stage.Length; i++) {
+    void Start() 
+    {
+        for (int i = 0; i < stage.Length; i++) 
+        {
             Vector3 position = new Vector3(i % width, 0f, i / height);
 
-            if (stage[i] > 0) {
+            if (stage[i] > 0) 
+            {
                 GameObject element = elements[stage[i] - 1];
-                Instantiate(element, position, Quaternion.identity);
+                GameObject elementInstance = Instantiate(element, position, Quaternion.identity, this.transform);
+
+                elementInstance.name = elementInstance.name.Replace("(Clone)", "");
             }
         }
     }
