@@ -20,17 +20,29 @@ public class TranslateStateChange : IStateChange
         return StateChange.Translate;
     }
 
-    public bool IsPossible()
+    public bool IsPossible(List<IStateChange> resultingStateChanges)
     {
         Collider[] hitColliders = Physics.OverlapSphere(startPosition + translation, 0.5f);
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponent<ElementProperties>();
+            ElementProperties otherElementProperties = hitCollider.GetComponent<ElementProperties>();
             
-            if (elementProperties != null && elementProperties.HasProperty(ElementProperty.Solid))
+            if (otherElementProperties != null && otherElementProperties.HasProperty(ElementProperty.Solid))
             {
-                return false;
+                ElementProperties myElementProperties = gameObject.GetComponent<ElementProperties>();
+
+                if (myElementProperties != null 
+                    && otherElementProperties.HasProperty(ElementProperty.Pushable)
+                    && myElementProperties.HasProperty(ElementProperty.Pusher))
+                {
+                    TranslateStateChange pushStateChange = new TranslateStateChange(hitCollider.gameObject, translation);
+                    resultingStateChanges.Add(pushStateChange);
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

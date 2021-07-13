@@ -19,7 +19,7 @@ public enum StateChange
 public interface IStateChange
 {
     public StateChange GetStateChangeCode();
-    public bool IsPossible();
+    public bool IsPossible(List<IStateChange> resultingStateChanges);
     public void Do();
     public void Undo();
     public void Render(float timer);

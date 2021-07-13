@@ -5,7 +5,8 @@ using UnityEngine;
 public enum ElementProperty
 {
     Solid,
-    Pushable
+    Pushable,
+    Pusher
 }
 
 public class ElementProperties : MonoBehaviour

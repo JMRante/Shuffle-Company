@@ -4,36 +4,49 @@ using UnityEngine;
 
 public class Move
 {
-    List<IStateChange> stageChanges;
+    private List<IStateChange> stateChanges;
 
     public Move() 
     {
-        stageChanges = new List<IStateChange>();
+        stateChanges = new List<IStateChange>();
     }
 
     private List<IStateChange> GetActions() 
     {
-        return stageChanges;
+        return stateChanges;
     }
 
     public bool RequestStateChange(IStateChange stateChange)
     {
-        if (stateChange.IsPossible())
+        Queue<IStateChange> resultantStateChanges = new Queue<IStateChange>();
+        resultantStateChanges.Enqueue(stateChange);
+        
+        while (resultantStateChanges.Count > 0)
         {
-            stageChanges.Add(stateChange);
-            return true;
-        }
-        else
-        {
-            return false;
+            IStateChange stateChangeToCheck = resultantStateChanges.Dequeue();
+            List<IStateChange> nextStateChanges = new List<IStateChange>();
+
+            if (stateChangeToCheck.IsPossible(nextStateChanges))
+            {
+                stateChanges.Add(stateChangeToCheck);
+                
+                foreach (IStateChange sc in nextStateChanges)
+                {
+                    resultantStateChanges.Enqueue(sc);
+                }
+            }
+            else
+            {
+                return false;                
+            }
         }
 
-        // Calculate resulting state changes
+        return true;
     }
 
     public void Do() 
     {
-        foreach (IStateChange stateChange in stageChanges) 
+        foreach (IStateChange stateChange in stateChanges) 
         {
             stateChange.Do();
         }
@@ -41,7 +54,7 @@ public class Move
 
     public void Undo() 
     {
-        foreach (IStateChange stateChange in stageChanges)
+        foreach (IStateChange stateChange in stateChanges)
         {
             stateChange.Undo();
         }
@@ -49,7 +62,7 @@ public class Move
 
     public void Render(float timer)
     {
-        foreach (IStateChange stateChange in stageChanges)
+        foreach (IStateChange stateChange in stateChanges)
         {
             stateChange.Render(timer);
         }
