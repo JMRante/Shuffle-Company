@@ -4,39 +4,54 @@ using UnityEngine;
 
 public class Move
 {
-    List<IAction> actions;
+    List<IStateChange> stageChanges;
 
     public Move() 
     {
-        actions = new List<IAction>();
+        stageChanges = new List<IStateChange>();
     }
 
-    public List<IAction> GetActions() 
+    private List<IStateChange> GetActions() 
     {
-        return actions;
+        return stageChanges;
+    }
+
+    public bool RequestStateChange(IStateChange stateChange)
+    {
+        if (stateChange.IsPossible())
+        {
+            stageChanges.Add(stateChange);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+        // Calculate resulting state changes
     }
 
     public void Do() 
     {
-        foreach (IAction action in actions) 
+        foreach (IStateChange stateChange in stageChanges) 
         {
-            action.Do();
+            stateChange.Do();
         }
     }
 
     public void Undo() 
     {
-        foreach (IAction action in actions)
+        foreach (IStateChange stateChange in stageChanges)
         {
-            action.Undo();
+            stateChange.Undo();
         }
     }
 
     public void Render(float timer)
     {
-        foreach (IAction action in actions)
+        foreach (IStateChange stateChange in stageChanges)
         {
-            action.Render(timer);
+            stateChange.Render(timer);
         }
     }
 }

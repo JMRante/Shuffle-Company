@@ -22,23 +22,23 @@ public class GameController : MonoBehaviour
         {
             if (moveExecutionTimer == 0f)
             {
-                IAction playerAction = null;
+                IStateChange playerAction = null;
 
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    playerAction = new TranslateAction(player, new Vector3(0, 0, 1));
+                    playerAction = new TranslateStateChange(player, Vector3.forward);
                 }
                 else if (Input.GetKey(KeyCode.RightArrow))
                 {
-                    playerAction = new TranslateAction(player, new Vector3(1, 0, 0));
+                    playerAction = new TranslateStateChange(player, Vector3.right);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
-                    playerAction = new TranslateAction(player, new Vector3(0, 0, -1));
+                    playerAction = new TranslateStateChange(player, Vector3.back);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
-                    playerAction = new TranslateAction(player, new Vector3(-1, 0, 0));
+                    playerAction = new TranslateStateChange(player, Vector3.left);
                 } 
                 else if (Input.GetKey(KeyCode.Z))
                 {
@@ -52,11 +52,15 @@ public class GameController : MonoBehaviour
                 if (playerAction != null)
                 {
                     Move nextMove = new Move();
-                    nextMove.GetActions().Add(playerAction);
-                    moves.Push(nextMove);
+                    bool requestPossible = nextMove.RequestStateChange(playerAction);
 
-                    moveExecutionTimer = moveExecutionTime;
-                    isUndo = false;
+                    if (requestPossible)
+                    {
+                        moves.Push(nextMove);
+
+                        moveExecutionTimer = moveExecutionTime;
+                        isUndo = false;
+                    }
                 }
             }
             else
