@@ -4,33 +4,33 @@ using UnityEngine;
 
 public class Move
 {
-    private List<IStateChange> stateChanges;
+    private List<StateChange> stateChanges;
 
     public Move() 
     {
-        stateChanges = new List<IStateChange>();
+        stateChanges = new List<StateChange>();
     }
 
-    private List<IStateChange> GetActions() 
+    private List<StateChange> GetActions() 
     {
         return stateChanges;
     }
 
-    public bool RequestStateChange(IStateChange stateChange)
+    public bool RequestStateChange(StateChange stateChange)
     {
-        Queue<IStateChange> resultantStateChanges = new Queue<IStateChange>();
+        Queue<StateChange> resultantStateChanges = new Queue<StateChange>();
         resultantStateChanges.Enqueue(stateChange);
         
         while (resultantStateChanges.Count > 0)
         {
-            IStateChange stateChangeToCheck = resultantStateChanges.Dequeue();
-            List<IStateChange> nextStateChanges = new List<IStateChange>();
+            StateChange stateChangeToCheck = resultantStateChanges.Dequeue();
+            List<StateChange> nextStateChanges = new List<StateChange>();
 
             if (stateChangeToCheck.IsPossible(nextStateChanges))
             {
                 stateChanges.Add(stateChangeToCheck);
                 
-                foreach (IStateChange sc in nextStateChanges)
+                foreach (StateChange sc in nextStateChanges)
                 {
                     resultantStateChanges.Enqueue(sc);
                 }
@@ -46,7 +46,7 @@ public class Move
 
     public void Do() 
     {
-        foreach (IStateChange stateChange in stateChanges) 
+        foreach (StateChange stateChange in stateChanges) 
         {
             stateChange.Do();
         }
@@ -54,7 +54,7 @@ public class Move
 
     public void Undo() 
     {
-        foreach (IStateChange stateChange in stateChanges)
+        foreach (StateChange stateChange in stateChanges)
         {
             stateChange.Undo();
         }
@@ -62,7 +62,7 @@ public class Move
 
     public void Render(float timer)
     {
-        foreach (IStateChange stateChange in stateChanges)
+        foreach (StateChange stateChange in stateChanges)
         {
             stateChange.Render(timer);
         }

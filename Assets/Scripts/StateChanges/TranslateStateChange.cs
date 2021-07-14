@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TranslateStateChange : IStateChange
+public class TranslateStateChange : StateChange
 {
     private GameObject gameObject;
     private Vector3 translation;
@@ -15,51 +15,43 @@ public class TranslateStateChange : IStateChange
         this.startPosition = this.gameObject.transform.position;
     }
 
-    public StateChange GetStateChangeCode() 
+    public override StateChangeType GetStateChangeCode() 
     {
-        return StateChange.Translate;
+        return StateChangeType.Translate;
     }
 
-    public bool IsPossible(List<IStateChange> resultingStateChanges)
+    public override bool IsPossible(List<StateChange> resultingStateChanges)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(startPosition + translation, 0.5f);
+        Vector3 positionAhead = startPosition + translation;
 
-        foreach (Collider hitCollider in hitColliders)
+        GameObject pushableAhead = FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
+        GameObject solidAhead = FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        bool canIPush = ElementHasProperty(gameObject, ElementProperty.Pusher);
+
+        if (canIPush && pushableAhead)
         {
-            ElementProperties otherElementProperties = hitCollider.GetComponent<ElementProperties>();
-            
-            if (otherElementProperties != null && otherElementProperties.HasProperty(ElementProperty.Solid))
-            {
-                ElementProperties myElementProperties = gameObject.GetComponent<ElementProperties>();
-
-                if (myElementProperties != null 
-                    && otherElementProperties.HasProperty(ElementProperty.Pushable)
-                    && myElementProperties.HasProperty(ElementProperty.Pusher))
-                {
-                    TranslateStateChange pushStateChange = new TranslateStateChange(hitCollider.gameObject, translation);
-                    resultingStateChanges.Add(pushStateChange);
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            TranslateStateChange pushStateChange = new TranslateStateChange(pushableAhead.gameObject, translation);
+            resultingStateChanges.Add(pushStateChange);
+        }
+        else if (solidAhead)
+        {
+            return false;
         }
 
         return true;
     }
 
-    public void Do() 
+    public override void Do() 
     {
         gameObject.transform.position = startPosition + translation;
     }
 
-    public void Undo() 
+    public override void Undo() 
     {
         gameObject.transform.position = startPosition;
     }
 
-    public void Render(float timer)
+    public override void Render(float timer)
     {
         gameObject.transform.position = Vector3.Lerp(startPosition, startPosition + translation, timer);
     }

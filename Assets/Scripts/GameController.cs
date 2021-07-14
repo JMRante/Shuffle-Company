@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
         {
             if (moveExecutionTimer == 0f)
             {
-                IStateChange playerAction = null;
+                StateChange playerAction = null;
 
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
