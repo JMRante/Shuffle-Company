@@ -28,24 +28,25 @@ public class GameController : MonoBehaviour
             {
                 // Check Player Input for State Changes
                 StateChange playerRequestStateChange = null;
+                bool canPlayerMove = CanPlayerMove();
 
-                if (Input.GetKey(KeyCode.UpArrow))
+                if (canPlayerMove && Input.GetKey(KeyCode.UpArrow))
                 {
                     playerRequestStateChange = new TranslateStateChange(player, Vector3.forward);
                 }
-                else if (Input.GetKey(KeyCode.RightArrow))
+                else if (canPlayerMove && Input.GetKey(KeyCode.RightArrow))
                 {
                     playerRequestStateChange = new TranslateStateChange(player, Vector3.right);
                 }
-                else if (Input.GetKey(KeyCode.DownArrow))
+                else if (canPlayerMove && Input.GetKey(KeyCode.DownArrow))
                 {
                     playerRequestStateChange = new TranslateStateChange(player, Vector3.back);
                 }
-                else if (Input.GetKey(KeyCode.LeftArrow))
+                else if (canPlayerMove && Input.GetKey(KeyCode.LeftArrow))
                 {
                     playerRequestStateChange = new TranslateStateChange(player, Vector3.left);
                 }
-                else if (Input.GetKey(KeyCode.X))
+                else if (canPlayerMove && Input.GetKey(KeyCode.X))
                 {
                     playerRequestStateChange = new VoidStateChange();
                 }
@@ -56,6 +57,10 @@ public class GameController : MonoBehaviour
                         moveExecutionTimer = moveExecutionTime;
                         isUndo = true;
                     }
+                }
+                else if (!canPlayerMove)
+                {
+                    playerRequestStateChange = new VoidStateChange();
                 }
 
                 // If state changes are queued, attempt them
@@ -127,6 +132,23 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public bool CanPlayerMove()
+    {
+        IBehavior[] behaviors = player.GetComponents<IBehavior>();
+
+        foreach (IBehavior behavior in behaviors)
+        {
+            List<StateChange> stateChanges = behavior.CheckForStateChanges();
+
+            if (stateChanges != null)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void SortDynamicElements()
     {
         dynamicElements.Sort(delegate (GameObject objA, GameObject objB) 
@@ -154,7 +176,8 @@ public class GameController : MonoBehaviour
         player = GameObject.Find("Player");
         GameObject[] dynamicElementArray = GameObject.FindGameObjectsWithTag("DynamicElement");
 
-        foreach (GameObject dynamicElement in dynamicElementArray) {
+        foreach (GameObject dynamicElement in dynamicElementArray) 
+        {
             dynamicElements.Add(dynamicElement);
         }
 

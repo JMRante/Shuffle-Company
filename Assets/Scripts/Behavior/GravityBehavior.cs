@@ -6,7 +6,7 @@ public class GravityBehavior : MonoBehaviour, IBehavior
 {
     public List<StateChange> CheckForStateChanges()
     {
-        bool isSolidBelow = Queries.ElementExistsAtIndexWithProperty(Vector3.down, ElementProperty.Solid);
+        bool isSolidBelow = Queries.ElementExistsAtIndexWithProperty(gameObject.transform.position + Vector3.down, ElementProperty.Solid);
 
         if (!isSolidBelow)
         {
