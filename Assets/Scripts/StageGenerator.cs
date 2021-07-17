@@ -5,28 +5,30 @@ using UnityEngine;
 public class StageGenerator : MonoBehaviour
 {
     public GameObject[] elements;
+    public GameController gameController;
 
-    private int width = 10;
-    private int height = 10;
+    public int width = 10;
+    public int depth = 10;
 
-    private int[] stage = new int[] {
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 0, 1, 1, 1, 1, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 0, 0, 1,
-        1, 0, 0, 1, 1, 0, 0, 1, 0, 1,
-        1, 0, 0, 0, 0, 3, 0, 3, 0, 1,
-        1, 0, 0, 1, 1, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 0, 0, 0, 1, 0, 1,
-        1, 0, 1, 1, 1, 0, 2, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 3, 0, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    };
+    // private int[] stage = new int[] {
+    //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    //     1, 0, 0, 0, 1, 1, 1, 1, 0, 1,
+    //     1, 0, 1, 1, 1, 1, 0, 0, 0, 1,
+    //     1, 0, 0, 1, 1, 0, 0, 1, 0, 1,
+    //     1, 0, 0, 0, 0, 3, 0, 3, 0, 1,
+    //     1, 0, 0, 1, 1, 1, 0, 1, 0, 1,
+    //     1, 0, 1, 0, 0, 0, 0, 1, 0, 1,
+    //     1, 0, 1, 1, 1, 0, 2, 1, 0, 1,
+    //     1, 0, 0, 0, 0, 0, 0, 3, 0, 1,
+    //     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // };
+    private int[] stage = new int[] {};
 
     void Start() 
     {
         for (int i = 0; i < stage.Length; i++) 
         {
-            Vector3 position = new Vector3(i % width, 0f, i / height);
+            Vector3 position = new Vector3(i % width, 0f, i / depth);
 
             if (stage[i] > 0) 
             {
@@ -36,5 +38,7 @@ public class StageGenerator : MonoBehaviour
                 elementInstance.name = elementInstance.name.Replace("(Clone)", "");
             }
         }
+
+        gameController.GetElementsToTrack();
     }
 }

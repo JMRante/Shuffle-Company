@@ -24,9 +24,9 @@ public class TranslateStateChange : StateChange
     {
         Vector3 positionAhead = startPosition + translation;
 
-        GameObject pushableAhead = FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
-        GameObject solidAhead = FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
-        bool canIPush = ElementHasProperty(gameObject, ElementProperty.Pusher);
+        GameObject pushableAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
+        GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        bool canIPush = Queries.ElementHasProperty(gameObject, ElementProperty.Pusher);
 
         if (canIPush && pushableAhead)
         {

@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 8220303196982020493}
   - component: {fileID: 8220303196982020492}
   - component: {fileID: 8220303196982020495}
+  - component: {fileID: 6742970365651181709}
   m_Layer: 0
   m_Name: WoodCrate
-  m_TagString: Untagged
+  m_TagString: DynamicElement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8220303196982020494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.98, y: 0.98, z: 0.98}
+  m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -109,3 +110,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementProperties: 0000000001000000
+--- !u!114 &6742970365651181709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220303196982020494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b48fb0d8f9d76b4ebc534d84480b7db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     private Stack<Move> moves;
+    private List<GameObject> dynamicElements;
     private GameObject player;
 
     private float moveExecutionTime = 0.2f;
@@ -14,6 +15,9 @@ public class GameController : MonoBehaviour
     void Start() 
     {
         moves = new Stack<Move>();
+        dynamicElements = new List<GameObject>();
+
+        GetElementsToTrack();
     }
 
     void Update() 
@@ -22,24 +26,29 @@ public class GameController : MonoBehaviour
         {
             if (moveExecutionTimer == 0f)
             {
-                StateChange playerAction = null;
+                // Check Player Input for State Changes
+                StateChange playerRequestStateChange = null;
 
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    playerAction = new TranslateStateChange(player, Vector3.forward);
+                    playerRequestStateChange = new TranslateStateChange(player, Vector3.forward);
                 }
                 else if (Input.GetKey(KeyCode.RightArrow))
                 {
-                    playerAction = new TranslateStateChange(player, Vector3.right);
+                    playerRequestStateChange = new TranslateStateChange(player, Vector3.right);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
-                    playerAction = new TranslateStateChange(player, Vector3.back);
+                    playerRequestStateChange = new TranslateStateChange(player, Vector3.back);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
-                    playerAction = new TranslateStateChange(player, Vector3.left);
-                } 
+                    playerRequestStateChange = new TranslateStateChange(player, Vector3.left);
+                }
+                else if (Input.GetKey(KeyCode.X))
+                {
+                    playerRequestStateChange = new VoidStateChange();
+                }
                 else if (Input.GetKey(KeyCode.Z))
                 {
                     if (moves.Count > 0) 
@@ -49,13 +58,37 @@ public class GameController : MonoBehaviour
                     }
                 }
 
-                if (playerAction != null)
+                // If state changes are queued, attempt them
+                if (playerRequestStateChange != null)
                 {
+                    // Check dynamic objects for state changes
+                    List<StateChange> requestStateChanges = new List<StateChange>();
+
+                    foreach (GameObject dynamicElement in dynamicElements)
+                    {
+                        IBehavior[] behaviors = dynamicElement.GetComponents<IBehavior>();
+
+                        foreach (IBehavior behavior in behaviors)
+                        {
+                            List<StateChange> stateChanges = behavior.CheckForStateChanges();
+
+                            if (stateChanges != null)
+                            {
+                                requestStateChanges.AddRange(stateChanges);
+                            }
+                        }
+                    }
+
                     Move nextMove = new Move();
-                    bool requestPossible = nextMove.RequestStateChange(playerAction);
+                    bool requestPossible = nextMove.RequestStateChange(playerRequestStateChange);
 
                     if (requestPossible)
                     {
+                        foreach (StateChange requestStateChange in requestStateChanges)
+                        {
+                            nextMove.RequestStateChange(requestStateChange);
+                        }
+
                         moves.Push(nextMove);
 
                         moveExecutionTimer = moveExecutionTime;
@@ -75,6 +108,7 @@ public class GameController : MonoBehaviour
                     if (moveExecutionTimer <= 0) 
                     {
                         moves.Pop().Undo();
+                        SortDynamicElements();
                         moveExecutionTimer = 0f;
                     }
                 }
@@ -85,14 +119,45 @@ public class GameController : MonoBehaviour
                     if (moveExecutionTimer <= 0)
                     {
                         moves.Peek().Do();
+                        SortDynamicElements();
                         moveExecutionTimer = 0f;
                     }
                 }
             }
-        } 
-        else
-        {
-            player = GameObject.Find("Player");
         }
+    }
+
+    public void SortDynamicElements()
+    {
+        dynamicElements.Sort(delegate (GameObject objA, GameObject objB) 
+        {
+            Vector3 objAPosition = objA.transform.position;
+            Vector3 objBPosition = objB.transform.position;
+
+            if (objAPosition.y.CompareTo(objBPosition.y) != 0)
+            {
+                return objAPosition.y.CompareTo(objBPosition.y);
+            }
+            else if (objAPosition.z.CompareTo(objBPosition.z) != 0)
+            {
+                return objAPosition.z.CompareTo(objBPosition.z);
+            }
+            else
+            {
+                return objAPosition.x.CompareTo(objBPosition.x);
+            }
+        });
+    }
+
+    public void GetElementsToTrack()
+    {
+        player = GameObject.Find("Player");
+        GameObject[] dynamicElementArray = GameObject.FindGameObjectsWithTag("DynamicElement");
+
+        foreach (GameObject dynamicElement in dynamicElementArray) {
+            dynamicElements.Add(dynamicElement);
+        }
+
+        SortDynamicElements();
     }
 }

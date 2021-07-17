@@ -16,8 +16,12 @@ public class GameCamera : MonoBehaviour
         else 
         {
             player = GameObject.Find("Player");
-            this.transform.position = player.transform.position + offsetFromPlayer;
-            this.transform.LookAt(player.transform.position, this.transform.up);
+
+            if (player != null)
+            {
+                this.transform.position = player.transform.position + offsetFromPlayer;
+                this.transform.LookAt(player.transform.position, this.transform.up);
+            }
         }
     }
 }
