@@ -43,11 +43,11 @@ public class PushableMoveBehavior : IBehavior
         stateChanges.Add(new TranslateStateChange(pushable, direction));
 
         Vector3 positionAhead = pushable.transform.position + direction;
-        SlotFillBehavior slotFillBehavior = new SlotFillBehavior(positionAhead);
+        SlotBehavior slotBehavior = new SlotBehavior(pushable.transform.position, positionAhead);
 
-        if (slotFillBehavior.IsTriggered())
+        if (slotBehavior.IsTriggered())
         {
-            stateChanges.AddRange(slotFillBehavior.GetStateChanges());
+            stateChanges.AddRange(slotBehavior.GetStateChanges());
         }
 
         return stateChanges;
