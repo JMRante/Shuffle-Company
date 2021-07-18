@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,29 +27,29 @@ public class GameController : MonoBehaviour
         {
             if (moveExecutionTimer == 0f)
             {
-                // Check Player Input for State Changes
-                StateChange playerRequestStateChange = null;
+                // Check Player Input for behavior requests
+                IBehavior playerRequestedBehavior = null;
                 bool canPlayerMove = CanPlayerMove();
 
                 if (canPlayerMove && Input.GetKey(KeyCode.UpArrow))
                 {
-                    playerRequestStateChange = new TranslateStateChange(player, Vector3.forward);
+                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.forward);
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.RightArrow))
                 {
-                    playerRequestStateChange = new TranslateStateChange(player, Vector3.right);
+                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.right);
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.DownArrow))
                 {
-                    playerRequestStateChange = new TranslateStateChange(player, Vector3.back);
+                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.back);
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.LeftArrow))
                 {
-                    playerRequestStateChange = new TranslateStateChange(player, Vector3.left);
+                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.left);
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.X))
                 {
-                    playerRequestStateChange = new VoidStateChange();
+                    playerRequestedBehavior = new DoNothingBehavior();
                 }
                 else if (Input.GetKey(KeyCode.Z))
                 {
@@ -60,45 +61,35 @@ public class GameController : MonoBehaviour
                 }
                 else if (!canPlayerMove)
                 {
-                    playerRequestStateChange = new VoidStateChange();
+                    playerRequestedBehavior = new DoNothingBehavior();
                 }
 
-                // If state changes are queued, attempt them
-                if (playerRequestStateChange != null)
+                // If player behavior queued, attempt it to go to next move
+                if (playerRequestedBehavior != null && playerRequestedBehavior.IsPossible())
                 {
                     // Check dynamic objects for state changes
-                    List<StateChange> requestStateChanges = new List<StateChange>();
+                    List<IBehavior> requestedBehaviors = new List<IBehavior>();
+                    requestedBehaviors.Add(playerRequestedBehavior);
 
                     foreach (GameObject dynamicElement in dynamicElements)
                     {
                         IBehavior[] behaviors = dynamicElement.GetComponents<IBehavior>();
+                        SortBehaviors(behaviors);
 
                         foreach (IBehavior behavior in behaviors)
                         {
-                            List<StateChange> stateChanges = behavior.CheckForStateChanges();
-
-                            if (stateChanges != null)
+                            if (behavior.IsTriggered() && behavior.IsPossible())
                             {
-                                requestStateChanges.AddRange(stateChanges);
+                                requestedBehaviors.Add(behavior);
                             }
                         }
                     }
 
-                    Move nextMove = new Move();
-                    bool requestPossible = nextMove.RequestStateChange(playerRequestStateChange);
+                    Move nextMove = CalculateMove(requestedBehaviors);
+                    moves.Push(nextMove);
 
-                    if (requestPossible)
-                    {
-                        foreach (StateChange requestStateChange in requestStateChanges)
-                        {
-                            nextMove.RequestStateChange(requestStateChange);
-                        }
-
-                        moves.Push(nextMove);
-
-                        moveExecutionTimer = moveExecutionTime;
-                        isUndo = false;
-                    }
+                    moveExecutionTimer = moveExecutionTime;
+                    isUndo = false;
                 }
             }
             else
@@ -138,9 +129,7 @@ public class GameController : MonoBehaviour
 
         foreach (IBehavior behavior in behaviors)
         {
-            List<StateChange> stateChanges = behavior.CheckForStateChanges();
-
-            if (stateChanges != null)
+            if (behavior.IsTriggered())
             {
                 return false;
             }
@@ -151,24 +140,40 @@ public class GameController : MonoBehaviour
 
     public void SortDynamicElements()
     {
-        dynamicElements.Sort(delegate (GameObject objA, GameObject objB) 
+        dynamicElements.Sort(delegate (GameObject obj1, GameObject obj2) 
         {
-            Vector3 objAPosition = objA.transform.position;
-            Vector3 objBPosition = objB.transform.position;
+            Vector3 obj1Position = obj1.transform.position;
+            Vector3 obj2Position = obj2.transform.position;
 
-            if (objAPosition.y.CompareTo(objBPosition.y) != 0)
+            if (obj1Position.y.CompareTo(obj2Position.y) != 0)
             {
-                return objAPosition.y.CompareTo(objBPosition.y);
+                return obj1Position.y.CompareTo(obj2Position.y);
             }
-            else if (objAPosition.z.CompareTo(objBPosition.z) != 0)
+            else if (obj1Position.z.CompareTo(obj2Position.z) != 0)
             {
-                return objAPosition.z.CompareTo(objBPosition.z);
+                return obj1Position.z.CompareTo(obj2Position.z);
             }
             else
             {
-                return objAPosition.x.CompareTo(objBPosition.x);
+                return obj1Position.x.CompareTo(obj2Position.x);
             }
         });
+    }
+
+    public void SortBehaviors(IBehavior[] behaviors)
+    {
+        Array.Sort(behaviors, delegate (IBehavior b1, IBehavior b2) 
+            {
+                int priorityCompare = b1.GetPriority().CompareTo(b2.GetPriority());
+
+                if (priorityCompare != 0)
+                {
+                    return priorityCompare;
+                }
+
+                return b1.GetType().ToString().CompareTo(b2.GetType().ToString());
+            }
+        );
     }
 
     public void GetElementsToTrack()
@@ -182,5 +187,22 @@ public class GameController : MonoBehaviour
         }
 
         SortDynamicElements();
+    }
+
+    public Move CalculateMove(List<IBehavior> behaviors)
+    {
+        Move move = new Move();
+
+        foreach (IBehavior behavior in behaviors)
+        {
+            List<StateChange> behaviorStateChanges = behavior.GetStateChanges();
+            
+            if (behaviorStateChanges != null)
+            {
+                move.AddStateChanges(behaviorStateChanges);
+            }
+        }
+
+        return move;
     }
 }

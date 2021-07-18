@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class GravityBehavior : MonoBehaviour, IBehavior
 {
-    public List<StateChange> CheckForStateChanges()
+    public int GetPriority()
+    {
+        return 0;
+    }
+
+    public bool IsTriggered()
     {
         bool isSolidBelow = Queries.ElementExistsAtIndexWithProperty(gameObject.transform.position + Vector3.down, ElementProperty.Solid);
+        return !isSolidBelow;
+    }
 
-        if (!isSolidBelow)
-        {
-            List<StateChange> stateChanges = new List<StateChange>();
-            stateChanges.Add(new TranslateStateChange(gameObject, Vector3.down));
-            return stateChanges;
-        }
+    public bool IsPossible()
+    {
+        return true;
+    }
 
-        return null;
+    public List<StateChange> GetStateChanges()
+    {
+        List<StateChange> stateChanges = new List<StateChange>();
+        stateChanges.Add(new TranslateStateChange(gameObject, Vector3.down));
+        return stateChanges;
     }
 }

@@ -4,5 +4,8 @@ using UnityEngine;
 
 public interface IBehavior
 {
-    public List<StateChange> CheckForStateChanges();
+    public int GetPriority();
+    public bool IsTriggered();
+    public bool IsPossible();
+    public List<StateChange> GetStateChanges();
 }

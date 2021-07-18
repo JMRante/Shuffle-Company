@@ -20,27 +20,6 @@ public class TranslateStateChange : StateChange
         return StateChangeType.Translate;
     }
 
-    public override bool IsPossible(List<StateChange> resultingStateChanges)
-    {
-        Vector3 positionAhead = startPosition + translation;
-
-        GameObject pushableAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
-        GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
-        bool canIPush = Queries.ElementHasProperty(gameObject, ElementProperty.Pusher);
-
-        if (canIPush && pushableAhead)
-        {
-            TranslateStateChange pushStateChange = new TranslateStateChange(pushableAhead.gameObject, translation);
-            resultingStateChanges.Add(pushStateChange);
-        }
-        else if (solidAhead)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public override void Do() 
     {
         gameObject.transform.position = startPosition + translation;

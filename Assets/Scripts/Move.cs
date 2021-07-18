@@ -11,37 +11,14 @@ public class Move
         stateChanges = new List<StateChange>();
     }
 
-    private List<StateChange> GetActions() 
+    public void AddStateChange(StateChange stateChangeToAdd)
     {
-        return stateChanges;
+        stateChanges.Add(stateChangeToAdd);
     }
 
-    public bool RequestStateChange(StateChange stateChange)
+    public void AddStateChanges(List<StateChange> stateChangesToAdd)
     {
-        Queue<StateChange> resultantStateChanges = new Queue<StateChange>();
-        resultantStateChanges.Enqueue(stateChange);
-        
-        while (resultantStateChanges.Count > 0)
-        {
-            StateChange stateChangeToCheck = resultantStateChanges.Dequeue();
-            List<StateChange> nextStateChanges = new List<StateChange>();
-
-            if (stateChangeToCheck.IsPossible(nextStateChanges))
-            {
-                stateChanges.Add(stateChangeToCheck);
-                
-                foreach (StateChange sc in nextStateChanges)
-                {
-                    resultantStateChanges.Enqueue(sc);
-                }
-            }
-            else
-            {
-                return false;                
-            }
-        }
-
-        return true;
+        this.stateChanges.AddRange(stateChangesToAdd);
     }
 
     public void Do() 

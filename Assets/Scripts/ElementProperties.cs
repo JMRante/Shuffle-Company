@@ -6,7 +6,8 @@ public enum ElementProperty
 {
     Solid,
     Pushable,
-    Pusher
+    Pusher,
+    Slot
 }
 
 public class ElementProperties : MonoBehaviour

@@ -9,6 +9,7 @@ public enum StateChangeType
     ChangeGlobalVariable,
     Create,
     Remove,
+    ChangeMaterial,
     IncrementItemInInventory,
     DecrementItemInInventory,
     Teleport,
@@ -19,7 +20,6 @@ public enum StateChangeType
 public abstract class StateChange
 {
     public abstract StateChangeType GetStateChangeCode();
-    public abstract bool IsPossible(List<StateChange> resultingStateChanges);
     public abstract void Do();
     public abstract void Undo();
     public abstract void Render(float timer);
