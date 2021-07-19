@@ -50,6 +50,19 @@ public class PushableMoveBehavior : IBehavior
             stateChanges.AddRange(slotBehavior.GetStateChanges());
         }
 
+        Vector3 positionAbove = pushable.transform.position + Vector3.up;
+        GameObject looseObjectAbove = Queries.FirstElementAtIndexWithProperty(positionAbove, ElementProperty.Loose);
+
+        if (looseObjectAbove != null)
+        {
+            PushableMoveBehavior pushAboveBehavior = new PushableMoveBehavior(looseObjectAbove, direction);
+
+            if (pushAboveBehavior.IsPossible())
+            {
+                stateChanges.AddRange(pushAboveBehavior.GetStateChanges());
+            }
+        }
+
         return stateChanges;
     }
 }
