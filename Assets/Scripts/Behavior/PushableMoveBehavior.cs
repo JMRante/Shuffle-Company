@@ -18,36 +18,24 @@ public class PushableMoveBehavior : IBehavior
         return 1;
     }
 
-    public bool IsTriggered()
-    {
-        return false;
-    }
-
-    public bool IsPossible()
-    {
-        Vector3 positionAhead = pushable.transform.position + direction;
-
-        GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
-
-        if (solidAhead)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public List<StateChange> GetStateChanges()
     {
         List<StateChange> stateChanges = new List<StateChange>();
-        stateChanges.Add(new TranslateStateChange(pushable, direction));
 
         Vector3 positionAhead = pushable.transform.position + direction;
-        SlotBehavior slotBehavior = new SlotBehavior(pushable.transform.position, positionAhead);
-
-        if (slotBehavior.IsTriggered())
+        GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        
+        if (solidAhead)
         {
-            stateChanges.AddRange(slotBehavior.GetStateChanges());
+            return null;
+        }
+
+        SlotBehavior slotBehavior = new SlotBehavior(pushable.transform.position, positionAhead);
+        List<StateChange> slotBehaviorStateChanges = slotBehavior.GetStateChanges();
+
+        if (slotBehaviorStateChanges != null)
+        {
+            stateChanges.AddRange(slotBehaviorStateChanges);
         }
 
         Vector3 positionAbove = pushable.transform.position + Vector3.up;
@@ -56,12 +44,15 @@ public class PushableMoveBehavior : IBehavior
         if (looseObjectAbove != null)
         {
             PushableMoveBehavior pushAboveBehavior = new PushableMoveBehavior(looseObjectAbove, direction);
+            List<StateChange> pushAboveBehaviorStateChanges = pushAboveBehavior.GetStateChanges();
 
-            if (pushAboveBehavior.IsPossible())
+            if (pushAboveBehaviorStateChanges != null)
             {
-                stateChanges.AddRange(pushAboveBehavior.GetStateChanges());
+                stateChanges.AddRange(pushAboveBehaviorStateChanges);
             }
         }
+
+        stateChanges.Add(new TranslateStateChange(pushable, direction));
 
         return stateChanges;
     }

@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
                 }
 
                 // If player behavior queued, attempt it to go to next move
-                if (playerRequestedBehavior != null && playerRequestedBehavior.IsPossible())
+                if (playerRequestedBehavior != null)
                 {
                     // Check dynamic objects for state changes
                     List<IBehavior> requestedBehaviors = new List<IBehavior>();
@@ -78,10 +78,7 @@ public class GameController : MonoBehaviour
 
                         foreach (IBehavior behavior in behaviors)
                         {
-                            if (behavior.IsTriggered() && behavior.IsPossible())
-                            {
-                                requestedBehaviors.Add(behavior);
-                            }
+                            requestedBehaviors.Add(behavior);
                         }
                     }
 
@@ -127,15 +124,43 @@ public class GameController : MonoBehaviour
     {
         IBehavior[] behaviors = player.GetComponents<IBehavior>();
 
+        PlayerMoveBehavior playerRequestedBehaviorForward = new PlayerMoveBehavior(player, Vector3.forward);
+
+        if (playerRequestedBehaviorForward.GetStateChanges() != null)
+        {
+            return true;
+        }
+
+        PlayerMoveBehavior playerRequestedBehaviorRight = new PlayerMoveBehavior(player, Vector3.right);
+
+        if (playerRequestedBehaviorRight.GetStateChanges() != null)
+        {
+            return true;
+        }
+
+        PlayerMoveBehavior playerRequestedBehaviorBack = new PlayerMoveBehavior(player, Vector3.back);
+
+        if (playerRequestedBehaviorBack.GetStateChanges() != null)
+        {
+            return true;
+        }
+
+        PlayerMoveBehavior playerRequestedBehaviorLeft = new PlayerMoveBehavior(player, Vector3.left);
+
+        if (playerRequestedBehaviorLeft.GetStateChanges() != null)
+        {
+            return true;
+        }
+
         foreach (IBehavior behavior in behaviors)
         {
-            if (behavior.IsTriggered())
+            if (behavior.GetStateChanges() != null)
             {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     public void SortDynamicElements()

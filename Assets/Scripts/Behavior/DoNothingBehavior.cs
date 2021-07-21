@@ -9,16 +9,6 @@ public class DoNothingBehavior : IBehavior
         return 100;
     }
 
-    public bool IsTriggered()
-    {
-        return false;
-    }
-
-    public bool IsPossible()
-    {
-        return true;
-    }
-
     public List<StateChange> GetStateChanges()
     {
         return null;

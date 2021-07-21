@@ -19,16 +19,6 @@ public class SlotBehavior : IBehavior
         return 1;
     }
 
-    public bool IsTriggered()
-    {
-        return true;
-    }
-
-    public bool IsPossible()
-    {
-        return true;
-    }
-
     public List<StateChange> GetStateChanges()
     {
         GameObject enteringSlot = Queries.FirstElementAtIndexWithProperty(slotablePositionAhead, ElementProperty.Slot);

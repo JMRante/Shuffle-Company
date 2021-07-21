@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class StateVariables : MonoBehaviour
 {
-    
+    public Dictionary<string, int> variables;
 }

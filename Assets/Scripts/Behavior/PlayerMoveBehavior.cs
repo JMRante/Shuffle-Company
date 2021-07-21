@@ -18,15 +18,11 @@ public class PlayerMoveBehavior : IBehavior
         return 0;
     }
 
-    public bool IsTriggered()
+    public List<StateChange> GetStateChanges()
     {
-        return false;
-    }
+        List<StateChange> stateChanges = new List<StateChange>();
 
-    public bool IsPossible()
-    {
         Vector3 positionAhead = player.transform.position + direction;
-
         GameObject pushableAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
         GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
         bool canIPush = Queries.ElementHasProperty(player, ElementProperty.Pusher);
@@ -34,31 +30,22 @@ public class PlayerMoveBehavior : IBehavior
         if (canIPush && pushableAhead != null)
         {
             PushableMoveBehavior pushableMove = new PushableMoveBehavior(pushableAhead.gameObject, direction);
-            return pushableMove.IsPossible();
+            List<StateChange> pushableStateChanges = pushableMove.GetStateChanges();
+
+            if (pushableStateChanges != null)
+            {
+                stateChanges.Add(new TranslateStateChange(player, direction));
+                stateChanges.AddRange(pushableStateChanges);
+                return stateChanges;
+            }
         }
         else if (solidAhead)
         {
-            return false;
+            return null;
         }
 
-        return true;
-    }
-
-    public List<StateChange> GetStateChanges()
-    {
-        List<StateChange> stateChanges = new List<StateChange>();
         stateChanges.Add(new TranslateStateChange(player, direction));
 
-        Vector3 positionAhead = player.transform.position + direction;
-        GameObject pushableAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
-        bool canIPush = Queries.ElementHasProperty(player, ElementProperty.Pusher);
-
-        if (canIPush && pushableAhead != null)
-        {
-            PushableMoveBehavior pushableMove = new PushableMoveBehavior(pushableAhead.gameObject, direction);
-            stateChanges.AddRange(pushableMove.GetStateChanges());
-        }
-        
         return stateChanges;
     }
 }
