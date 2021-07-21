@@ -6,7 +6,7 @@ public class Queries
 {
     public static GameObject FirstElementAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.45f);
+        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
         foreach (Collider hitCollider in hitColliders)
         {
@@ -24,7 +24,7 @@ public class Queries
     public static List<GameObject> AllElementsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
     {
         List<GameObject> elementList = new List<GameObject>();
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.45f);
+        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
         foreach (Collider hitCollider in hitColliders)
         {
@@ -41,7 +41,7 @@ public class Queries
 
     public static bool ElementExistsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.45f);
+        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
         foreach (Collider hitCollider in hitColliders)
         {

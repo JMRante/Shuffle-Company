@@ -38,6 +38,10 @@ public class PlayerMoveBehavior : IBehavior
                 stateChanges.AddRange(pushableStateChanges);
                 return stateChanges;
             }
+            else
+            {
+                return null;
+            }
         }
         else if (solidAhead)
         {

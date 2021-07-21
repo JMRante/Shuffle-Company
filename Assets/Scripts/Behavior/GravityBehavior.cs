@@ -12,7 +12,7 @@ public class GravityBehavior : MonoBehaviour, IBehavior
     public List<StateChange> GetStateChanges()
     {
         bool isSolidBelow = Queries.ElementExistsAtIndexWithProperty(gameObject.transform.position + Vector3.down, ElementProperty.Solid);
-        StateVariables stateVariables = gameObject.GetComponent<StateVariables>();
+        // StateVariables stateVariables = gameObject.GetComponent<StateVariables>();
 
         if (!isSolidBelow)
         {
@@ -31,10 +31,11 @@ public class GravityBehavior : MonoBehaviour, IBehavior
             if (looseObjectAbove != null && looseObjectAbove != gameObject)
             {
                 GravityBehavior looseObjectAboveGravityBehavior = looseObjectAbove.GetComponent<GravityBehavior>();
+                List<StateChange> looseObjectAboveGravityBehaviorStateChanges = looseObjectAboveGravityBehavior.GetStateChanges();
 
-                if (looseObjectAboveGravityBehavior != null)
+                if (looseObjectAboveGravityBehaviorStateChanges != null)
                 {
-                    stateChanges.AddRange(looseObjectAboveGravityBehavior.GetStateChanges());
+                    stateChanges.AddRange(looseObjectAboveGravityBehaviorStateChanges);
                 }
             }
 

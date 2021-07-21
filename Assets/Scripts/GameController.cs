@@ -124,40 +124,24 @@ public class GameController : MonoBehaviour
     {
         IBehavior[] behaviors = player.GetComponents<IBehavior>();
 
-        PlayerMoveBehavior playerRequestedBehaviorForward = new PlayerMoveBehavior(player, Vector3.forward);
-
-        if (playerRequestedBehaviorForward.GetStateChanges() != null)
-        {
-            return true;
-        }
-
-        PlayerMoveBehavior playerRequestedBehaviorRight = new PlayerMoveBehavior(player, Vector3.right);
-
-        if (playerRequestedBehaviorRight.GetStateChanges() != null)
-        {
-            return true;
-        }
-
-        PlayerMoveBehavior playerRequestedBehaviorBack = new PlayerMoveBehavior(player, Vector3.back);
-
-        if (playerRequestedBehaviorBack.GetStateChanges() != null)
-        {
-            return true;
-        }
-
-        PlayerMoveBehavior playerRequestedBehaviorLeft = new PlayerMoveBehavior(player, Vector3.left);
-
-        if (playerRequestedBehaviorLeft.GetStateChanges() != null)
-        {
-            return true;
-        }
-
         foreach (IBehavior behavior in behaviors)
         {
             if (behavior.GetStateChanges() != null)
             {
-                return true;
+                return false;
             }
+        }
+
+        Vector3[] directions = new Vector3[] { Vector3.forward, Vector3.right, Vector3.back, Vector3.left };
+
+        foreach (Vector3 direction in directions)
+        {
+            PlayerMoveBehavior potentialMove = new PlayerMoveBehavior(player, direction);
+
+            if (potentialMove.GetStateChanges() != null)
+            {
+                return true;
+            }            
         }
 
         return false;

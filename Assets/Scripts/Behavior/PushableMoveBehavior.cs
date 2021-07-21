@@ -25,7 +25,7 @@ public class PushableMoveBehavior : IBehavior
         Vector3 positionAhead = pushable.transform.position + direction;
         GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
         
-        if (solidAhead)
+        if (solidAhead != null)
         {
             return null;
         }
@@ -49,6 +49,10 @@ public class PushableMoveBehavior : IBehavior
             if (pushAboveBehaviorStateChanges != null)
             {
                 stateChanges.AddRange(pushAboveBehaviorStateChanges);
+            }
+            else
+            {
+                return null;
             }
         }
 
