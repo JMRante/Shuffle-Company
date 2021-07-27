@@ -10,11 +10,11 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponent<ElementProperties>();
+            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
 
             if (elementProperties != null && elementProperties.HasProperty(elementProperty))
             {
-                return hitCollider.gameObject;
+                return elementProperties.gameObject;
             }
         }
 
@@ -28,11 +28,11 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponent<ElementProperties>();
+            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
 
             if (elementProperties != null && elementProperties.HasProperty(elementProperty))
             {
-                elementList.Add(hitCollider.gameObject);
+                elementList.Add(elementProperties.gameObject);
             }
         }
 
@@ -45,7 +45,7 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponent<ElementProperties>();
+            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
 
             if (elementProperties != null && elementProperties.HasProperty(elementProperty))
             {
@@ -58,7 +58,7 @@ public class Queries
 
     public static bool ElementHasProperty(GameObject gameObject, ElementProperty elementProperty)
     {
-        ElementProperties elementProperties = gameObject.GetComponent<ElementProperties>();
+        ElementProperties elementProperties = gameObject.GetComponentInParent<ElementProperties>();
 
         if (elementProperties != null && elementProperties.HasProperty(elementProperty))
         {
