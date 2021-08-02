@@ -140,6 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementName: WoodCrate
+  sortOrder: 5
   elementProperties: 000000000100000004000000
 --- !u!114 &6742970365651181709
 MonoBehaviour:

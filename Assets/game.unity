@@ -4496,6 +4496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementName: 
+  sortOrder: 0
   elementProperties: 00000000
 --- !u!1001 &844906655
 PrefabInstance:
@@ -5726,7 +5728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1082928659
 Transform:
   m_ObjectHideFlags: 0
@@ -6689,7 +6691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1238361611
 Transform:
   m_ObjectHideFlags: 0
@@ -11237,6 +11239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementName: 
+  sortOrder: 0
   elementProperties: 00000000
 --- !u!65 &1952275684
 BoxCollider:

@@ -11,8 +11,10 @@ public enum ElementProperty
     Loose
 }
 
-public class ElementProperties : MonoBehaviour
+public class Element : MonoBehaviour
 {
+    public string elementName;
+    public int sortOrder;
     public ElementProperty[] elementProperties;
 
     public bool HasProperty(ElementProperty elementProperty)

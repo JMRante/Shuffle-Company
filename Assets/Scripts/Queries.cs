@@ -10,11 +10,11 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
+            Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (elementProperties != null && elementProperties.HasProperty(elementProperty))
+            if (element != null && element.HasProperty(elementProperty))
             {
-                return elementProperties.gameObject;
+                return element.gameObject;
             }
         }
 
@@ -28,11 +28,11 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
+            Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (elementProperties != null && elementProperties.HasProperty(elementProperty))
+            if (element != null && element.HasProperty(elementProperty))
             {
-                elementList.Add(elementProperties.gameObject);
+                elementList.Add(element.gameObject);
             }
         }
 
@@ -45,9 +45,9 @@ public class Queries
 
         foreach (Collider hitCollider in hitColliders)
         {
-            ElementProperties elementProperties = hitCollider.GetComponentInParent<ElementProperties>();
+            Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (elementProperties != null && elementProperties.HasProperty(elementProperty))
+            if (element != null && element.HasProperty(elementProperty))
             {
                 return true;
             }
@@ -58,9 +58,9 @@ public class Queries
 
     public static bool ElementHasProperty(GameObject gameObject, ElementProperty elementProperty)
     {
-        ElementProperties elementProperties = gameObject.GetComponentInParent<ElementProperties>();
+        Element element = gameObject.GetComponentInParent<Element>();
 
-        if (elementProperties != null && elementProperties.HasProperty(elementProperty))
+        if (element != null && element.HasProperty(elementProperty))
         {
             return true;
         }

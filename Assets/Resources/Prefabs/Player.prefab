@@ -96,6 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementName: Player
+  sortOrder: 0
   elementProperties: 000000000200000004000000
 --- !u!114 &4695318615755415283
 MonoBehaviour:

@@ -151,6 +151,15 @@ public class GameController : MonoBehaviour
     {
         dynamicElements.Sort(delegate (GameObject obj1, GameObject obj2) 
         {
+            Element obj1Element = obj1.GetComponent<Element>();
+            Element obj2Element = obj2.GetComponent<Element>();
+
+            int elementComparison = obj1Element.sortOrder.CompareTo(obj2Element.sortOrder);
+
+            if (elementComparison != 0) {
+                return elementComparison;
+            }
+
             Vector3 obj1Position = obj1.transform.position;
             Vector3 obj2Position = obj2.transform.position;
 
