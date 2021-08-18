@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlotBehavior : IBehavior
+public class SlotBehavior : MonoBehaviour, IBehavior
 {
-    private Vector3 slotablePosition;
-    private Vector3 slotablePositionAhead;
-    private bool isFill;
+    private GridCollisionSystem gcs;
+    private StateVariables stateVariables;
 
-    public SlotBehavior(Vector3 slotablePosition, Vector3 slotablePositionAhead)
+    void Start()
     {
-        this.slotablePosition = slotablePosition;
-        this.slotablePositionAhead = slotablePositionAhead;
+        GameObject gameController = GameObject.Find("GameController");
+
+        if (gameController != null)
+        {
+            gcs = gameController.GetComponent<GridCollisionSystem>();
+        }
+
+        stateVariables = gameObject.GetComponent<StateVariables>();
+        stateVariables.SetBoolean("filled", gcs.ElementExistsAtIndexWithProperty(gameObject.transform.position, ElementProperty.Slotable));
+    }
+
+    public bool IsPassive()
+    {
+        return false;
     }
 
     public int GetPriority()
@@ -21,19 +32,20 @@ public class SlotBehavior : IBehavior
 
     public List<StateChange> GetStateChanges()
     {
-        GameObject enteringSlot = Queries.FirstElementAtIndexWithProperty(slotablePositionAhead, ElementProperty.Slot);
-        GameObject exitingSlot = Queries.FirstElementAtIndexWithProperty(slotablePosition, ElementProperty.Slot);
-
         List<StateChange> stateChanges = new List<StateChange>();
 
-        if (enteringSlot != null)
-        {
-            stateChanges.Add(new ChangeMaterialStateChange(enteringSlot, Resources.Load<Material>("Materials/SlotTestFull"), 0.8f));
-        }
+        bool isFilled = gcs.ElementExistsAtIndexWithProperty(gameObject.transform.position, ElementProperty.Slotable);
+        bool wasFilled = stateVariables.GetBoolean("filled");
 
-        if (exitingSlot != null)
+        if (isFilled && !wasFilled)
         {
-            stateChanges.Add(new ChangeMaterialStateChange(exitingSlot, Resources.Load<Material>("Materials/SlotTestEmpty"), 0.2f));
+            stateChanges.Add(new ChangeMaterialStateChange(gameObject, Resources.Load<Material>("Materials/SlotTestFull"), 0.8f));
+            stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, "filled", 1, 0));
+        }
+        else if (!isFilled && wasFilled)
+        {
+            stateChanges.Add(new ChangeMaterialStateChange(gameObject, Resources.Load<Material>("Materials/SlotTestEmpty"), 0.2f));
+            stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, "filled", 0, 0));
         }
 
         return stateChanges;

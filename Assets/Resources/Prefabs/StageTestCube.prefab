@@ -139,4 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elementName: StageTestCube
+  sortOrder: 0
   elementProperties: 00000000

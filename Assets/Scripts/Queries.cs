@@ -4,57 +4,57 @@ using UnityEngine;
 
 public class Queries
 {
-    public static GameObject FirstElementAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
+    // public static GameObject FirstElementAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
+    // {
+    //     Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
-        foreach (Collider hitCollider in hitColliders)
-        {
-            Element element = hitCollider.GetComponentInParent<Element>();
+    //     foreach (Collider hitCollider in hitColliders)
+    //     {
+    //         Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (element != null && element.HasProperty(elementProperty))
-            {
-                return element.gameObject;
-            }
-        }
+    //         if (element != null && element.HasProperty(elementProperty))
+    //         {
+    //             return element.gameObject;
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
-    public static List<GameObject> AllElementsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
-    {
-        List<GameObject> elementList = new List<GameObject>();
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
+    // public static List<GameObject> AllElementsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
+    // {
+    //     List<GameObject> elementList = new List<GameObject>();
+    //     Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
-        foreach (Collider hitCollider in hitColliders)
-        {
-            Element element = hitCollider.GetComponentInParent<Element>();
+    //     foreach (Collider hitCollider in hitColliders)
+    //     {
+    //         Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (element != null && element.HasProperty(elementProperty))
-            {
-                elementList.Add(element.gameObject);
-            }
-        }
+    //         if (element != null && element.HasProperty(elementProperty))
+    //         {
+    //             elementList.Add(element.gameObject);
+    //         }
+    //     }
 
-        return elementList;
-    }
+    //     return elementList;
+    // }
 
-    public static bool ElementExistsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
+    // public static bool ElementExistsAtIndexWithProperty(Vector3 index, ElementProperty elementProperty)
+    // {
+    //     Collider[] hitColliders = Physics.OverlapSphere(index, 0.25f);
 
-        foreach (Collider hitCollider in hitColliders)
-        {
-            Element element = hitCollider.GetComponentInParent<Element>();
+    //     foreach (Collider hitCollider in hitColliders)
+    //     {
+    //         Element element = hitCollider.GetComponentInParent<Element>();
 
-            if (element != null && element.HasProperty(elementProperty))
-            {
-                return true;
-            }
-        }
+    //         if (element != null && element.HasProperty(elementProperty))
+    //         {
+    //             return true;
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public static bool ElementHasProperty(GameObject gameObject, ElementProperty elementProperty)
     {

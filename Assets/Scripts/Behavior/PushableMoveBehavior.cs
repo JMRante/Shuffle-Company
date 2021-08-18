@@ -2,14 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PushableMoveBehavior : IBehavior
+public class PushableMoveBehavior : MonoBehaviour, IBehavior
 {
-    private GameObject pushable;
+    private GridCollisionSystem gcs;
     private Vector3 direction;
 
-    public PushableMoveBehavior(GameObject pushable, Vector3 direction)
+    void Start()
     {
-        this.pushable = pushable;
+        GameObject gameController = GameObject.Find("GameController");
+
+        if (gameController != null)
+        {
+            gcs = gameController.GetComponent<GridCollisionSystem>();
+        }
+    }
+
+    public bool IsPassive()
+    {
+        return true;
+    }
+
+    public void SetDirection(Vector3 direction)
+    {
         this.direction = direction;
     }
 
@@ -22,28 +36,21 @@ public class PushableMoveBehavior : IBehavior
     {
         List<StateChange> stateChanges = new List<StateChange>();
 
-        Vector3 positionAhead = pushable.transform.position + direction;
-        GameObject solidAhead = Queries.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        Vector3 positionAhead = gameObject.transform.position + direction;
+        GameObject solidAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
         
         if (solidAhead != null)
         {
             return null;
         }
 
-        SlotBehavior slotBehavior = new SlotBehavior(pushable.transform.position, positionAhead);
-        List<StateChange> slotBehaviorStateChanges = slotBehavior.GetStateChanges();
-
-        if (slotBehaviorStateChanges != null)
-        {
-            stateChanges.AddRange(slotBehaviorStateChanges);
-        }
-
-        Vector3 positionAbove = pushable.transform.position + Vector3.up;
-        GameObject looseObjectAbove = Queries.FirstElementAtIndexWithProperty(positionAbove, ElementProperty.Loose);
+        Vector3 positionAbove = gameObject.transform.position + Vector3.up;
+        GameObject looseObjectAbove = gcs.FirstElementAtIndexWithProperty(positionAbove, ElementProperty.Loose);
 
         if (looseObjectAbove != null)
         {
-            PushableMoveBehavior pushAboveBehavior = new PushableMoveBehavior(looseObjectAbove, direction);
+            PushableMoveBehavior pushAboveBehavior = looseObjectAbove.GetComponent<PushableMoveBehavior>();
+            pushAboveBehavior.SetDirection(direction);
             List<StateChange> pushAboveBehaviorStateChanges = pushAboveBehavior.GetStateChanges();
 
             if (pushAboveBehaviorStateChanges != null)
@@ -56,7 +63,7 @@ public class PushableMoveBehavior : IBehavior
             }
         }
 
-        stateChanges.Add(new TranslateStateChange(pushable, direction));
+        stateChanges.Add(new TranslateStateChange(gameObject, direction, gcs));
 
         return stateChanges;
     }

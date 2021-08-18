@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IBehavior
 {
+    public bool IsPassive();
     public int GetPriority();
     public List<StateChange> GetStateChanges();
 }

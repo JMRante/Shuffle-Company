@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     private Stack<Move> moves;
     private List<GameObject> dynamicElements;
     private GameObject player;
+    private GridCollisionSystem gcs;
 
     private float moveExecutionTime = 0.2f;
     private float moveExecutionTimer = 0f;
@@ -17,7 +18,9 @@ public class GameController : MonoBehaviour
     {
         moves = new Stack<Move>();
         dynamicElements = new List<GameObject>();
+        gcs = GetComponent<GridCollisionSystem>();
 
+        HashAllElements();
         GetElementsToTrack();
     }
 
@@ -33,23 +36,31 @@ public class GameController : MonoBehaviour
 
                 if (canPlayerMove && Input.GetKey(KeyCode.UpArrow))
                 {
-                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.forward);
+                    PlayerMoveBehavior tempPlayerRequestedBehavior = player.GetComponent<PlayerMoveBehavior>();
+                    tempPlayerRequestedBehavior.SetDirection(Vector3.forward);
+                    playerRequestedBehavior = tempPlayerRequestedBehavior;
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.RightArrow))
                 {
-                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.right);
+                    PlayerMoveBehavior tempPlayerRequestedBehavior = player.GetComponent<PlayerMoveBehavior>();
+                    tempPlayerRequestedBehavior.SetDirection(Vector3.right);
+                    playerRequestedBehavior = tempPlayerRequestedBehavior;
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.DownArrow))
                 {
-                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.back);
+                    PlayerMoveBehavior tempPlayerRequestedBehavior = player.GetComponent<PlayerMoveBehavior>();
+                    tempPlayerRequestedBehavior.SetDirection(Vector3.back);
+                    playerRequestedBehavior = tempPlayerRequestedBehavior;
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.LeftArrow))
                 {
-                    playerRequestedBehavior = new PlayerMoveBehavior(player, Vector3.left);
+                    PlayerMoveBehavior tempPlayerRequestedBehavior = player.GetComponent<PlayerMoveBehavior>();
+                    tempPlayerRequestedBehavior.SetDirection(Vector3.left);
+                    playerRequestedBehavior = tempPlayerRequestedBehavior;
                 }
                 else if (canPlayerMove && Input.GetKey(KeyCode.X))
                 {
-                    playerRequestedBehavior = new DoNothingBehavior();
+                    playerRequestedBehavior = player.GetComponent<DoNothingBehavior>();
                 }
                 else if (Input.GetKey(KeyCode.Z))
                 {
@@ -61,7 +72,7 @@ public class GameController : MonoBehaviour
                 }
                 else if (!canPlayerMove)
                 {
-                    playerRequestedBehavior = new DoNothingBehavior();
+                    playerRequestedBehavior = player.GetComponent<DoNothingBehavior>();
                 }
 
                 // If player behavior queued, attempt it to go to next move
@@ -78,7 +89,10 @@ public class GameController : MonoBehaviour
 
                         foreach (IBehavior behavior in behaviors)
                         {
-                            requestedBehaviors.Add(behavior);
+                            if (!behavior.IsPassive())
+                            {
+                                requestedBehaviors.Add(behavior);
+                            }
                         }
                     }
 
@@ -126,7 +140,7 @@ public class GameController : MonoBehaviour
 
         foreach (IBehavior behavior in behaviors)
         {
-            if (behavior.GetStateChanges() != null)
+            if (!behavior.IsPassive() && behavior.GetStateChanges() != null)
             {
                 return false;
             }
@@ -136,7 +150,8 @@ public class GameController : MonoBehaviour
 
         foreach (Vector3 direction in directions)
         {
-            PlayerMoveBehavior potentialMove = new PlayerMoveBehavior(player, direction);
+            PlayerMoveBehavior potentialMove = player.GetComponent<PlayerMoveBehavior>();
+            potentialMove.SetDirection(direction);
 
             if (potentialMove.GetStateChanges() != null)
             {
@@ -194,6 +209,23 @@ public class GameController : MonoBehaviour
         );
     }
 
+    public void HashAllElements()
+    {
+        GameObject[] staticElementArray = GameObject.FindGameObjectsWithTag("StaticElement");
+
+        foreach (GameObject staticElement in staticElementArray)
+        {
+            gcs.Hash(staticElement, Vector3.negativeInfinity, staticElement.transform.position);
+        }
+
+        GameObject[] dynamicElementArray = GameObject.FindGameObjectsWithTag("DynamicElement");
+
+        foreach (GameObject dynamicElement in dynamicElementArray)
+        {
+            gcs.Hash(dynamicElement, Vector3.negativeInfinity, dynamicElement.transform.position);
+        }
+    }
+
     public void GetElementsToTrack()
     {
         player = GameObject.Find("Player");
@@ -210,17 +242,35 @@ public class GameController : MonoBehaviour
     public Move CalculateMove(List<IBehavior> behaviors)
     {
         Move move = new Move();
+        // Debug.Log("Calculate Move");
 
         foreach (IBehavior behavior in behaviors)
         {
+            // Debug.Log("Behavior: " + behavior.ToString());
             List<StateChange> behaviorStateChanges = behavior.GetStateChanges();
             
             if (behaviorStateChanges != null)
             {
-                move.AddStateChanges(behaviorStateChanges);
+                foreach (StateChange behaviorStateChange in behaviorStateChanges)
+                {
+                    // Debug.Log("SC: " + behaviorStateChange.ToString());
+                    behaviorStateChange.Do();
+                    move.AddStateChange(behaviorStateChange);
+                    // PrintDynamicElementStatus();
+                }
             }
         }
 
+        move.Undo();
+
         return move;
+    }
+
+    public void PrintDynamicElementStatus()
+    {
+        foreach (GameObject go in dynamicElements)
+        {
+            Debug.Log("DO " + go.name + " is " + go.transform.position);
+        }
     }
 }

@@ -56,9 +56,11 @@ GameObject:
   - component: {fileID: 2286461570088899871}
   - component: {fileID: 3560061926470105603}
   - component: {fileID: 2118150707055623700}
+  - component: {fileID: -5288296016253061600}
+  - component: {fileID: 6167365443442852785}
   m_Layer: 0
   m_Name: Slot
-  m_TagString: Untagged
+  m_TagString: DynamicElement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,4 +143,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Slot
   sortOrder: 50
-  elementProperties: 03000000
+  elementProperties: 
+--- !u!114 &-5288296016253061600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101080394599569511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853e8ee169aeacc4e94a828279462668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6167365443442852785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101080394599569511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4590103be4e6e7a48883b0707cae04be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

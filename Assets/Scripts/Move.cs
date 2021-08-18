@@ -18,9 +18,9 @@ public class Move
 
     public void AddStateChanges(List<StateChange> stateChangesToAdd)
     {
-        this.stateChanges.AddRange(stateChangesToAdd);
+        stateChanges.AddRange(stateChangesToAdd);
     }
-
+    
     public void Do() 
     {
         foreach (StateChange stateChange in stateChanges) 

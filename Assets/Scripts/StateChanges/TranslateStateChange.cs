@@ -8,11 +8,14 @@ public class TranslateStateChange : StateChange
     private Vector3 translation;
     private Vector3 startPosition;
 
-    public TranslateStateChange(GameObject gameObject, Vector3 translation) 
+    private GridCollisionSystem gcs;
+
+    public TranslateStateChange(GameObject gameObject, Vector3 translation, GridCollisionSystem gcs) 
     {
         this.gameObject = gameObject;
         this.translation = translation;
         this.startPosition = this.gameObject.transform.position;
+        this.gcs = gcs;
     }
 
     public override StateChangeType GetStateChangeCode() 
@@ -22,12 +25,15 @@ public class TranslateStateChange : StateChange
 
     public override void Do() 
     {
+        // Debug.Log("Do " + gameObject + " from " + startPosition + " to " + (startPosition + translation));
         gameObject.transform.position = startPosition + translation;
+        gcs.Hash(gameObject, startPosition, startPosition + translation);
     }
 
     public override void Undo() 
     {
         gameObject.transform.position = startPosition;
+        gcs.Hash(gameObject, startPosition + translation, startPosition);
     }
 
     public override void Render(float timer)

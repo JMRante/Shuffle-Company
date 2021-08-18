@@ -16,7 +16,7 @@ public class ChangeLocalVariableStateChange : StateChange
         this.gameObject = gameObject;
         this.stateVariables = gameObject.GetComponent<StateVariables>();
         this.key = key;
-        this.oldValue = stateVariables.variables[key];
+        this.oldValue = stateVariables.GetInt(key);
         this.newValue = newValue;
         this.changeTime = changeTime;
     }
@@ -28,23 +28,23 @@ public class ChangeLocalVariableStateChange : StateChange
 
     public override void Do()
     {
-        stateVariables.variables[key] = newValue;
+        stateVariables.SetInt(key, newValue);
     }
 
     public override void Undo()
     {
-        stateVariables.variables[key] = oldValue;
+        stateVariables.SetInt(key, oldValue);
     }
 
     public override void Render(float timer)
     {
         if (timer >= changeTime)
         {
-            stateVariables.variables[key] = newValue;
+            stateVariables.SetInt(key, newValue);
         }
         else
         {
-            stateVariables.variables[key] = oldValue;
+            stateVariables.SetInt(key, oldValue);
         }
     }
 }

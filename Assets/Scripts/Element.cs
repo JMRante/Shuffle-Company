@@ -7,7 +7,7 @@ public enum ElementProperty
     Solid,
     Pushable,
     Pusher,
-    Slot,
+    Slotable,
     Loose
 }
 
