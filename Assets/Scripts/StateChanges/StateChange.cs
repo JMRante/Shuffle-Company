@@ -14,7 +14,8 @@ public enum StateChangeType
     DecrementItemInInventory,
     Teleport,
     ChangeLiquidHeight,
-    BounceLaser
+    BounceLaser,
+    ChangeActiveStatus
 }
 
 public abstract class StateChange

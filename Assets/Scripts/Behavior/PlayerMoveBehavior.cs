@@ -60,6 +60,25 @@ public class PlayerMoveBehavior : MonoBehaviour, IBehavior
         }
         else if (solidAhead)
         {
+            GameObject keyBlockAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.KeyBlock);
+            
+            if (keyBlockAhead != null)
+            {
+                StateVariables stateVariables = gameObject.GetComponent<StateVariables>();
+                int keyCount = stateVariables.GetInt("yellowKeys");
+
+                if (keyCount > 0)
+                {
+                    UnlockKeyBlockBehavior unlockKeyBlock = keyBlockAhead.GetComponent<UnlockKeyBlockBehavior>();
+
+                    stateChanges.Add(new TranslateStateChange(gameObject, direction, gcs));
+                    stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, "yellowKeys", keyCount - 1, 0.1f));
+                    stateChanges.AddRange(unlockKeyBlock.GetStateChanges());
+
+                    return stateChanges;
+                }
+            }
+
             return null;
         }
 

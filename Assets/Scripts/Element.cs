@@ -8,7 +8,9 @@ public enum ElementProperty
     Pushable,
     Pusher,
     Slotable,
-    Loose
+    Loose,
+    Key,
+    KeyBlock
 }
 
 public class Element : MonoBehaviour

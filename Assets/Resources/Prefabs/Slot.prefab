@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 921405866944067392}
-  - component: {fileID: 808214043397551786}
+  - component: {fileID: 4115306079136481581}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -31,18 +31,18 @@ Transform:
   m_Father: {fileID: 7695197418732557996}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &808214043397551786
-SphereCollider:
+--- !u!65 &4115306079136481581
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3042908763187654292}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.49
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5101080394599569511
 GameObject:
@@ -56,8 +56,8 @@ GameObject:
   - component: {fileID: 2286461570088899871}
   - component: {fileID: 3560061926470105603}
   - component: {fileID: 2118150707055623700}
-  - component: {fileID: -5288296016253061600}
   - component: {fileID: 6167365443442852785}
+  - component: {fileID: -5288296016253061600}
   m_Layer: 0
   m_Name: Slot
   m_TagString: DynamicElement
@@ -144,18 +144,6 @@ MonoBehaviour:
   elementName: Slot
   sortOrder: 50
   elementProperties: 
---- !u!114 &-5288296016253061600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5101080394599569511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853e8ee169aeacc4e94a828279462668, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6167365443442852785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,5 +154,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4590103be4e6e7a48883b0707cae04be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5288296016253061600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101080394599569511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853e8ee169aeacc4e94a828279462668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

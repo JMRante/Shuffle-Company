@@ -6,7 +6,7 @@ public class GridCollisionSystem : MonoBehaviour
 {
     private Dictionary<Vector3Int, List<GameObject>> collisionHash;
 
-    void Start()
+    void Awake()
     {
         collisionHash = new Dictionary<Vector3Int, List<GameObject>>();
     }
@@ -34,26 +34,29 @@ public class GridCollisionSystem : MonoBehaviour
         }
 
         Vector3Int[] nextTransformHashList = GetTransformHashList(gameObject, nextPositionInt);
-        
-        // Add hash to next position
-        for (int i = 0; i < nextTransformHashList.Length; i++)
-        {
-            if (collisionHash.ContainsKey(nextTransformHashList[i]))
-            {
-                List<GameObject> collisionHashList = collisionHash[nextTransformHashList[i]];
 
-                if (!collisionHashList.Contains(gameObject))
+        // Add hash to next position if it exists
+        if (nextPosition != Vector3.negativeInfinity)
+        {
+            for (int i = 0; i < nextTransformHashList.Length; i++)
+            {
+                if (collisionHash.ContainsKey(nextTransformHashList[i]))
                 {
+                    List<GameObject> collisionHashList = collisionHash[nextTransformHashList[i]];
+
+                    if (!collisionHashList.Contains(gameObject))
+                    {
+                        collisionHashList.Add(gameObject);
+                        // Debug.Log("Add to Hash: " + gameObject + ", " + previousPositionInt + ", " + nextPositionInt);
+                    }
+                }
+                else
+                {
+                    List<GameObject> collisionHashList = new List<GameObject>();
                     collisionHashList.Add(gameObject);
+                    collisionHash.Add(nextTransformHashList[i], collisionHashList);
                     // Debug.Log("Add to Hash: " + gameObject + ", " + previousPositionInt + ", " + nextPositionInt);
                 }
-            }
-            else
-            {
-                List<GameObject> collisionHashList = new List<GameObject>();
-                collisionHashList.Add(gameObject);
-                collisionHash.Add(nextTransformHashList[i], collisionHashList);
-                // Debug.Log("Add to Hash: " + gameObject + ", " + previousPositionInt + ", " + nextPositionInt);
             }
         }
     }
@@ -84,7 +87,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.HasProperty(elementProperty))
+                if (element != null && element.isActiveAndEnabled && element.HasProperty(elementProperty))
                 {
                     return element.gameObject;
                 }
@@ -112,7 +115,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.HasProperty(elementProperty))
+                if (element != null && element.isActiveAndEnabled && element.HasProperty(elementProperty))
                 {
                     elementList.Add(element.gameObject);
                 }
@@ -138,7 +141,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.HasProperty(elementProperty))
+                if (element != null && element.isActiveAndEnabled && element.HasProperty(elementProperty))
                 {
                     return true;
                 }
@@ -158,7 +161,7 @@ public class GridCollisionSystem : MonoBehaviour
     {
         Element element = gameObject.GetComponent<Element>();
 
-        if (element != null && element.HasProperty(elementProperty))
+        if (element != null && element.isActiveAndEnabled && element.HasProperty(elementProperty))
         {
             return true;
         }

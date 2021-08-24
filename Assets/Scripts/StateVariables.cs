@@ -6,7 +6,7 @@ public class StateVariables : MonoBehaviour
 {
     private Dictionary<string, int> variables;
 
-    void Start()
+    void Awake()
     {
         variables = new Dictionary<string, int>();
     }
