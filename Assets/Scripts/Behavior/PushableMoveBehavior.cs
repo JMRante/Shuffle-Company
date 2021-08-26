@@ -37,7 +37,7 @@ public class PushableMoveBehavior : MonoBehaviour, IBehavior
         List<StateChange> stateChanges = new List<StateChange>();
 
         Vector3 positionAhead = gameObject.transform.position + direction;
-        GameObject solidAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        GameObject solidAhead = gcs.FirstElementAtIndex(positionAhead, ElementProperty.Solid);
         
         if (solidAhead != null)
         {
@@ -45,7 +45,7 @@ public class PushableMoveBehavior : MonoBehaviour, IBehavior
         }
 
         Vector3 positionAbove = gameObject.transform.position + Vector3.up;
-        GameObject looseObjectAbove = gcs.FirstElementAtIndexWithProperty(positionAbove, ElementProperty.Loose);
+        GameObject looseObjectAbove = gcs.FirstElementAtIndex(positionAbove, ElementProperty.Loose);
 
         if (looseObjectAbove != null)
         {

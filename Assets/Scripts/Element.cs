@@ -10,7 +10,8 @@ public enum ElementProperty
     Slotable,
     Loose,
     Key,
-    KeyBlock
+    KeyBlock,
+    All
 }
 
 public class Element : MonoBehaviour

@@ -17,7 +17,7 @@ public class SlotBehavior : MonoBehaviour, IBehavior
         }
 
         stateVariables = gameObject.GetComponent<StateVariables>();
-        stateVariables.SetBoolean("filled", gcs.ElementExistsAtIndexWithProperty(gameObject.transform.position, ElementProperty.Slotable));
+        stateVariables.SetBoolean("filled", gcs.ElementExistsAtIndex(gameObject.transform.position, ElementProperty.Slotable));
     }
 
     public bool IsPassive()
@@ -34,7 +34,7 @@ public class SlotBehavior : MonoBehaviour, IBehavior
     {
         List<StateChange> stateChanges = new List<StateChange>();
 
-        bool isFilled = gcs.ElementExistsAtIndexWithProperty(gameObject.transform.position, ElementProperty.Slotable);
+        bool isFilled = gcs.ElementExistsAtIndex(gameObject.transform.position, ElementProperty.Slotable);
         bool wasFilled = stateVariables.GetBoolean("filled");
 
         if (isFilled && !wasFilled)

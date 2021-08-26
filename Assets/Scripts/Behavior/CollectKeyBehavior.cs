@@ -34,7 +34,7 @@ public class CollectKeyBehavior : MonoBehaviour, IBehavior
     {
         List<StateChange> stateChanges = new List<StateChange>();
 
-        GameObject key = gcs.FirstElementAtIndexWithProperty(gameObject.transform.position, ElementProperty.Key);
+        GameObject key = gcs.FirstElementAtIndex(gameObject.transform.position, ElementProperty.Key);
 
         if (key != null)
         {

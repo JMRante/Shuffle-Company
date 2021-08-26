@@ -28,7 +28,7 @@ public class GravityBehavior : MonoBehaviour, IBehavior
 
     public List<StateChange> GetStateChanges()
     {
-        bool isSolidBelow = gcs.ElementExistsAtIndexWithProperty(gameObject.transform.position + Vector3.down, ElementProperty.Solid);
+        bool isSolidBelow = gcs.ElementExistsAtIndex(gameObject.transform.position + Vector3.down, ElementProperty.Solid);
         // StateVariables stateVariables = gameObject.GetComponent<StateVariables>();
 
         if (!isSolidBelow)
@@ -37,7 +37,7 @@ public class GravityBehavior : MonoBehaviour, IBehavior
             stateChanges.Add(new TranslateStateChange(gameObject, Vector3.down, gcs));
 
             Vector3 positionAbove = gameObject.transform.position + Vector3.up;
-            GameObject looseObjectAbove = gcs.FirstElementAtIndexWithProperty(positionAbove, ElementProperty.Loose);
+            GameObject looseObjectAbove = gcs.FirstElementAtIndex(positionAbove, ElementProperty.Loose);
 
             // Vector3 positionBelow2 = gameObject.transform.position + (Vector3.down * 2);
             // GameObject solidObjectBelow2 = gcs.FirstElementAtIndexWithProperty(positionBelow2, ElementProperty.Solid);

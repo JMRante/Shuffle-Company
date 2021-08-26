@@ -37,8 +37,8 @@ public class PlayerMoveBehavior : MonoBehaviour, IBehavior
         List<StateChange> stateChanges = new List<StateChange>();
 
         Vector3 positionAhead = gameObject.transform.position + direction;
-        GameObject pushableAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Pushable);
-        GameObject solidAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.Solid);
+        GameObject pushableAhead = gcs.FirstElementAtIndex(positionAhead, ElementProperty.Pushable);
+        GameObject solidAhead = gcs.FirstElementAtIndex(positionAhead, ElementProperty.Solid);
         bool canIPush = gcs.ElementHasProperty(gameObject, ElementProperty.Pusher);
 
         if (canIPush && pushableAhead != null)
@@ -60,7 +60,7 @@ public class PlayerMoveBehavior : MonoBehaviour, IBehavior
         }
         else if (solidAhead)
         {
-            GameObject keyBlockAhead = gcs.FirstElementAtIndexWithProperty(positionAhead, ElementProperty.KeyBlock);
+            GameObject keyBlockAhead = gcs.FirstElementAtIndex(positionAhead, ElementProperty.KeyBlock);
             
             if (keyBlockAhead != null)
             {
