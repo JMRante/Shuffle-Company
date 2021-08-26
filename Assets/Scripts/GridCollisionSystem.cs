@@ -77,7 +77,7 @@ public class GridCollisionSystem : MonoBehaviour
 
 
     // Query fuctions
-    public GameObject FirstElementAtIndex(Vector3Int index, ElementProperty elementProperty)
+    public GameObject FirstElementAtIndex(Vector3Int index, params ElementProperty[] elementProperties)
     {
         if (collisionHash.ContainsKey(index))
         {
@@ -87,7 +87,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.isActiveAndEnabled && (elementProperty == ElementProperty.All || element.HasProperty(elementProperty)))
+                if (element != null && element.isActiveAndEnabled && (AreAllElementsAccepted(elementProperties) || element.HasAnyProperty(elementProperties)))
                 {
                     return element.gameObject;
                 }
@@ -97,13 +97,13 @@ public class GridCollisionSystem : MonoBehaviour
         return null;
     }
 
-    public GameObject FirstElementAtIndex(Vector3 index, ElementProperty elementProperty)
+    public GameObject FirstElementAtIndex(Vector3 index, params ElementProperty[] elementProperties)
     {
         Vector3Int intIndex = Vector3Int.FloorToInt(index);
-        return FirstElementAtIndex(intIndex, elementProperty);
+        return FirstElementAtIndex(intIndex, elementProperties);
     }
 
-    public List<GameObject> AllElementsAtIndex(Vector3Int index, ElementProperty elementProperty)
+    public List<GameObject> AllElementsAtIndex(Vector3Int index, params ElementProperty[] elementProperties)
     {
         List<GameObject> elementList = new List<GameObject>();
 
@@ -115,7 +115,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.isActiveAndEnabled && (elementProperty == ElementProperty.All || element.HasProperty(elementProperty)))
+                if (element != null && element.isActiveAndEnabled && (AreAllElementsAccepted(elementProperties) || element.HasAnyProperty(elementProperties)))
                 {
                     elementList.Add(element.gameObject);
                 }
@@ -125,13 +125,13 @@ public class GridCollisionSystem : MonoBehaviour
         return elementList;
     }
 
-    public List<GameObject> AllElementsAtIndex(Vector3 index, ElementProperty elementProperty)
+    public List<GameObject> AllElementsAtIndex(Vector3 index, params ElementProperty[] elementProperties)
     {
         Vector3Int intIndex = Vector3Int.FloorToInt(index);
-        return AllElementsAtIndex(intIndex, elementProperty);
+        return AllElementsAtIndex(intIndex, elementProperties);
     }
 
-    public bool ElementExistsAtIndex(Vector3Int index, ElementProperty elementProperty)
+    public bool ElementExistsAtIndex(Vector3Int index, params ElementProperty[] elementProperties)
     {
         if (collisionHash.ContainsKey(index))
         {
@@ -141,7 +141,7 @@ public class GridCollisionSystem : MonoBehaviour
             {
                 Element element = elementsAtIndex[i].GetComponent<Element>();
 
-                if (element != null && element.isActiveAndEnabled && (elementProperty == ElementProperty.All || element.HasProperty(elementProperty)))
+                if (element != null && element.isActiveAndEnabled && (AreAllElementsAccepted(elementProperties) || element.HasAnyProperty(elementProperties)))
                 {
                     return true;
                 }
@@ -151,10 +151,10 @@ public class GridCollisionSystem : MonoBehaviour
         return false;
     }
 
-    public bool ElementExistsAtIndex(Vector3 index, ElementProperty elementProperty)
+    public bool ElementExistsAtIndex(Vector3 index, params ElementProperty[] elementProperties)
     {
         Vector3Int intIndex = Vector3Int.FloorToInt(index);
-        return ElementExistsAtIndex(intIndex, elementProperty);
+        return ElementExistsAtIndex(intIndex, elementProperties);
     }
 
     public bool ElementHasProperty(GameObject gameObject, ElementProperty elementProperty)
@@ -164,6 +164,19 @@ public class GridCollisionSystem : MonoBehaviour
         if (element != null && element.isActiveAndEnabled && element.HasProperty(elementProperty))
         {
             return true;
+        }
+
+        return false;
+    }
+
+    public bool AreAllElementsAccepted(params ElementProperty[] elementProperties)
+    {
+        foreach (ElementProperty ep in elementProperties)
+        {
+            if (ep == ElementProperty.All)
+            {
+                return true;
+            }
         }
 
         return false;

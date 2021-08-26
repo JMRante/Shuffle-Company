@@ -11,7 +11,8 @@ public enum ElementProperty
     Loose,
     Key,
     KeyBlock,
-    All
+    All,
+    Blocker
 }
 
 public class Element : MonoBehaviour
@@ -27,6 +28,22 @@ public class Element : MonoBehaviour
             if (ep == elementProperty)
             {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasAnyProperty(ElementProperty[] anyElementProperties)
+    {
+        foreach (ElementProperty ep1 in elementProperties)
+        {
+            foreach (ElementProperty ep2 in anyElementProperties)
+            {
+                if (ep1 == ep2)
+                {
+                    return true;
+                }
             }
         }
 
