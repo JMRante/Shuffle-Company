@@ -17,7 +17,10 @@ public class CollectKeyBehavior : MonoBehaviour, IBehavior
         }
 
         stateVariables = gameObject.GetComponent<StateVariables>();
+        stateVariables.SetInt("redKeys", 0);
         stateVariables.SetInt("yellowKeys", 0);
+        stateVariables.SetInt("greenKeys", 0);
+        stateVariables.SetInt("blueKeys", 0);
     }
 
     public bool IsPassive()
@@ -38,14 +41,13 @@ public class CollectKeyBehavior : MonoBehaviour, IBehavior
 
         if (key != null)
         {
-            if (key.name.Contains("YellowKey"))
-            {
-                int yellowKeyCount = stateVariables.GetInt("yellowKeys");
-                stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, "yellowKeys", yellowKeyCount + 1, 0.5f));
-                stateChanges.Add(new ChangeActiveStatusStateChange(key, false, 0.5f));
+            Key keyProperties = key.GetComponent<Key>();
 
-                return stateChanges;
-            }
+            int keyCount = stateVariables.GetInt(keyProperties.keyStateVariableName);
+            stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, keyProperties.keyStateVariableName, keyCount + 1, 0.5f));
+            stateChanges.Add(new ChangeActiveStatusStateChange(key, false, 0.5f));
+
+            return stateChanges;
         }
 
         return null;

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7999046617747465086}
   - component: {fileID: 7999046617747465081}
   - component: {fileID: 2723235813823185979}
+  - component: {fileID: 5060864618598002955}
   m_Layer: 0
   m_Name: YellowKeyGate
   m_TagString: DynamicElement
@@ -111,6 +112,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411ae5cabb0d44245a1550e9a3ce1ef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5060864618598002955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7999046617747465083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ea81a820535a2409c52cb9ed18d525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyStateVariableName: yellowKeys
 --- !u!1 &7999046618586463163
 GameObject:
   m_ObjectHideFlags: 0

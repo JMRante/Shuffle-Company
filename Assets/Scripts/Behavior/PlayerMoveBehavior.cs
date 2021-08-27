@@ -64,15 +64,17 @@ public class PlayerMoveBehavior : MonoBehaviour, IBehavior
             
             if (keyBlockAhead != null)
             {
+                Key keyBlockKeyProperties = keyBlockAhead.GetComponent<Key>();
+
                 StateVariables stateVariables = gameObject.GetComponent<StateVariables>();
-                int keyCount = stateVariables.GetInt("yellowKeys");
+                int keyCount = stateVariables.GetInt(keyBlockKeyProperties.keyStateVariableName);
 
                 if (keyCount > 0)
                 {
                     UnlockKeyBlockBehavior unlockKeyBlock = keyBlockAhead.GetComponent<UnlockKeyBlockBehavior>();
 
                     stateChanges.Add(new TranslateStateChange(gameObject, direction, gcs));
-                    stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, "yellowKeys", keyCount - 1, 0.1f));
+                    stateChanges.Add(new ChangeLocalVariableStateChange(gameObject, keyBlockKeyProperties.keyStateVariableName, keyCount - 1, 0.1f));
                     stateChanges.AddRange(unlockKeyBlock.GetStateChanges());
 
                     return stateChanges;
