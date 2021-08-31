@@ -9,17 +9,26 @@ public class ChangeMaterialStateChange : StateChange
     private Material oldMaterial;
     private float changeTime;
 
+    private StateChangeRecord stateChangeRecord;
+
     public ChangeMaterialStateChange(GameObject gameObject, Material newMaterial, float changeTime)
     {
         this.gameObject = gameObject;
         this.newMaterial = newMaterial;
         this.oldMaterial = gameObject.GetComponent<MeshRenderer>().material;
         this.changeTime = changeTime;
+
+        this.stateChangeRecord = new StateChangeRecord(GetStateChangeCode(), this.gameObject);
     }
 
     public override StateChangeType GetStateChangeCode()
     {
         return StateChangeType.ChangeMaterial;
+    }
+
+    public override StateChangeRecord GetStateChangeRecord()
+    {
+        return stateChangeRecord;
     }
 
     public override void Do()

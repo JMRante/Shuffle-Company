@@ -9,16 +9,25 @@ public class RemoveStateChange : StateChange
     private Quaternion removedGameObjectRotation;
     private float changeTime;
 
+    private StateChangeRecord stateChangeRecord;
+
     public RemoveStateChange(GameObject removedGameObject, float changeTime)
     {
         this.removedGameObject = removedGameObject;
         this.removedGameObjectPosition = removedGameObject.transform.position;
         this.removedGameObjectRotation = removedGameObject.transform.rotation;
+
+        this.stateChangeRecord = new StateChangeRecord(GetStateChangeCode(), this.removedGameObject);
     }
 
     public override StateChangeType GetStateChangeCode()
     {
         return StateChangeType.Remove;
+    }
+
+    public override StateChangeRecord GetStateChangeRecord()
+    {
+        return stateChangeRecord;
     }
 
     public override void Do()

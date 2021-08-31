@@ -21,6 +21,7 @@ public enum StateChangeType
 public abstract class StateChange
 {
     public abstract StateChangeType GetStateChangeCode();
+    public abstract StateChangeRecord GetStateChangeRecord();
     public abstract void Do();
     public abstract void Undo();
     public abstract void Render(float timer);

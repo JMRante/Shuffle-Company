@@ -11,6 +11,8 @@ public class ChangeLocalVariableStateChange : StateChange
     private int newValue;
     private float changeTime;
 
+    private StateChangeRecord stateChangeRecord;
+
     public ChangeLocalVariableStateChange(GameObject gameObject, string key, int newValue, float changeTime)
     {
         this.gameObject = gameObject;
@@ -19,11 +21,18 @@ public class ChangeLocalVariableStateChange : StateChange
         this.oldValue = stateVariables.GetInt(key);
         this.newValue = newValue;
         this.changeTime = changeTime;
+
+        this.stateChangeRecord = new StateChangeRecord(GetStateChangeCode(), this.gameObject);
     }
 
     public override StateChangeType GetStateChangeCode()
     {
         return StateChangeType.ChangeLocalVariable;
+    }
+
+    public override StateChangeRecord GetStateChangeRecord()
+    {
+        return stateChangeRecord;
     }
 
     public override void Do()

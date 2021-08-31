@@ -12,7 +12,8 @@ public enum ElementProperty
     Key,
     KeyBlock,
     All,
-    Blocker
+    Blocker,
+    Movable
 }
 
 public class Element : MonoBehaviour

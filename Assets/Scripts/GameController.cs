@@ -254,8 +254,11 @@ public class GameController : MonoBehaviour
                 foreach (StateChange behaviorStateChange in behaviorStateChanges)
                 {
                     // Debug.Log("SC: " + behaviorStateChange.ToString());
-                    behaviorStateChange.Do();
-                    move.AddStateChange(behaviorStateChange);
+                    if (!move.IsInStateChangeRecords(behaviorStateChange))
+                    {
+                        behaviorStateChange.Do();
+                        move.AddStateChange(behaviorStateChange);
+                    }
                     // PrintDynamicElementStatus();
                 }
             }

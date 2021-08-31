@@ -8,16 +8,25 @@ public class ChangeActiveStatusStateChange : StateChange
     private bool newStatus;
     private float changeTime;
 
+    private StateChangeRecord stateChangeRecord;
+
     public ChangeActiveStatusStateChange(GameObject gameObject, bool newStatus, float changeTime)
     {
         this.gameObject = gameObject;
         this.newStatus = newStatus;
         this.changeTime = changeTime;
+
+        this.stateChangeRecord = new StateChangeRecord(GetStateChangeCode(), this.gameObject);
     }
 
     public override StateChangeType GetStateChangeCode()
     {
         return StateChangeType.ChangeActiveStatus;
+    }
+
+    public override StateChangeRecord GetStateChangeRecord()
+    {
+        return stateChangeRecord;
     }
 
     public override void Do()
