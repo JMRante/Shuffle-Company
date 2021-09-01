@@ -7,13 +7,13 @@ public class PlayerMove : MonoBehaviour
     public float walkSpeed = 3f;
     
     private Vector3 velocity;
-    private Vector3 direction;
+    private Vector3 inputDirection;
     private Vector3 closestSnapPoint;
 
     void Start()
     {
         velocity = Vector3.zero;
-        direction = Vector3.zero;
+        inputDirection = Vector3.zero;
         closestSnapPoint = transform.position;
     }
 
@@ -26,7 +26,7 @@ public class PlayerMove : MonoBehaviour
 
         if (inputUp)
         {
-            direction = Vector3.forward;
+            inputDirection = Vector3.forward;
 
             if (Utility.IsSnapped(transform.position))
             {
@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (inputRight)
         {
-            direction = Vector3.right;
+            inputDirection = Vector3.right;
 
             if (Utility.IsSnapped(transform.position))
             {
@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (inputDown)
         {
-            direction = Vector3.back;
+            inputDirection = Vector3.back;
 
             if (Utility.IsSnapped(transform.position))
             {
@@ -53,7 +53,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (inputLeft)
         {
-            direction = Vector3.left;
+            inputDirection = Vector3.left;
 
             if (Utility.IsSnapped(transform.position))
             {
@@ -63,14 +63,14 @@ public class PlayerMove : MonoBehaviour
 
         if (!inputUp || !inputRight || !inputDown || !inputLeft)
         {
-            if (direction != Vector3.zero)
+            if (inputDirection != Vector3.zero)
             {
                 Vector3 tempClosestSnapPoint = Utility.Round(transform.position);
                 Vector3 moveToSnapPointVelocity = Vector3.Normalize(tempClosestSnapPoint - transform.position) * walkSpeed;
 
                 if (moveToSnapPointVelocity.normalized == velocity.normalized)
                 {
-                    direction = Vector3.zero;
+                    inputDirection = Vector3.zero;
                     velocity = moveToSnapPointVelocity;
                     closestSnapPoint = tempClosestSnapPoint;
                 }
@@ -82,7 +82,7 @@ public class PlayerMove : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
 
-        if (direction != Vector3.zero)
+        if (inputDirection != Vector3.zero)
         {
             rb.MovePosition(transform.position + velocity * Time.deltaTime);
         }
