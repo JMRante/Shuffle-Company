@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameCamera : MonoBehaviour
 {
-    public Vector3 offsetFromPlayer = new Vector3(0f, 8f, -10f);
+    public Vector3 offsetFromPlayer = new Vector3(0f, 9f, -5f);
     private GameObject player = null;
 
     void Update() 
