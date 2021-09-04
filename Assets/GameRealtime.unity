@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6867dc89d1be304e9fc1793688cb335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 3
+  walkSpeed: 3.7
 --- !u!4 &800055379 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8222472465084806872, guid: bd9248eb18db5a642b60eac622137c86, type: 3}
@@ -1089,6 +1089,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7069408150569358081, guid: 58a93cbb5293c6041bf4436fbe57bdb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069408150569358083, guid: 58a93cbb5293c6041bf4436fbe57bdb9, type: 3}
+      propertyPath: m_Radius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069408150569358083, guid: 58a93cbb5293c6041bf4436fbe57bdb9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7069408150569358110, guid: 58a93cbb5293c6041bf4436fbe57bdb9, type: 3}

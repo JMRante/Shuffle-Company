@@ -4,89 +4,88 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    public float walkSpeed = 3f;
+    public float walkSpeed = 3.7f;
     
     private Vector3 velocity;
-    private Vector3 inputDirection;
-    private Vector3 closestSnapPoint;
+    private List<Vector3> inputDirections;
+    private Rigidbody rb;
 
     void Start()
     {
         velocity = Vector3.zero;
-        inputDirection = Vector3.zero;
-        closestSnapPoint = transform.position;
+        inputDirections = new List<Vector3>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        bool inputUp = Input.GetKey(KeyCode.UpArrow);
-        bool inputRight = Input.GetKey(KeyCode.RightArrow);
-        bool inputDown = Input.GetKey(KeyCode.DownArrow);
-        bool inputLeft = Input.GetKey(KeyCode.LeftArrow);
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            inputDirections.Add(Vector3.forward);
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            inputDirections.Add(Vector3.right);
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+            inputDirections.Add(Vector3.back);
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            inputDirections.Add(Vector3.left);
 
-        if (inputUp)
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+            inputDirections.Remove(Vector3.forward);
+        else if (Input.GetKeyUp(KeyCode.RightArrow))
+            inputDirections.Remove(Vector3.right);
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+            inputDirections.Remove(Vector3.back);
+        else if (Input.GetKeyUp(KeyCode.LeftArrow))
+            inputDirections.Remove(Vector3.left);
+
+        if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+            inputDirections.Clear();
+
+        if (inputDirections.Count > 0)
         {
-            inputDirection = Vector3.forward;
-
             if (Utility.IsSnapped(transform.position))
             {
-                velocity = Vector3.forward * walkSpeed;
-            }
-        }
-        else if (inputRight)
-        {
-            inputDirection = Vector3.right;
-
-            if (Utility.IsSnapped(transform.position))
-            {
-                velocity = Vector3.right * walkSpeed;
-            }
-        }
-        else if (inputDown)
-        {
-            inputDirection = Vector3.back;
-
-            if (Utility.IsSnapped(transform.position))
-            {
-                velocity = Vector3.back * walkSpeed;
-            }
-        }
-        else if (inputLeft)
-        {
-            inputDirection = Vector3.left;
-
-            if (Utility.IsSnapped(transform.position))
-            {
-                velocity = Vector3.left * walkSpeed;
-            }
-        }
-
-        if (!inputUp || !inputRight || !inputDown || !inputLeft)
-        {
-            if (inputDirection != Vector3.zero)
-            {
-                Vector3 tempClosestSnapPoint = Utility.Round(transform.position);
-                Vector3 moveToSnapPointVelocity = Vector3.Normalize(tempClosestSnapPoint - transform.position) * walkSpeed;
-
-                if (moveToSnapPointVelocity.normalized == velocity.normalized)
+                if (inputDirections.Count > 0)
                 {
-                    inputDirection = Vector3.zero;
-                    velocity = moveToSnapPointVelocity;
-                    closestSnapPoint = tempClosestSnapPoint;
+                    Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
+
+                    if (!Physics.CheckSphere(transform.position + latestInputDirection, 0.49f))
+                    {
+                        velocity = latestInputDirection * walkSpeed;
+                    }
                 }
+                else
+                    velocity = Vector3.zero;
             }
         }
     }
 
     void FixedUpdate()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        if (inputDirection != Vector3.zero)
+        if (inputDirections.Count > 0)
         {
-            rb.MovePosition(transform.position + velocity * Time.deltaTime);
+            Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
+
+            if (Physics.CheckSphere(transform.position + latestInputDirection, 0.49f) || velocity.normalized != inputDirections[inputDirections.Count - 1])
+            {
+                MoveRigidbodyTowardsSnapPointAhead();
+            }
+            else
+            {
+                rb.MovePosition(transform.position + velocity * Time.deltaTime);
+            }
         }
-        else if (velocity != Vector3.zero)
+        else
+        {
+            MoveRigidbodyTowardsSnapPointAhead();
+        }
+    }
+
+    private void MoveRigidbodyTowardsSnapPointAhead()
+    {
+        Vector3 closestSnapPoint = Utility.Round(transform.position);
+        Vector3 moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.position) * walkSpeed;
+
+        if (moveToSnapPointVelocity.normalized == velocity.normalized)
         {
             Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.position);
             Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.position + (velocity * Time.deltaTime)));
@@ -98,8 +97,12 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                rb.MovePosition(transform.position + velocity * Time.deltaTime);
+                rb.MovePosition(transform.position + moveToSnapPointVelocity * Time.deltaTime);
             }
+        }
+        else
+        {
+            rb.MovePosition(transform.position + velocity * Time.deltaTime);
         }
     }
 }
