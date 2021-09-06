@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1196468556203554089}
   - component: {fileID: 577969669332375224}
   - component: {fileID: 6552900929249928295}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3880999081713418062}
   - component: {fileID: 6362854301135452880}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RealtimeTestSolidB
   m_TagString: Untagged
   m_Icon: {fileID: 0}

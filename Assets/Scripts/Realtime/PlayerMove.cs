@@ -6,15 +6,19 @@ public class PlayerMove : MonoBehaviour
 {
     public float walkSpeed = 3.7f;
     
-    private Vector3 velocity;
     private List<Vector3> inputDirections;
-    private Rigidbody rb;
+    private KinematicMover mover;
+    private SnappingGravity gravityComp;
+    
+    private int solidLayerMask;
 
     void Start()
     {
-        velocity = Vector3.zero;
         inputDirections = new List<Vector3>();
-        rb = GetComponent<Rigidbody>();
+        mover = GetComponent<KinematicMover>();
+        gravityComp = GetComponent<SnappingGravity>();
+
+        solidLayerMask = LayerMask.GetMask("Solid");
     }
 
     void Update()
@@ -40,69 +44,33 @@ public class PlayerMove : MonoBehaviour
         if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
             inputDirections.Clear();
 
-        if (inputDirections.Count > 0)
+        if (!gravityComp.IsFalling)
         {
-            if (Utility.IsSnapped(transform.position))
+            if (inputDirections.Count > 0)
             {
-                if (inputDirections.Count > 0)
-                {
-                    Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
+                Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
 
-                    if (!Physics.CheckSphere(transform.position + latestInputDirection, 0.49f))
+                if (Physics.CheckSphere(transform.position + latestInputDirection, 0.49f, solidLayerMask) || !gravityComp.IsSolidBelow)
+                {
+                    if (mover.Mode == KinematicMoverMode.Moving)
                     {
-                        velocity = latestInputDirection * walkSpeed;
+                        mover.Mode = KinematicMoverMode.Snapping;
                     }
                 }
-                else
-                    velocity = Vector3.zero;
+                else if (mover.Velocity.normalized != latestInputDirection && mover.Velocity != Vector3.zero)
+                {
+                    mover.Mode = KinematicMoverMode.Snapping;
+                }
+                else if (mover.Mode == KinematicMoverMode.Snapped)
+                {
+                    mover.Velocity = latestInputDirection * walkSpeed;
+                    mover.Mode = KinematicMoverMode.Moving;
+                }
             }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (inputDirections.Count > 0)
-        {
-            Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
-
-            if (Physics.CheckSphere(transform.position + latestInputDirection, 0.49f) || velocity.normalized != inputDirections[inputDirections.Count - 1])
+            else if (mover.Mode != KinematicMoverMode.Snapped)
             {
-                MoveRigidbodyTowardsSnapPointAhead();
+                mover.Mode = KinematicMoverMode.Snapping;
             }
-            else
-            {
-                rb.MovePosition(transform.position + velocity * Time.deltaTime);
-            }
-        }
-        else
-        {
-            MoveRigidbodyTowardsSnapPointAhead();
-        }
-    }
-
-    private void MoveRigidbodyTowardsSnapPointAhead()
-    {
-        Vector3 closestSnapPoint = Utility.Round(transform.position);
-        Vector3 moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.position) * walkSpeed;
-
-        if (moveToSnapPointVelocity.normalized == velocity.normalized)
-        {
-            Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.position);
-            Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.position + (velocity * Time.deltaTime)));
-
-            if (currentNorm != overshotNorm)
-            {
-                rb.MovePosition(closestSnapPoint);
-                velocity = Vector3.zero;
-            }
-            else
-            {
-                rb.MovePosition(transform.position + moveToSnapPointVelocity * Time.deltaTime);
-            }
-        }
-        else
-        {
-            rb.MovePosition(transform.position + velocity * Time.deltaTime);
         }
     }
 }

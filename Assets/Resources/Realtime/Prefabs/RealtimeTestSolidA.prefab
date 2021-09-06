@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8222472463737962570}
   - component: {fileID: 8222472463737962568}
   - component: {fileID: 8222472463737962569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8222472465084806872}
   - component: {fileID: 8222472465084806879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RealtimeTestSolidA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
