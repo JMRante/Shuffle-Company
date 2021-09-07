@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum KinematicMoverMode
 {
-    Snapped,
-    Snapping,
-    Moving
+    snapped,
+    snapping,
+    moving
 }
 
 public class KinematicMover : MonoBehaviour
@@ -49,7 +49,7 @@ public class KinematicMover : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        mode = KinematicMoverMode.Snapped;
+        mode = KinematicMoverMode.snapped;
         velocity = Vector3.zero;
         snapSpeed = 0f;
     }
@@ -58,8 +58,8 @@ public class KinematicMover : MonoBehaviour
     {
         switch (mode)
         {
-            case KinematicMoverMode.Snapped: break;
-            case KinematicMoverMode.Snapping:
+            case KinematicMoverMode.snapped: break;
+            case KinematicMoverMode.snapping:
             {
                 snapSpeed = velocity.magnitude;
 
@@ -77,7 +77,7 @@ public class KinematicMover : MonoBehaviour
                     {
                         rb.MovePosition(closestSnapPoint);
                         velocity = Vector3.zero;
-                        mode = KinematicMoverMode.Snapped;
+                        mode = KinematicMoverMode.snapped;
                         snapSpeed = 0f;
                     }
                     else
@@ -91,7 +91,7 @@ public class KinematicMover : MonoBehaviour
                 }
                 break;
             }
-            case KinematicMoverMode.Moving:
+            case KinematicMoverMode.moving:
             {
                 rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                 break;

@@ -24,7 +24,7 @@ public class SnappingGravity : MonoBehaviour
     void Start()
     {
         isFalling = false;
-        isSolidBelow = Physics.Raycast(transform.position + (0.49f * Vector3.down), Vector3.down, 0.5f, solidLayerMask);
+        isSolidBelow = CalculateIsSolidBelow();
         mover = GetComponent<KinematicMover>();
         
         solidLayerMask = LayerMask.GetMask("Solid");
@@ -33,16 +33,13 @@ public class SnappingGravity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isSolidBelow = Physics.Raycast(transform.position + (0.49f * Vector3.down), Vector3.down, 0.5f, solidLayerMask);
-
-        Debug.Log(mover.Velocity + ", " + mover.Mode + ", " + isFalling + ", " + isSolidBelow);
+        isSolidBelow = CalculateIsSolidBelow();
 
         if (!isSolidBelow)
         {
-            if (mover.Mode == KinematicMoverMode.Snapped)
+            if (mover.Mode == KinematicMoverMode.snapped)
             {
-                mover.Mode = KinematicMoverMode.Moving;
-                Debug.Log("Velocity is " + mover.Velocity + ", " + (mover.Velocity.y + (-9.8f * Time.deltaTime)));
+                mover.Mode = KinematicMoverMode.moving;
                 isFalling = true;
             }
         }
@@ -50,11 +47,11 @@ public class SnappingGravity : MonoBehaviour
         {
             if (isFalling)
             {
-                if (mover.Mode == KinematicMoverMode.Moving)
+                if (mover.Mode == KinematicMoverMode.moving)
                 {
-                    mover.Mode = KinematicMoverMode.Snapping;
+                    mover.Mode = KinematicMoverMode.snapping;
                 }
-                else if (mover.Mode == KinematicMoverMode.Snapped)
+                else if (mover.Mode == KinematicMoverMode.snapped)
                 {
                     isFalling =false;
                 }
@@ -65,5 +62,20 @@ public class SnappingGravity : MonoBehaviour
         {
             mover.VelocityY += -9.8f * Time.deltaTime;
         }
+    }
+
+    private bool CalculateIsSolidBelow()
+    {
+        Sensor[] sensors = GetComponentsInChildren<Sensor>();
+
+        foreach (Sensor sensor in sensors)
+        {
+            if (sensor.IsBlocked(Vector3.down))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

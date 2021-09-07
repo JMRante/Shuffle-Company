@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float walkSpeed = 3.7f;
+    public float pushSpeed = 1.3f;
     
     private List<Vector3> inputDirections;
     private KinematicMover mover;
@@ -50,27 +51,78 @@ public class PlayerMove : MonoBehaviour
             {
                 Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
 
-                if (Physics.CheckSphere(transform.position + latestInputDirection, 0.49f, solidLayerMask) || !gravityComp.IsSolidBelow)
+                Collider[] collidersAhead = Physics.OverlapBox(transform.position + (latestInputDirection * 0.51f), Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
+                bool isSolidAhead = false;
+                bool canPushSolidAhead = false;
+                Pushable pushableAhead = null;
+
+                foreach (Collider colliderAhead in collidersAhead)
                 {
-                    if (mover.Mode == KinematicMoverMode.Moving)
+                    if (colliderAhead.gameObject != transform.gameObject)
                     {
-                        mover.Mode = KinematicMoverMode.Snapping;
+                        isSolidAhead = true;
+                    }
+
+                    Pushable tempPushableAhead = colliderAhead.GetComponentInChildren<Pushable>();
+                    if (tempPushableAhead != null)
+                    {
+                        canPushSolidAhead = tempPushableAhead.CanBePushed(latestInputDirection);
+                        pushableAhead = tempPushableAhead;
+                    }
+                }
+
+                if (canPushSolidAhead && mover.Mode == KinematicMoverMode.snapped)
+                {
+                    mover.Velocity = latestInputDirection * walkSpeed;
+                    mover.Mode = KinematicMoverMode.moving;
+                    pushableAhead.Push(mover);
+                }
+                else if (isSolidAhead || !gravityComp.IsSolidBelow)
+                {
+                    if (mover.Mode == KinematicMoverMode.moving)
+                    {
+                        mover.Mode = KinematicMoverMode.snapping;
                     }
                 }
                 else if (mover.Velocity.normalized != latestInputDirection && mover.Velocity != Vector3.zero)
                 {
-                    mover.Mode = KinematicMoverMode.Snapping;
+                    mover.Mode = KinematicMoverMode.snapping;
                 }
-                else if (mover.Mode == KinematicMoverMode.Snapped)
+                else if (mover.Mode == KinematicMoverMode.snapped)
                 {
                     mover.Velocity = latestInputDirection * walkSpeed;
-                    mover.Mode = KinematicMoverMode.Moving;
+                    mover.Mode = KinematicMoverMode.moving;
                 }
             }
-            else if (mover.Mode != KinematicMoverMode.Snapped)
+            else if (mover.Mode != KinematicMoverMode.snapped)
             {
-                mover.Mode = KinematicMoverMode.Snapping;
+                mover.Mode = KinematicMoverMode.snapping;
             }
         }
     }
 }
+
+// if (pushableAhead != null && pushableAhead.IsMoving())
+// {
+//     pushableAhead.StopPushing();
+// }
+
+// if (pushableAhead != null && pushableAhead.CanBePushed(latestInputDirection))
+// {
+//     pushableAhead.Push(latestInputDirection * pushSpeed);
+//     mover.Velocity = latestInputDirection * pushSpeed;
+// }
+// else
+// {
+//     mover.Velocity = latestInputDirection * walkSpeed;
+// }
+
+// void OnDrawGizmos()
+// {
+//     if (inputDirections.Count > 0)
+//     {
+//         Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
+//         Gizmos.color = Color.green;
+//         Gizmos.DrawWireCube(transform.position + latestInputDirection, new Vector3(1, 1, 1));
+//     }
+// }
