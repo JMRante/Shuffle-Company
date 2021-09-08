@@ -17,7 +17,7 @@ public class Sensor : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject != transform.parent.gameObject)
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
                 return true;
         }
 

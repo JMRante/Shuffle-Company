@@ -58,12 +58,12 @@ public class PlayerMove : MonoBehaviour
 
                 foreach (Collider colliderAhead in collidersAhead)
                 {
-                    if (colliderAhead.gameObject != transform.gameObject)
+                    if (colliderAhead.transform.parent.gameObject != transform.gameObject)
                     {
                         isSolidAhead = true;
                     }
 
-                    Pushable tempPushableAhead = colliderAhead.GetComponentInChildren<Pushable>();
+                    Pushable tempPushableAhead = colliderAhead.GetComponentInParent<Pushable>();
                     if (tempPushableAhead != null)
                     {
                         canPushSolidAhead = tempPushableAhead.CanBePushed(latestInputDirection);
