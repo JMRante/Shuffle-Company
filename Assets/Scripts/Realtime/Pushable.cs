@@ -38,6 +38,11 @@ public class Pushable : MonoBehaviour
 
     public bool CanBePushed(Vector3 direction)
     {
+        if (mover.Mode == KinematicMoverMode.moving && !gravityComp.IsSolidBelow)
+        {
+            return false;
+        }
+
         if (!gravityComp.IsFalling && mover.Mode == KinematicMoverMode.snapped)
         {
             Sensor[] sensors = GetComponentsInChildren<Sensor>();
