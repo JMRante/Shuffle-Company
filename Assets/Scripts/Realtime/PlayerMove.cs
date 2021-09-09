@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     private List<Vector3> inputDirections;
     private KinematicMover mover;
     private SnappingGravity gravityComp;
+    private Pushable lastPushable;
     
     private int solidLayerMask;
 
@@ -18,6 +19,7 @@ public class PlayerMove : MonoBehaviour
         inputDirections = new List<Vector3>();
         mover = GetComponent<KinematicMover>();
         gravityComp = GetComponent<SnappingGravity>();
+        lastPushable = null;
 
         solidLayerMask = LayerMask.GetMask("Solid");
     }
@@ -76,6 +78,7 @@ public class PlayerMove : MonoBehaviour
                     mover.Velocity = latestInputDirection * walkSpeed;
                     mover.Mode = KinematicMoverMode.moving;
                     pushableAhead.Push(mover);
+                    lastPushable = pushableAhead;
                 }
                 else if (isSolidAhead || !gravityComp.IsSolidBelow)
                 {
@@ -87,6 +90,12 @@ public class PlayerMove : MonoBehaviour
                 else if (mover.Velocity.normalized != latestInputDirection && mover.Velocity != Vector3.zero)
                 {
                     mover.Mode = KinematicMoverMode.snapping;
+
+                    if (lastPushable != null)
+                    {
+                        lastPushable.StopPushing();
+                        lastPushable = null;
+                    }
                 }
                 else if (mover.Mode == KinematicMoverMode.snapped)
                 {

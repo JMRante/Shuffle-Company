@@ -36,6 +36,15 @@ public class Pushable : MonoBehaviour
         mover.Mode = pusher.Mode;
     }
 
+    public void StopPushing()
+    {
+        if (pusher != null)
+        {
+            mover.Mode = KinematicMoverMode.snapping;
+            pusher = null;
+        }
+    }
+
     public bool CanBePushed(Vector3 direction)
     {
         if (mover.Mode == KinematicMoverMode.moving && !gravityComp.IsSolidBelow)
