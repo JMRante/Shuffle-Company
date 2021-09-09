@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float walkSpeed = 3.7f;
-    public float pushSpeed = 1.3f;
+    public float pushSpeed = 2.7f;
     
     private List<Vector3> inputDirections;
     private KinematicMover mover;
@@ -75,7 +75,7 @@ public class PlayerMove : MonoBehaviour
 
                 if (canPushSolidAhead && mover.Mode == KinematicMoverMode.snapped)
                 {
-                    mover.Velocity = latestInputDirection * walkSpeed;
+                    mover.Velocity = latestInputDirection * pushSpeed;
                     mover.Mode = KinematicMoverMode.moving;
                     pushableAhead.Push(mover);
                     lastPushable = pushableAhead;
