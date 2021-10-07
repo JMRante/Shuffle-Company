@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float walkSpeed = 3.7f;
-    public float pushSpeed = 2.7f;
+    public float pushSpeed = 3.7f;
     
     private List<Vector3> inputDirections;
     private KinematicMover mover;
@@ -78,7 +78,6 @@ public class PlayerMove : MonoBehaviour
                     mover.Velocity = latestInputDirection * pushSpeed;
                     mover.Mode = KinematicMoverMode.moving;
                     pushableAhead.Push(mover);
-                    lastPushable = pushableAhead;
                 }
                 else if (isSolidAhead || !gravityComp.IsSolidBelow)
                 {
@@ -90,17 +89,21 @@ public class PlayerMove : MonoBehaviour
                 else if (mover.Velocity.normalized != latestInputDirection && mover.Velocity != Vector3.zero)
                 {
                     mover.Mode = KinematicMoverMode.snapping;
-
-                    if (lastPushable != null)
-                    {
-                        lastPushable.StopPushing();
-                        lastPushable = null;
-                    }
                 }
                 else if (mover.Mode == KinematicMoverMode.snapped)
                 {
                     mover.Velocity = latestInputDirection * walkSpeed;
                     mover.Mode = KinematicMoverMode.moving;
+                }
+
+                if (lastPushable != pushableAhead)
+                {
+                    if (lastPushable != null)
+                    {
+                        lastPushable.StopPushing();
+                    }
+
+                    lastPushable = pushableAhead;
                 }
             }
             else if (mover.Mode != KinematicMoverMode.snapped)
