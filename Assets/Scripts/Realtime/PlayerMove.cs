@@ -79,7 +79,7 @@ public class PlayerMove : MonoBehaviour
                     mover.Mode = KinematicMoverMode.moving;
                     pushableAhead.Push(mover);
                 }
-                else if (isSolidAhead || !gravityComp.IsSolidBelow)
+                else if (((!canPushSolidAhead || (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)) && isSolidAhead) || !gravityComp.IsSolidBelow)
                 {
                     if (mover.Mode == KinematicMoverMode.moving)
                     {
