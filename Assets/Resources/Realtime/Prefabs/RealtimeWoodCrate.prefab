@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 6982505187797842129}
   m_Layer: 6
   m_Name: RealtimeWoodCrate
-  m_TagString: Untagged
+  m_TagString: Slottable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

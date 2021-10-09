@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StaticElement
   - DynamicElement
+  - Slottable
   layers:
   - Default
   - TransparentFX
