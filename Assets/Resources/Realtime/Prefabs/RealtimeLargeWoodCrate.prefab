@@ -182,9 +182,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2904474738556189344}
   - component: {fileID: 7700783528605843286}
+  - component: {fileID: 6618570976890352907}
   - component: {fileID: 8255674837305720471}
-  - component: {fileID: 2750704435238998621}
   - component: {fileID: 3691216913897617786}
+  - component: {fileID: 2750704435238998621}
   m_Layer: 6
   m_Name: RealtimeLargeWoodCrate
   m_TagString: Untagged
@@ -232,6 +233,22 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6618570976890352907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904474738556189345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementId: LargeWoodCrate
+  elementName: Large Wood Crate
+  sortOrder: 0
+  elementProperties: 
 --- !u!114 &8255674837305720471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,18 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90da408e393f2c043899843855511166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2750704435238998621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2904474738556189345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1d6c07d75c1957438bda63d449821ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3691216913897617786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +271,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cddcaed7e01b6194eae26465378a15a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2750704435238998621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904474738556189345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d6c07d75c1957438bda63d449821ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2904474739133800666

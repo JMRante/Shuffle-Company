@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4284092895271831308}
   - component: {fileID: 4284092895271831311}
+  - component: {fileID: 2843547880204569224}
   - component: {fileID: 4284092895271831310}
   m_Layer: 0
   m_Name: RealtimeSlot
@@ -70,7 +71,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4284092895271831309}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4284092896143492343}
@@ -94,6 +95,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2843547880204569224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4284092895271831309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementId: Slot
+  elementName: Slot
+  sortOrder: 0
+  elementProperties: 
 --- !u!114 &4284092895271831310
 MonoBehaviour:
   m_ObjectHideFlags: 0

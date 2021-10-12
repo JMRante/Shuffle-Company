@@ -18,6 +18,7 @@ public enum ElementProperty
 
 public class Element : MonoBehaviour
 {
+    public string elementId;
     public string elementName;
     public int sortOrder;
     public ElementProperty[] elementProperties;
