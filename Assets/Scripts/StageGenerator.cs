@@ -5,7 +5,6 @@ using UnityEngine;
 public class StageGenerator : MonoBehaviour
 {
     public GameObject[] elements;
-    public GameController gameController;
 
     public int width = 10;
     public int depth = 10;
@@ -38,7 +37,5 @@ public class StageGenerator : MonoBehaviour
                 elementInstance.name = elementInstance.name.Replace("(Clone)", "");
             }
         }
-
-        gameController.GetElementsToTrack();
     }
 }
