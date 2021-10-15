@@ -24,14 +24,13 @@ public class SnappingGravity : MonoBehaviour
     void Start()
     {
         isFalling = false;
-        isSolidBelow = CalculateIsSolidBelow();
+        isSolidBelow = true;
         mover = GetComponent<KinematicMover>();
         
         solidLayerMask = LayerMask.GetMask("Solid");
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         isSolidBelow = CalculateIsSolidBelow();
 
@@ -53,7 +52,7 @@ public class SnappingGravity : MonoBehaviour
                 }
                 else if (mover.Mode == KinematicMoverMode.snapped)
                 {
-                    isFalling =false;
+                    isFalling = false;
                 }
             }
         }

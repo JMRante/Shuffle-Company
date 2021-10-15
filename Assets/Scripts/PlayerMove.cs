@@ -9,6 +9,8 @@ public class PlayerMove : MonoBehaviour
     public float walkRotationSpeed = 500f;
     
     private List<Vector3> inputDirections;
+    private Vector3 latestInputDirection;
+
     private KinematicMover mover;
     private KinematicRotater rotator;
     private SnappingGravity gravityComp;
@@ -19,9 +21,15 @@ public class PlayerMove : MonoBehaviour
 
     private int solidLayerMask;
 
+    private bool isSolidAhead;
+    private bool canPushSolidAhead;
+    private Pushable pushableAhead;
+
     void Start()
     {
         inputDirections = new List<Vector3>();
+        latestInputDirection = Vector3.zero;
+
         mover = GetComponent<KinematicMover>();
         rotator = GetComponent<KinematicRotater>();
         gravityComp = GetComponent<SnappingGravity>();
@@ -31,6 +39,10 @@ public class PlayerMove : MonoBehaviour
         climbDirection = Vector3.zero;
 
         solidLayerMask = LayerMask.GetMask("Solid");
+
+        isSolidAhead = false;
+        canPushSolidAhead = false;
+        pushableAhead = null;
     }
 
     void Update()
@@ -56,46 +68,44 @@ public class PlayerMove : MonoBehaviour
         if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
             inputDirections.Clear();
 
+        if (inputDirections.Count > 0)
+        {
+            latestInputDirection = inputDirections[inputDirections.Count - 1];
+        }
+        else
+        {
+            latestInputDirection = Vector3.zero;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        // Check surroundings
+        Collider[] collidersAhead = Physics.OverlapBox(transform.position + latestInputDirection, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
+        isSolidAhead = false;
+        canPushSolidAhead = false;
+        pushableAhead = null;
+
+        foreach (Collider colliderAhead in collidersAhead)
+        {
+            if (colliderAhead.transform.parent.gameObject != transform.gameObject)
+            {
+                isSolidAhead = true;
+            }
+
+            Pushable tempPushableAhead = colliderAhead.GetComponentInParent<Pushable>();
+            if (tempPushableAhead != null)
+            {
+                canPushSolidAhead = tempPushableAhead.CanBePushed(latestInputDirection);
+                pushableAhead = tempPushableAhead;
+            }
+        }
+
+        // Set Motion
         if (!gravityComp.IsFalling)
         {
-            if (inputDirections.Count > 0)
+            if (latestInputDirection != Vector3.zero)
             {
-                Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
-
-                // Check surroundings
-                Collider[] collidersAhead = Physics.OverlapBox(transform.position + latestInputDirection, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
-                bool isSolidAhead = false;
-                // bool isLadderAhead = false;
-                bool canPushSolidAhead = false;
-                Pushable pushableAhead = null;
-
-                foreach (Collider colliderAhead in collidersAhead)
-                {
-                    if (colliderAhead.transform.parent.gameObject != transform.gameObject)
-                    {
-                        isSolidAhead = true;
-                    }
-
-                    // Element elementAhead = colliderAhead.GetComponentInParent<Element>();
-                    // if (elementAhead != null && elementAhead.elementId == "Ladder")
-                    // {
-                    //     Transform ladderTransform = colliderAhead.transform.parent;
-
-                    //     if (ladderTransform.forward + latestInputDirection == Vector3.zero)
-                    //     {
-                    //         climbDirection = latestInputDirection;
-                    //         isLadderAhead = true;
-                    //     }
-                    // }
-
-                    Pushable tempPushableAhead = colliderAhead.GetComponentInParent<Pushable>();
-                    if (tempPushableAhead != null)
-                    {
-                        canPushSolidAhead = tempPushableAhead.CanBePushed(latestInputDirection);
-                        pushableAhead = tempPushableAhead;
-                    }
-                }
-
                 // Turn
                 if (mover.Mode == KinematicMoverMode.snapped)
                 {
@@ -148,6 +158,18 @@ public class PlayerMove : MonoBehaviour
         }
     }
 }
+
+// Element elementAhead = colliderAhead.GetComponentInParent<Element>();
+// if (elementAhead != null && elementAhead.elementId == "Ladder")
+// {
+//     Transform ladderTransform = colliderAhead.transform.parent;
+
+//     if (ladderTransform.forward + latestInputDirection == Vector3.zero)
+//     {
+//         climbDirection = latestInputDirection;
+//         isLadderAhead = true;
+//     }
+// }
 
 // if (pushableAhead != null && pushableAhead.IsMoving())
 // {

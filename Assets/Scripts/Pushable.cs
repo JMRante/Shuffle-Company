@@ -15,7 +15,7 @@ public class Pushable : MonoBehaviour
         gravityComp = GetComponent<SnappingGravity>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (pusher != null)
         {
