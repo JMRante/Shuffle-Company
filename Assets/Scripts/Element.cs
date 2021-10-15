@@ -13,14 +13,14 @@ public enum ElementProperty
     KeyBlock,
     All,
     Blocker,
-    Movable
+    Movable,
+    Ladder
 }
 
 public class Element : MonoBehaviour
 {
     public string elementId;
     public string elementName;
-    public int sortOrder;
     public ElementProperty[] elementProperties;
 
     public bool HasProperty(ElementProperty elementProperty)
