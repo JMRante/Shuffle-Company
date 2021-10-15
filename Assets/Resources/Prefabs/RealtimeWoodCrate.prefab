@@ -111,7 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: WoodCrate
   elementName: Wood Crate
-  sortOrder: 0
   elementProperties: 
 --- !u!114 &4761242482140515568
 MonoBehaviour:
@@ -188,7 +187,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2197932265746577090}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5960244074451848327, guid: bb3abc740df99fc47be822626f7aac34, type: 3}
 --- !u!23 &2197932265746577088
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -378,7 +378,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: WeirdWoodCrate
   elementName: Weird Wood Crate
-  sortOrder: 0
   elementProperties: 
 --- !u!114 &3985828447777614039
 MonoBehaviour:
