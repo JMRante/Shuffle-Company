@@ -19,12 +19,19 @@ public class Pushable : MonoBehaviour
     {
         if (pusher != null)
         {
-            mover.Velocity = pusher.Velocity;
-            mover.Mode = pusher.Mode;
-
-            if (pusher.Mode == KinematicMoverMode.snapped)
+            if (gravityComp.IsFalling)
             {
                 pusher = null;
+            }
+            else
+            {
+                mover.Velocity = pusher.Velocity;
+                mover.Mode = pusher.Mode;
+
+                if (pusher.Mode == KinematicMoverMode.snapped)
+                {
+                    pusher = null;
+                }
             }
         }
     }
