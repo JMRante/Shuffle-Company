@@ -69,7 +69,7 @@ public class SnappingGravity : MonoBehaviour
 
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.IsBlocked(Vector3.down))
+            if (sensor.IsRayBlocked(Vector3.down))
             {
                 return true;
             }

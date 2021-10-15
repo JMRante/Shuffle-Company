@@ -63,7 +63,7 @@ public class Pushable : MonoBehaviour
 
             foreach (Sensor sensor in sensors)
             {
-                if (sensor.IsBlocked(direction))
+                if (sensor.IsCellBlocked(direction))
                 {
                     return false;
                 }

@@ -81,7 +81,7 @@ public class PlayerMove : MonoBehaviour
     void FixedUpdate()
     {
         // Check surroundings
-        Collider[] collidersAhead = Physics.OverlapBox(transform.position + latestInputDirection, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
+        Collider[] collidersAhead = Physics.OverlapBox(transform.position + latestInputDirection, Vector3.one * 0.49f, Quaternion.identity, solidLayerMask);
         isSolidAhead = false;
         canPushSolidAhead = false;
         pushableAhead = null;

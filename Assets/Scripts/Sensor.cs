@@ -11,13 +11,26 @@ public class Sensor : MonoBehaviour
         solidLayerMask = LayerMask.GetMask("Solid");
     }
 
-    public bool IsBlocked(Vector3 direction)
+    public bool IsCellBlocked(Vector3 direction)
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position + (direction * 0.51f), Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, solidLayerMask);
 
         foreach (Collider collider in colliders)
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool IsRayBlocked(Vector3 direction)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, direction, out hit, 0.98f, solidLayerMask))
+        {
+            if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
                 return true;
         }
 
