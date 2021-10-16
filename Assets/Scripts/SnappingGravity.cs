@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SnappingGravity : MonoBehaviour
 {
+    public bool isFallingEnabled = true;
+
     private bool isFalling;
     private bool isSolidBelow;
     private KinematicMover mover;
@@ -34,32 +36,35 @@ public class SnappingGravity : MonoBehaviour
     {
         isSolidBelow = CalculateIsSolidBelow();
 
-        if (!isSolidBelow)
+        if (isFallingEnabled)
         {
-            if (mover.Mode == KinematicMoverMode.snapped)
+            if (!isSolidBelow)
             {
-                mover.Mode = KinematicMoverMode.moving;
-                isFalling = true;
+                if (mover.Mode == KinematicMoverMode.snapped)
+                {
+                    mover.Mode = KinematicMoverMode.moving;
+                    isFalling = true;
+                }
             }
-        }
-        else
-        {
+            else
+            {
+                if (isFalling)
+                {
+                    if (mover.Mode == KinematicMoverMode.moving)
+                    {
+                        mover.Mode = KinematicMoverMode.snapping;
+                    }
+                    else if (mover.Mode == KinematicMoverMode.snapped)
+                    {
+                        isFalling = false;
+                    }
+                }
+            }
+
             if (isFalling)
             {
-                if (mover.Mode == KinematicMoverMode.moving)
-                {
-                    mover.Mode = KinematicMoverMode.snapping;
-                }
-                else if (mover.Mode == KinematicMoverMode.snapped)
-                {
-                    isFalling = false;
-                }
+                mover.VelocityY += -9.8f * Time.deltaTime;
             }
-        }
-
-        if (isFalling)
-        {
-            mover.VelocityY += -9.8f * Time.deltaTime;
         }
     }
 

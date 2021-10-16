@@ -357,7 +357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Player
   elementName: Player
-  sortOrder: 0
   elementProperties: 
 --- !u!114 &8801564459460563657
 MonoBehaviour:

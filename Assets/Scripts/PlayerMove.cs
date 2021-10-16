@@ -19,6 +19,8 @@ public class PlayerMove : MonoBehaviour
 
     private bool isClimbing;
     private Vector3 climbDirection;
+    private bool isMountingClimbableFromAbove;
+    private bool isDismountingClimbableFromAbove;
 
     private int solidLayerMask;
 
@@ -35,6 +37,8 @@ public class PlayerMove : MonoBehaviour
 
         isClimbing = false;
         climbDirection = Vector3.zero;
+        isMountingClimbableFromAbove = false;
+        isDismountingClimbableFromAbove = false;
 
         solidLayerMask = LayerMask.GetMask("Solid");
     }
@@ -64,7 +68,15 @@ public class PlayerMove : MonoBehaviour
 
         if (inputDirections.Count > 0)
         {
-            latestInputDirection = inputDirections[inputDirections.Count - 1];
+            if (isClimbing)
+            {
+                // Use climbing axis if climbing
+                latestInputDirection = Utility.Round(Quaternion.AngleAxis(90f, Vector3.Cross(climbDirection, Vector3.up)) * inputDirections[inputDirections.Count - 1]);
+            }
+            else
+            {
+                latestInputDirection = inputDirections[inputDirections.Count - 1];
+            }
         }
         else
         {
@@ -76,30 +88,89 @@ public class PlayerMove : MonoBehaviour
     {
         // Check surroundings
         bool isSolidAhead = sensor.IsCellBlocked(latestInputDirection);
+
         Pushable pushableAhead = (Pushable) sensor.GetComponentFromCell(latestInputDirection, typeof(Pushable));
         bool canPushSolidAhead = pushableAhead != null ? pushableAhead.CanBePushed(latestInputDirection) : false;
+
+        bool isClimbableAhead = sensor.DoesRayContainElementProperty(latestInputDirection, ElementProperty.Climbable);
+        bool isOnClimbable = sensor.DoesRayContainElementProperty(transform.forward, ElementProperty.Climbable) 
+            && ((Transform)sensor.GetComponentFromRay(transform.forward, typeof(Transform))).forward + transform.forward == Vector3.zero;
+        bool isClimbableBelow = sensor.DoesCellContainElementProperty(Vector3.down, ElementProperty.Climbable);
 
         // Set Motion
         if (!gravityComp.IsFalling)
         {
-            if (latestInputDirection != Vector3.zero)
+            // Mount Climbable From Above
+            if (isMountingClimbableFromAbove && mover.Mode == KinematicMoverMode.snapped)
             {
+                if (isOnClimbable)
+                {
+                    isMountingClimbableFromAbove = false;
+                }
+                else
+                {
+                    mover.Velocity = Vector3.down * walkSpeed;
+                    mover.Mode = KinematicMoverMode.moving;
+                }
+            }
+            else if (latestInputDirection != Vector3.zero)
+            {
+                // Start Climbing
+                if (!isClimbing && mover.Mode == KinematicMoverMode.snapped)
+                {
+                    if (isClimbableAhead)
+                    {
+                        Transform climbableTransform = (Transform)sensor.GetComponentFromCell(latestInputDirection, typeof(Transform));
+
+                        if (climbableTransform.forward + transform.forward == Vector3.zero)
+                        {
+                            climbDirection = latestInputDirection;
+                            isClimbing = true;
+                            gravityComp.isFallingEnabled = false;
+                        }
+                    }
+                    else if (isClimbableBelow)
+                    {
+                        Transform climbableTransform = (Transform)sensor.GetComponentFromCell(Vector3.down, typeof(Transform));
+                        bool isSolidAheadBelow = sensor.IsCellPositionBlocked(latestInputDirection + Vector3.down);
+                        
+                        if (climbableTransform.forward == -latestInputDirection && !isSolidAhead && !isSolidAheadBelow)
+                        {
+                            rotator.TargetForwardDirection = -climbableTransform.forward;
+                            rotator.RotationSpeed = walkRotationSpeed;
+
+                            climbDirection = -climbableTransform.forward;
+                            isClimbing = true;
+                            gravityComp.isFallingEnabled = false;
+
+                            mover.Velocity = latestInputDirection * walkSpeed;
+                            mover.Mode = KinematicMoverMode.moving;
+                            isMountingClimbableFromAbove = true;
+                        }
+                    }
+                }
+
                 // Turn
-                if (mover.Mode == KinematicMoverMode.snapped)
+                if (mover.Mode == KinematicMoverMode.snapped && !isClimbing && gravityComp.IsSolidBelow)
                 {
                     rotator.TargetForwardDirection = latestInputDirection;
                     rotator.RotationSpeed = walkRotationSpeed;
                 }
 
+                // Dismount Climbing On Solid
+                if (isClimbing && !isClimbableAhead && gravityComp.IsSolidBelow && isSolidAhead)
+                {
+                    StopClimbing();
+                }
                 // Push
-                if (canPushSolidAhead && mover.Mode == KinematicMoverMode.snapped)
+                else if (canPushSolidAhead && mover.Mode == KinematicMoverMode.snapped)
                 {
                     mover.Velocity = latestInputDirection * pushSpeed;
                     mover.Mode = KinematicMoverMode.moving;
                     pushableAhead.Push(mover);
                 }
                 // Stop
-                else if (((!canPushSolidAhead || (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)) && isSolidAhead) || !gravityComp.IsSolidBelow)
+                else if (((!canPushSolidAhead || (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)) && isSolidAhead) || (!gravityComp.IsSolidBelow && gravityComp.isFallingEnabled))
                 {
                     if (mover.Mode == KinematicMoverMode.moving)
                     {
@@ -131,11 +202,47 @@ public class PlayerMove : MonoBehaviour
             }
             else if (mover.Mode != KinematicMoverMode.snapped)
             {
+                // Stop When No Input
                 mover.Mode = KinematicMoverMode.snapping;
+            }
+
+            // Start Falling After Climbing
+            if (isClimbing && !isOnClimbable && !isMountingClimbableFromAbove && !isDismountingClimbableFromAbove)
+            {
+                StopClimbing();
             }
         }
     }
+
+    private void StopClimbing()
+    {
+        climbDirection = Vector3.zero;
+        isClimbing = false;
+        gravityComp.isFallingEnabled = true;
+        mover.Mode = KinematicMoverMode.snapping;
+    }
 }
+
+// if (isClimbing && !isOnClimbable)
+// {
+//     // Climb On Top Of Climbable
+//     if (!isSolidAhead && mover.Velocity.normalized == Vector3.up && mover.Mode == KinematicMoverMode.snapped)
+//     {
+//         mover.Velocity = transform.forward * walkSpeed;
+//         mover.Mode = KinematicMoverMode.moving;
+//         climbDirection = Vector3.zero;
+//         isClimbing = false;
+//         gravityComp.isFallingEnabled = true;
+//     }
+//     // Fall From Climbing
+//     else if (mover.Mode == KinematicMoverMode.moving)
+//     {
+//         mover.Mode = KinematicMoverMode.snapping;
+//         // climbDirection = Vector3.zero;
+//         // isClimbing = false;
+//         // gravityComp.isFallingEnabled = true;
+//     }
+// }
 
 // Element elementAhead = colliderAhead.GetComponentInParent<Element>();
 // if (elementAhead != null && elementAhead.HasProperty(ElementProperty.Ladder))

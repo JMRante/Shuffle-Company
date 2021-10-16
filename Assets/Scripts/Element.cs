@@ -14,7 +14,7 @@ public enum ElementProperty
     All,
     Blocker,
     Movable,
-    Ladder
+    Climbable
 }
 
 public class Element : MonoBehaviour
