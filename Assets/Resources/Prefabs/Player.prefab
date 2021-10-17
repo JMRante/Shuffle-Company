@@ -357,7 +357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Player
   elementName: Player
-  elementProperties: 
+  elementProperties: 04000000
 --- !u!114 &8801564459460563657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddcaed7e01b6194eae26465378a15a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFallingEnabled: 1
 --- !u!114 &3860043117021978268
 MonoBehaviour:
   m_ObjectHideFlags: 0

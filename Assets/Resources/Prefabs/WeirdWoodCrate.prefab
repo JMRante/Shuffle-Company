@@ -378,7 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: WeirdWoodCrate
   elementName: Weird Wood Crate
-  elementProperties: 
+  elementProperties: 04000000
 --- !u!114 &3985828447777614039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddcaed7e01b6194eae26465378a15a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFallingEnabled: 1
 --- !u!114 &7200968011280385053
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: WoodCrate
   elementName: Wood Crate
-  elementProperties: 
+  elementProperties: 04000000
 --- !u!114 &4761242482140515568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddcaed7e01b6194eae26465378a15a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFallingEnabled: 1
 --- !u!114 &5661238858678535770
 MonoBehaviour:
   m_ObjectHideFlags: 0
