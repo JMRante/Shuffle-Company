@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 2843547880204569224}
   - component: {fileID: 4284092895271831310}
   m_Layer: 0
-  m_Name: RealtimeSlot
+  m_Name: Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

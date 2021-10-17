@@ -14,7 +14,7 @@ public class SnappingGravity : MonoBehaviour
 
     public bool IsFalling
     {
-        get => isFalling;
+        get { return isFallingEnabled ? isFalling : false; }
     }
 
     public bool IsSolidBelow

@@ -7,7 +7,7 @@ public class PlayerMove : MonoBehaviour
     public float walkSpeed = 4.8f;
     public float pushSpeed = 4.8f;
     public float walkRotationSpeed = 500f;
-    
+
     private List<Vector3> inputDirections;
     private Vector3 latestInputDirection;
 
@@ -21,6 +21,11 @@ public class PlayerMove : MonoBehaviour
     private Vector3 climbDirection;
 
     private int solidLayerMask;
+
+    public Vector3 LatestInputDirection
+    {
+        get => latestInputDirection;
+    }
 
     void Start()
     {
@@ -64,9 +69,9 @@ public class PlayerMove : MonoBehaviour
 
         if (inputDirections.Count > 0)
         {
+            // Use climbing axis if climbing
             if (isClimbing)
             {
-                // Use climbing axis if climbing
                 latestInputDirection = Utility.Round(Quaternion.AngleAxis(90f, Vector3.Cross(climbDirection, Vector3.up)) * inputDirections[inputDirections.Count - 1]);
             }
             else

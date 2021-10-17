@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 8573546805954178874}
   - component: {fileID: 7200968011280385053}
   m_Layer: 6
-  m_Name: RealtimeWeirdWoodCrate
+  m_Name: WeirdWoodCrate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
