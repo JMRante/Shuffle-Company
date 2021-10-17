@@ -61,6 +61,11 @@ public class KinematicMover : MonoBehaviour
             case KinematicMoverMode.snapped: break;
             case KinematicMoverMode.snapping:
             {
+                if (velocity == Vector3.zero && transform.position == Utility.Round(transform.position))
+                {
+                    Snap(transform.position);
+                }
+
                 snapSpeed = velocity.magnitude;
 
                 Vector3 closestSnapPoint = Utility.Round(transform.position);
@@ -75,10 +80,7 @@ public class KinematicMover : MonoBehaviour
 
                     if (currentNorm != overshotNorm)
                     {
-                        rb.MovePosition(closestSnapPoint);
-                        velocity = Vector3.zero;
-                        mode = KinematicMoverMode.snapped;
-                        snapSpeed = 0f;
+                        Snap(closestSnapPoint);
                     }
                     else
                     {
@@ -89,6 +91,7 @@ public class KinematicMover : MonoBehaviour
                 {
                     rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                 }
+
                 break;
             }
             case KinematicMoverMode.moving:
@@ -97,5 +100,13 @@ public class KinematicMover : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void Snap(Vector3 snapPoint)
+    {
+        rb.MovePosition(snapPoint);
+        velocity = Vector3.zero;
+        mode = KinematicMoverMode.snapped;
+        snapSpeed = 0f;
     }
 }
