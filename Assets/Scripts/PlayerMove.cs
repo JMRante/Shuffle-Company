@@ -21,6 +21,9 @@ public class PlayerMove : MonoBehaviour
     private bool isClimbing;
     private Vector3 climbDirection;
 
+    private Vector3[] climbUpPath;
+    private Vector3[] climbDownPath;
+
     private int solidLayerMask;
 
     void Start()
@@ -36,6 +39,25 @@ public class PlayerMove : MonoBehaviour
 
         isClimbing = false;
         climbDirection = Vector3.zero;
+
+        climbUpPath = new Vector3[] 
+        { 
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 0.309f, 0.048f),
+            new Vector3(0f, 0.588f, 0.191f),
+            new Vector3(0f, 0.809f, 0.412f),
+            new Vector3(0f, 0.951f, 0.691f),
+            new Vector3(0f, 1f, 1f)
+        };
+        climbDownPath = new Vector3[]
+        {
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, -0.309f, 0.048f),
+            new Vector3(0f, -0.588f, 0.191f),
+            new Vector3(0f, -0.809f, 0.412f),
+            new Vector3(0f, -0.951f, 0.691f),
+            new Vector3(0f, -1f, 1f)
+        };
 
         solidLayerMask = LayerMask.GetMask("Solid");
     }
@@ -94,6 +116,7 @@ public class PlayerMove : MonoBehaviour
         bool isClimbableAhead = sensor.DoesRayContainElementProperty(latestInputDirectionRaw, ElementProperty.Climbable);
         bool isOnClimbable = sensor.DoesRayContainElementProperty(transform.forward, ElementProperty.Climbable) 
             && ((Transform)sensor.GetComponentFromRay(transform.forward, typeof(Transform))).forward + transform.forward == Vector3.zero;
+        bool isClimbableClearAbove = !sensor.IsCellPositionBlocked(transform.position + Vector3.up + latestInputDirectionRaw);
 
         // Set Motion
         if (!gravityComp.IsFalling)
@@ -120,8 +143,15 @@ public class PlayerMove : MonoBehaviour
                     rotator.RotationSpeed = walkRotationSpeed;
                 }
 
+                // Climb Atop Climbable
+                if (isClimbing && isClimbableAhead && isClimbableClearAbove && mover.Mode != KinematicMoverMode.pathing)
+                {
+                    mover.Mode = KinematicMoverMode.pathing;
+                    mover.Path = climbUpPath;
+                    mover.PathingSpeed = walkSpeed;
+                }
                 // Dismount Climbing On Solid
-                if (isClimbing && gravityComp.IsSolidBelow && !isClimbableAhead && mover.Mode == KinematicMoverMode.snapped)
+                else if (isClimbing && gravityComp.IsSolidBelow && !isClimbableAhead && mover.Mode == KinematicMoverMode.snapped)
                 {
                     StopClimbing();
                 }
@@ -163,14 +193,14 @@ public class PlayerMove : MonoBehaviour
                     lastPushable = pushableAhead;
                 }
             }
-            else if (mover.Mode != KinematicMoverMode.snapped)
+            else if (mover.Mode != KinematicMoverMode.snapped && mover.Mode != KinematicMoverMode.pathing)
             {
                 // Stop When No Input
                 mover.Mode = KinematicMoverMode.snapping;
             }
 
             // Start Falling After Climbing
-            if (isClimbing && !isOnClimbable)
+            if (isClimbing && !isOnClimbable && mover.Mode != KinematicMoverMode.pathing)
             {
                 StopClimbing();
             }

@@ -6,7 +6,8 @@ public enum KinematicMoverMode
 {
     snapped,
     snapping,
-    moving
+    moving,
+    pathing
 }
 
 public class KinematicMover : MonoBehaviour
@@ -15,6 +16,11 @@ public class KinematicMover : MonoBehaviour
     private KinematicMoverMode mode;
     private Vector3 velocity;
     private float snapSpeed;
+
+    private Vector3[] path;
+    private int pathIndex;
+    private float pathingSpeed;
+    private Vector3 pathStart;
 
     public KinematicMoverMode Mode
     {
@@ -46,12 +52,33 @@ public class KinematicMover : MonoBehaviour
         set => velocity.z = value;
     }
 
+    public Vector3[] Path
+    {
+        set 
+        { 
+            path = value;
+            pathIndex = 0;
+            pathStart = transform.position;
+        }
+    }
+
+    public float PathingSpeed
+    {
+        get => pathingSpeed;
+        set => pathingSpeed = value;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         mode = KinematicMoverMode.snapped;
         velocity = Vector3.zero;
         snapSpeed = 0f;
+
+        path = null;
+        pathIndex = 0;
+        pathingSpeed = 0f;
+        pathStart = Vector3.zero;
     }
 
     void FixedUpdate()
@@ -99,6 +126,33 @@ public class KinematicMover : MonoBehaviour
                 rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                 break;
             }
+            case KinematicMoverMode.pathing:
+            {
+                if (path != null && path.Length > 0)
+                {
+                    if (pathIndex < path.Length)
+                    {
+                        Vector3 destinationPoint = Utility.Round(Quaternion.FromToRotation(Vector3.forward, transform.forward) * (path[pathIndex] + pathStart));
+                        Vector3 moveToPathPointVelocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
+
+                        Vector3 currentNorm = Vector3.Normalize(destinationPoint - transform.position);
+                        Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (moveToPathPointVelocity * Time.deltaTime)));
+
+                        if (currentNorm != overshotNorm)
+                        {
+                            pathIndex++;
+                        }
+
+                        rb.MovePosition(transform.position + (moveToPathPointVelocity * Time.deltaTime));
+                    }
+                    else
+                    {
+                        Snap(Utility.Round(transform.position));
+                    }
+                }
+
+                break;
+            }
         }
     }
 
@@ -108,5 +162,10 @@ public class KinematicMover : MonoBehaviour
         velocity = Vector3.zero;
         mode = KinematicMoverMode.snapped;
         snapSpeed = 0f;
+
+        path = null;
+        pathingSpeed = 0f;
+        pathIndex = 0;
+        pathStart = Vector3.zero;
     }
 }
