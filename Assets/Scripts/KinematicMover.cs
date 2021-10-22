@@ -21,6 +21,7 @@ public class KinematicMover : MonoBehaviour
     private int pathIndex;
     private float pathingSpeed;
     private Vector3 pathStart;
+    private Quaternion pathRotation;
 
     public KinematicMoverMode Mode
     {
@@ -68,6 +69,12 @@ public class KinematicMover : MonoBehaviour
         set => pathingSpeed = value;
     }
 
+    public Quaternion PathRotation
+    {
+        get => pathRotation;
+        set => pathRotation = value;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -79,6 +86,7 @@ public class KinematicMover : MonoBehaviour
         pathIndex = 0;
         pathingSpeed = 0f;
         pathStart = Vector3.zero;
+        pathRotation = Quaternion.identity;
     }
 
     void FixedUpdate()
@@ -132,20 +140,21 @@ public class KinematicMover : MonoBehaviour
                 {
                     if (pathIndex < path.Length)
                     {
-                        Vector3 destinationPoint = Utility.Round(Quaternion.FromToRotation(Vector3.forward, transform.forward) * (path[pathIndex] + pathStart));
+                        Vector3 destinationPoint = (pathRotation * path[pathIndex]) + pathStart;
                         Vector3 moveToPathPointVelocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
 
                         Vector3 currentNorm = Vector3.Normalize(destinationPoint - transform.position);
                         Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (moveToPathPointVelocity * Time.deltaTime)));
 
-                        if (currentNorm != overshotNorm)
+                        if (currentNorm != overshotNorm || moveToPathPointVelocity == Vector3.zero)
                         {
                             pathIndex++;
                         }
 
                         rb.MovePosition(transform.position + (moveToPathPointVelocity * Time.deltaTime));
                     }
-                    else
+                    
+                    if (pathIndex >= path.Length)
                     {
                         Snap(Utility.Round(transform.position));
                     }
