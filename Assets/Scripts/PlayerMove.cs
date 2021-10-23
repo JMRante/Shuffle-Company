@@ -124,8 +124,14 @@ public class PlayerMove : MonoBehaviour
         bool isSolidAbove = sensor.IsCellPositionBlocked(transform.position + Vector3.up);
 
         // Set Motion
-        if (!gravityComp.IsFalling)
+        if (!gravityComp.IsFalling && mover.Mode != KinematicMoverMode.pathing)
         {
+            // Start Falling After Climbing
+            if (isClimbing && !isOnClimbable && mover.Mode != KinematicMoverMode.pathing)
+            {
+                StopClimbing();
+            }
+
             if (latestInputDirection != Vector3.zero)
             {
                 // Start Climbing
@@ -140,21 +146,6 @@ public class PlayerMove : MonoBehaviour
                         gravityComp.isFallingEnabled = false;
                     }
                 }
-                // Climb Onto Climbable From Above
-                else if (!isClimbing && !isSolidAhead && !isSolidBelowAheadForClimbable && isClimbableBelowInDirection && mover.Mode != KinematicMoverMode.pathing)
-                {
-                    climbDirection = -latestInputDirectionRaw;
-                    isClimbing = true;
-                    gravityComp.isFallingEnabled = false;
-
-                    rotator.TargetForwardDirection = climbDirection;
-                    rotator.RotationSpeed = walkRotationSpeed * 2f;
-
-                    mover.Mode = KinematicMoverMode.pathing;
-                    mover.Path = climbDownPath;
-                    mover.PathingSpeed = walkSpeed;
-                    mover.PathRotation = Quaternion.LookRotation(latestInputDirectionRaw, Vector3.up);
-                }
 
                 // Turn
                 if (mover.Mode == KinematicMoverMode.snapped && !isClimbing && gravityComp.IsSolidBelow)
@@ -163,8 +154,28 @@ public class PlayerMove : MonoBehaviour
                     rotator.RotationSpeed = walkRotationSpeed;
                 }
 
+                // Climb Onto Climbable From Above
+                if (!isClimbing && !isSolidAhead && !isSolidBelowAheadForClimbable && isClimbableBelowInDirection)
+                {
+                    Transform climbableTransform = (Transform)sensor.GetComponentFromRay(Vector3.down, typeof(Transform));
+
+                    if (mover.Mode == KinematicMoverMode.snapped || Vector3.Angle(climbableTransform.forward, transform.forward) < 80f)
+                    {
+                        climbDirection = -latestInputDirectionRaw;
+                        isClimbing = true;
+                        gravityComp.isFallingEnabled = false;
+
+                        rotator.TargetForwardDirection = climbDirection;
+                        rotator.RotationSpeed = walkRotationSpeed * 2f;
+
+                        mover.Mode = KinematicMoverMode.pathing;
+                        mover.Path = climbDownPath;
+                        mover.PathingSpeed = walkSpeed;
+                        mover.PathRotation = Quaternion.LookRotation(latestInputDirectionRaw, Vector3.up);
+                    }
+                }
                 // Climb Atop Climbable
-                if (isClimbing && isClimbableAhead && isClimbableFacingAhead && !isSolidAboveAheadForClimbable && !isSolidAbove && mover.Mode != KinematicMoverMode.pathing)
+                else if (isClimbing && isClimbableAhead && isClimbableFacingAhead && !isSolidAboveAheadForClimbable && !isSolidAbove)
                 {
                     mover.Mode = KinematicMoverMode.pathing;
                     mover.Path = climbUpPath;
@@ -172,7 +183,7 @@ public class PlayerMove : MonoBehaviour
                     mover.PathRotation = Quaternion.LookRotation(latestInputDirectionRaw, Vector3.up);
                 }
                 // Dismount Climbing On Solid
-                else if (isClimbing && gravityComp.IsSolidBelow && !isClimbableAhead && mover.Mode == KinematicMoverMode.snapped)
+                else if (isClimbing && gravityComp.IsSolidBelow && climbDirection != latestInputDirectionRaw && mover.Mode == KinematicMoverMode.snapped)
                 {
                     StopClimbing();
                 }
@@ -214,16 +225,10 @@ public class PlayerMove : MonoBehaviour
                     lastPushable = pushableAhead;
                 }
             }
-            else if (mover.Mode != KinematicMoverMode.snapped && mover.Mode != KinematicMoverMode.pathing)
+            else if (mover.Mode != KinematicMoverMode.snapped)
             {
                 // Stop When No Input
                 mover.Mode = KinematicMoverMode.snapping;
-            }
-
-            // Start Falling After Climbing
-            if (isClimbing && !isOnClimbable && mover.Mode != KinematicMoverMode.pathing)
-            {
-                StopClimbing();
             }
         }
     }

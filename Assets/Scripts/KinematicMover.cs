@@ -125,6 +125,7 @@ public class KinematicMover : MonoBehaviour
                 else
                 {
                     rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                    // Debug.Log("v: " + velocity + "sp: " + closestSnapPoint + ", spv: " + moveToSnapPointVelocity);
                 }
 
                 break;
