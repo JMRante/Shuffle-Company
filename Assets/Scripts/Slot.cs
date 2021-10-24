@@ -29,9 +29,9 @@ public class Slot : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
-        GameObject slottable = col.transform.parent.gameObject;
-
-        if (slottable.tag == "Slottable")
+        Element slottable = col.transform.GetComponentInParent<Element>();
+        
+        if (slottable.HasProperty(ElementProperty.Slotable))
         {
             KinematicMover slottableMover = slottable.GetComponent<KinematicMover>();
 

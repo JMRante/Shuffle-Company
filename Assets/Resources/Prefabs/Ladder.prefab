@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Ladder
   elementName: Ladder
-  elementProperties: 0a000000
+  elementProperties: 02000000
 --- !u!1 &3809123942147479522
 GameObject:
   m_ObjectHideFlags: 0

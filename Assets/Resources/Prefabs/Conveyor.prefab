@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4544834419684436681}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4544834420150256798}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!33 &4544834419684436678
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -128,8 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Conveyor
   elementName: Conveyor
-  sortOrder: 0
-  elementProperties: 
+  elementProperties: 03000000
 --- !u!1 &4544834420480425416
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,17 +4,10 @@ using UnityEngine;
 
 public enum ElementProperty
 {
-    Solid,
-    Pushable,
-    Pusher,
     Slotable,
     Loose,
-    Key,
-    KeyBlock,
-    All,
-    Blocker,
-    Movable,
-    Climbable
+    Climbable,
+    Conveyor
 }
 
 public class Element : MonoBehaviour

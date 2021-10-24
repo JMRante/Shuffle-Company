@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 6158808909660271332}
   - component: {fileID: 3985828447777614039}
   - component: {fileID: 8573546805954178874}
+  - component: {fileID: 8171761317248630941}
   - component: {fileID: 7200968011280385053}
   m_Layer: 6
   m_Name: WeirdWoodCrate
@@ -378,7 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: WeirdWoodCrate
   elementName: Weird Wood Crate
-  elementProperties: 04000000
+  elementProperties: 01000000
 --- !u!114 &3985828447777614039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +405,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+--- !u!114 &8171761317248630941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7893764777735761121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e121dd49198d037448d76ac383425257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7200968011280385053
 MonoBehaviour:
   m_ObjectHideFlags: 0
