@@ -16,6 +16,7 @@ public class KinematicMover : MonoBehaviour
     private KinematicMoverMode mode;
     private Vector3 velocity;
     private float snapSpeed;
+    private KinematicMover parentMover;
 
     private Vector3[] path;
     private int pathIndex;
@@ -53,6 +54,12 @@ public class KinematicMover : MonoBehaviour
         set => velocity.z = value;
     }
 
+    public KinematicMover ParentMover
+    {
+        get => parentMover;
+        set => parentMover = value;
+    }
+
     public Vector3[] Path
     {
         set 
@@ -81,6 +88,7 @@ public class KinematicMover : MonoBehaviour
         mode = KinematicMoverMode.snapped;
         velocity = Vector3.zero;
         snapSpeed = 0f;
+        parentMover = null;
 
         path = null;
         pathIndex = 0;
@@ -93,7 +101,12 @@ public class KinematicMover : MonoBehaviour
     {
         switch (mode)
         {
-            case KinematicMoverMode.snapped: break;
+            case KinematicMoverMode.snapped: 
+                if (parentMover != null)
+                {
+                    rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
+                }
+                break;
             case KinematicMoverMode.snapping:
             {
                 if (velocity == Vector3.zero && transform.position == Utility.Round(transform.position))
@@ -119,12 +132,12 @@ public class KinematicMover : MonoBehaviour
                     }
                     else
                     {
-                        rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                        rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
                     }
                 }
                 else
                 {
-                    rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                    rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
                     // Debug.Log("v: " + velocity + "sp: " + closestSnapPoint + ", spv: " + moveToSnapPointVelocity);
                 }
 
@@ -132,7 +145,7 @@ public class KinematicMover : MonoBehaviour
             }
             case KinematicMoverMode.moving:
             {
-                rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
                 break;
             }
             case KinematicMoverMode.pathing:
@@ -142,17 +155,17 @@ public class KinematicMover : MonoBehaviour
                     if (pathIndex < path.Length)
                     {
                         Vector3 destinationPoint = (pathRotation * path[pathIndex]) + pathStart;
-                        Vector3 moveToPathPointVelocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
+                        velocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
 
                         Vector3 currentNorm = Vector3.Normalize(destinationPoint - transform.position);
-                        Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (moveToPathPointVelocity * Time.deltaTime)));
+                        Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (velocity * Time.deltaTime)));
 
-                        if (currentNorm != overshotNorm || moveToPathPointVelocity == Vector3.zero)
+                        if (currentNorm != overshotNorm || velocity == Vector3.zero)
                         {
                             pathIndex++;
                         }
 
-                        rb.MovePosition(transform.position + (moveToPathPointVelocity * Time.deltaTime));
+                        rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
                     }
                     
                     if (pathIndex >= path.Length)
@@ -163,6 +176,18 @@ public class KinematicMover : MonoBehaviour
 
                 break;
             }
+        }
+    }
+
+    public Vector3 GetNetVelocity()
+    {
+        if (parentMover != null)
+        {
+            return parentMover.GetNetVelocity() + velocity;
+        }
+        else
+        {
+            return velocity;
         }
     }
 

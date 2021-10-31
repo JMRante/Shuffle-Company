@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 6618570976890352907}
   - component: {fileID: 8255674837305720471}
   - component: {fileID: 3691216913897617786}
+  - component: {fileID: 581018043033029437}
   - component: {fileID: 5253732221210329264}
   - component: {fileID: 2750704435238998621}
   m_Layer: 6
@@ -248,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: LargeWoodCrate
   elementName: Large Wood Crate
-  elementProperties: 01000000
+  elementProperties: 0100000004000000
 --- !u!114 &8255674837305720471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +275,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+--- !u!114 &581018043033029437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904474738556189345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e290c8ff76c3174b94f359f8fc0bb0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5253732221210329264
 MonoBehaviour:
   m_ObjectHideFlags: 0
