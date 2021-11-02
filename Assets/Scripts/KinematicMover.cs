@@ -16,7 +16,7 @@ public class KinematicMover : MonoBehaviour
     private KinematicMoverMode mode;
     private Vector3 velocity;
     private float snapSpeed;
-    private KinematicMover parentMover;
+    // private Transform parentTransform;
 
     private Vector3[] path;
     private int pathIndex;
@@ -54,11 +54,11 @@ public class KinematicMover : MonoBehaviour
         set => velocity.z = value;
     }
 
-    public KinematicMover ParentMover
-    {
-        get => parentMover;
-        set => parentMover = value;
-    }
+    // public Transform ParentTransform
+    // {
+    //     get => parentTransform;
+    //     set => parentTransform = value;
+    // }
 
     public Vector3[] Path
     {
@@ -88,7 +88,7 @@ public class KinematicMover : MonoBehaviour
         mode = KinematicMoverMode.snapped;
         velocity = Vector3.zero;
         snapSpeed = 0f;
-        parentMover = null;
+        // parentTransform = null;
 
         path = null;
         pathIndex = 0;
@@ -102,10 +102,6 @@ public class KinematicMover : MonoBehaviour
         switch (mode)
         {
             case KinematicMoverMode.snapped: 
-                if (parentMover != null)
-                {
-                    rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
-                }
                 break;
             case KinematicMoverMode.snapping:
             {
@@ -181,14 +177,7 @@ public class KinematicMover : MonoBehaviour
 
     public Vector3 GetNetVelocity()
     {
-        if (parentMover != null)
-        {
-            return parentMover.GetNetVelocity() + velocity;
-        }
-        else
-        {
-            return velocity;
-        }
+        return velocity;
     }
 
     private void Snap(Vector3 snapPoint)

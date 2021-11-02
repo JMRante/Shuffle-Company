@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SnappingGravity : MonoBehaviour
@@ -70,7 +71,7 @@ public class SnappingGravity : MonoBehaviour
 
     private bool CalculateIsSolidBelow()
     {
-        Sensor[] sensors = GetComponentsInChildren<Sensor>();
+        Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         foreach (Sensor sensor in sensors)
         {

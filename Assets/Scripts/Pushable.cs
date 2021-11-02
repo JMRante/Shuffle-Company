@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Pushable : MonoBehaviour
@@ -66,7 +67,7 @@ public class Pushable : MonoBehaviour
 
         if (!gravityComp.IsFalling)
         {
-            Sensor[] sensors = GetComponentsInChildren<Sensor>();
+            Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
             foreach (Sensor sensor in sensors)
             {

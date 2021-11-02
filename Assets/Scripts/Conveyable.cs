@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Conveyable : MonoBehaviour
@@ -35,7 +36,7 @@ public class Conveyable : MonoBehaviour
 
     private Vector3 GetConveyorDirection()
     {
-        Sensor[] sensors = GetComponentsInChildren<Sensor>();
+        Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         Vector3 direction = Vector3.zero;
 

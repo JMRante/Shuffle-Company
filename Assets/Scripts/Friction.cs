@@ -1,48 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Friction : MonoBehaviour
 {
-    private KinematicMover mover;
+    private KinematicMover parentMover;
     private SnappingGravity gravityComp;
+
+    private Transform defaultParent;
+    private bool trigger;
 
     void Start()
     {
-        mover = GetComponent<KinematicMover>();
+        parentMover = GetComponent<KinematicMover>();
         gravityComp = GetComponent<SnappingGravity>();
+
+        defaultParent = transform.parent;
     }
 
     void FixedUpdate()
     {
-        if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && gravityComp.IsSolidBelow)
+        // if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && gravityComp.IsSolidBelow)
+        // {
+        //     KinematicMover parentMoverCandidate = GetFrictionDominantKinematicMoverParent();
+
+        //     if (parentMoverCandidate != null && CanMoveWithParent(parentMoverCandidate.Velocity.normalized))
+        //     {
+        //         mover.ParentMover = parentMoverCandidate;
+        //     }
+        //     else
+        //     {
+        //         mover.ParentMover = null;
+        //     }
+        // }
+        // else
+        // {
+        //     mover.ParentMover = null;
+        // }
+        KinematicMover parentMoverCandidate = GetFrictionDominantKinematicMoverParent();
+
+        if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && parentMoverCandidate != null)
         {
-            KinematicMover parentMoverCandidate = GetFrictionDominantKinematicMoverParent();
-            
-            if (parentMoverCandidate != null && CanMoveWithParent(parentMoverCandidate.Velocity.normalized))
+            if (transform.parent != parentMoverCandidate.gameObject.transform)
             {
-                mover.ParentMover = parentMoverCandidate;
-            }
-            else
-            {
-                mover.ParentMover = null;
+                transform.SetParent(parentMoverCandidate.gameObject.transform);
             }
         }
-        else
+        else 
         {
-            mover.ParentMover = null;
+            if (transform.parent != defaultParent)
+            {
+                transform.SetParent(defaultParent);
+            }
         }
     }
 
     private KinematicMover GetFrictionDominantKinematicMoverParent()
     {
-        Sensor[] sensors = GetComponentsInChildren<Sensor>();
+        Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         Dictionary<KinematicMover, int> parentMovers = new Dictionary<KinematicMover, int>();
 
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.DoesRayContainElementProperty(Vector3.down, ElementProperty.Frictional))
+            // if (gameObject.name == "RealtimeWoodCrate (22)") Debug.Log("Sensor :" + sensor.transform.position);
+            if (sensor.DoesRayContainElementProperty(Vector3.down * 0.5f, ElementProperty.Frictional))
             {
                 KinematicMover parentMover = (KinematicMover)sensor.GetComponentFromRay(Vector3.down, typeof(KinematicMover));
                 
@@ -84,27 +107,29 @@ public class Friction : MonoBehaviour
             return topMovers[0];
         }
 
-        List<KinematicMover> fastestMovers = new List<KinematicMover>();
-        float candidateMaxParentSpeed = 0f;
+        
 
-        foreach (KinematicMover mover in topMovers)
-        {
-            if (mover.GetNetVelocity().magnitude > candidateMaxParentSpeed)
-            {
-                fastestMovers.Clear();
-                candidateMaxParentSpeed = mover.GetNetVelocity().magnitude;
-                fastestMovers.Add(mover);
-            }
-            else if (mover.GetNetVelocity().magnitude == candidateMaxParentSpeed)
-            {
-                fastestMovers.Add(mover);
-            }
-        }
+        // List<KinematicMover> fastestMovers = new List<KinematicMover>();
+        // float candidateMaxParentSpeed = 0f;
 
-        if (fastestMovers.Count == 1)
-        {
-            return fastestMovers[0];
-        }
+        // foreach (KinematicMover mover in topMovers)
+        // {
+        //     if (mover.GetNetVelocity().magnitude > candidateMaxParentSpeed)
+        //     {
+        //         fastestMovers.Clear();
+        //         candidateMaxParentSpeed = mover.GetNetVelocity().magnitude;
+        //         fastestMovers.Add(mover);
+        //     }
+        //     else if (mover.GetNetVelocity().magnitude == candidateMaxParentSpeed)
+        //     {
+        //         fastestMovers.Add(mover);
+        //     }
+        // }
+
+        // if (fastestMovers.Count == 1)
+        // {
+        //     return fastestMovers[0];
+        // }
 
         return null;
     }
@@ -118,7 +143,7 @@ public class Friction : MonoBehaviour
 
         if (!gravityComp.IsFalling)
         {
-            Sensor[] sensors = GetComponentsInChildren<Sensor>();
+            Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
             foreach (Sensor sensor in sensors)
             {

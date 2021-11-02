@@ -93,11 +93,14 @@ public class Sensor : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            Element element = collider.GetComponentInParent<Element>();
-
-            if (element != null && element.HasProperty(elementProperty))
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
-                return true;
+                Element element = collider.GetComponentInParent<Element>();
+
+                if (element != null && element.HasProperty(elementProperty))
+                {
+                    return true;
+                }
             }
         }
 
@@ -110,11 +113,14 @@ public class Sensor : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            Element element = collider.GetComponentInParent<Element>();
-
-            if (element != null && element.HasProperty(elementProperty))
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
-                return true;
+                Element element = collider.GetComponentInParent<Element>();
+
+                if (element != null && element.HasProperty(elementProperty))
+                {
+                    return true;
+                }
             }
         }
 
@@ -128,11 +134,14 @@ public class Sensor : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out hit, 0.98f, solidLayerMask))
         {
-            Element element = hit.collider.GetComponentInParent<Element>();
-
-            if (element != null && element.HasProperty(elementProperty))
+            if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
             {
-                return true;
+                Element element = hit.collider.GetComponentInParent<Element>();
+
+                if (element != null && element.HasProperty(elementProperty))
+                {
+                    return true;
+                }
             }
         }
 
