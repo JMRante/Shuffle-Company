@@ -19,7 +19,7 @@ public class Friction : MonoBehaviour
         defaultParent = transform.parent;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && gravityComp.IsSolidBelow)
         // {

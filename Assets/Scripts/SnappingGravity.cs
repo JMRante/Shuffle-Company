@@ -33,7 +33,7 @@ public class SnappingGravity : MonoBehaviour
         solidLayerMask = LayerMask.GetMask("Solid");
     }
 
-    void FixedUpdate()
+    void Update()
     {
         isSolidBelow = CalculateIsSolidBelow();
 

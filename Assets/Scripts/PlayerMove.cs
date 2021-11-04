@@ -101,10 +101,7 @@ public class PlayerMove : MonoBehaviour
         {
             latestInputDirection = Vector3.zero;
         }
-    }
 
-    void FixedUpdate()
-    {
         // Check surroundings
         bool isSolidAhead = sensor.IsCellBlocked(latestInputDirection);
 

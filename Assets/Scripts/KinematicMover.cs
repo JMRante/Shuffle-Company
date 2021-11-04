@@ -128,12 +128,12 @@ public class KinematicMover : MonoBehaviour
                     }
                     else
                     {
-                        rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
+                        rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                     }
                 }
                 else
                 {
-                    rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
+                    rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                     // Debug.Log("v: " + velocity + "sp: " + closestSnapPoint + ", spv: " + moveToSnapPointVelocity);
                 }
 
@@ -141,7 +141,7 @@ public class KinematicMover : MonoBehaviour
             }
             case KinematicMoverMode.moving:
             {
-                rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
+                rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                 break;
             }
             case KinematicMoverMode.pathing:
@@ -161,7 +161,7 @@ public class KinematicMover : MonoBehaviour
                             pathIndex++;
                         }
 
-                        rb.MovePosition(transform.position + (GetNetVelocity() * Time.deltaTime));
+                        rb.MovePosition(transform.position + (velocity * Time.deltaTime));
                     }
                     
                     if (pathIndex >= path.Length)
@@ -173,11 +173,6 @@ public class KinematicMover : MonoBehaviour
                 break;
             }
         }
-    }
-
-    public Vector3 GetNetVelocity()
-    {
-        return velocity;
     }
 
     private void Snap(Vector3 snapPoint)

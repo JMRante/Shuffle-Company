@@ -18,7 +18,7 @@ public class Conveyable : MonoBehaviour
         mover = GetComponent<KinematicMover>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         previousConveyorDirection = conveyorDirection;
         conveyorDirection = GetConveyorDirection();
