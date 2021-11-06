@@ -15,6 +15,7 @@ public class KinematicMover : MonoBehaviour
     private Rigidbody rb;
     private KinematicMoverMode mode;
     private Vector3 velocity;
+    private Vector3 moveToSnapPointVelocity;
     private float snapSpeed;
     // private Transform parentTransform;
 
@@ -105,22 +106,23 @@ public class KinematicMover : MonoBehaviour
                 break;
             case KinematicMoverMode.snapping:
             {
-                if (velocity == Vector3.zero && transform.position == Utility.Round(transform.position))
+                if (velocity == Vector3.zero)
                 {
-                    Snap(transform.position);
+                    Snap(Utility.Round(transform.localPosition));
+                    break;
                 }
 
                 snapSpeed = velocity.magnitude;
 
-                Vector3 closestSnapPoint = Utility.Round(transform.position);
-                Vector3 moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.position) * snapSpeed;
+                Vector3 closestSnapPoint = Utility.Round(transform.localPosition);
+                moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.localPosition) * snapSpeed;
 
                 if (moveToSnapPointVelocity.normalized == velocity.normalized)
                 {
                     velocity = moveToSnapPointVelocity;
 
-                    Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.position);
-                    Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.position + (velocity * Time.deltaTime)));
+                    Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.localPosition);
+                    Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.localPosition + (velocity * Time.deltaTime)));
 
                     if (currentNorm != overshotNorm)
                     {
@@ -175,7 +177,7 @@ public class KinematicMover : MonoBehaviour
         }
     }
 
-    private void Snap(Vector3 snapPoint)
+    public void Snap(Vector3 snapPoint)
     {
         rb.MovePosition(snapPoint);
         velocity = Vector3.zero;

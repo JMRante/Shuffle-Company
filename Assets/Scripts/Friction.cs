@@ -5,15 +5,14 @@ using UnityEngine;
 
 public class Friction : MonoBehaviour
 {
-    private KinematicMover parentMover;
+    private KinematicMover mover;
     private SnappingGravity gravityComp;
 
     private Transform defaultParent;
-    private bool trigger;
 
     void Start()
     {
-        parentMover = GetComponent<KinematicMover>();
+        mover = GetComponent<KinematicMover>();
         gravityComp = GetComponent<SnappingGravity>();
 
         defaultParent = transform.parent;
@@ -21,38 +20,23 @@ public class Friction : MonoBehaviour
 
     void Update()
     {
-        // if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && gravityComp.IsSolidBelow)
-        // {
-        //     KinematicMover parentMoverCandidate = GetFrictionDominantKinematicMoverParent();
-
-        //     if (parentMoverCandidate != null && CanMoveWithParent(parentMoverCandidate.Velocity.normalized))
-        //     {
-        //         mover.ParentMover = parentMoverCandidate;
-        //     }
-        //     else
-        //     {
-        //         mover.ParentMover = null;
-        //     }
-        // }
-        // else
-        // {
-        //     mover.ParentMover = null;
-        // }
         KinematicMover parentMoverCandidate = GetFrictionDominantKinematicMoverParent();
-
+        
         if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && parentMoverCandidate != null)
         {
-            if (transform.parent != parentMoverCandidate.gameObject.transform)
+            if (CanMoveWithParent())
             {
                 transform.SetParent(parentMoverCandidate.gameObject.transform);
+            }
+            else
+            {
+                transform.SetParent(defaultParent);
+                mover.Snap(Utility.Round(transform.localPosition));
             }
         }
         else 
         {
-            if (transform.parent != defaultParent)
-            {
-                transform.SetParent(defaultParent);
-            }
+            transform.SetParent(defaultParent);
         }
     }
 
@@ -64,7 +48,6 @@ public class Friction : MonoBehaviour
 
         foreach (Sensor sensor in sensors)
         {
-            // if (gameObject.name == "RealtimeWoodCrate (22)") Debug.Log("Sensor :" + sensor.transform.position);
             if (sensor.DoesRayContainElementProperty(Vector3.down * 0.5f, ElementProperty.Frictional))
             {
                 KinematicMover parentMover = (KinematicMover)sensor.GetComponentFromRay(Vector3.down, typeof(KinematicMover));
@@ -107,34 +90,32 @@ public class Friction : MonoBehaviour
             return topMovers[0];
         }
 
-        
+        List<KinematicMover> fastestMovers = new List<KinematicMover>();
+        float candidateMaxParentSpeed = 0f;
 
-        // List<KinematicMover> fastestMovers = new List<KinematicMover>();
-        // float candidateMaxParentSpeed = 0f;
+        foreach (KinematicMover mover in topMovers)
+        {
+            if (mover.Velocity.magnitude > candidateMaxParentSpeed)
+            {
+                fastestMovers.Clear();
+                candidateMaxParentSpeed = mover.Velocity.magnitude;
+                fastestMovers.Add(mover);
+            }
+            else if (mover.Velocity.magnitude == candidateMaxParentSpeed)
+            {
+                fastestMovers.Add(mover);
+            }
+        }
 
-        // foreach (KinematicMover mover in topMovers)
-        // {
-        //     if (mover.GetNetVelocity().magnitude > candidateMaxParentSpeed)
-        //     {
-        //         fastestMovers.Clear();
-        //         candidateMaxParentSpeed = mover.GetNetVelocity().magnitude;
-        //         fastestMovers.Add(mover);
-        //     }
-        //     else if (mover.GetNetVelocity().magnitude == candidateMaxParentSpeed)
-        //     {
-        //         fastestMovers.Add(mover);
-        //     }
-        // }
-
-        // if (fastestMovers.Count == 1)
-        // {
-        //     return fastestMovers[0];
-        // }
+        if (fastestMovers.Count == 1)
+        {
+            return fastestMovers[0];
+        }
 
         return null;
     }
 
-    public bool CanMoveWithParent(Vector3 parentDirection)
+    public bool CanMoveWithParent()
     {
         if (!gravityComp.IsSolidBelow)
         {
@@ -147,7 +128,7 @@ public class Friction : MonoBehaviour
 
             foreach (Sensor sensor in sensors)
             {
-                if (sensor.IsCellBlocked(parentDirection))
+                if (sensor.IsCellBlocked(Vector3.zero))
                 {
                     return false;
                 }
