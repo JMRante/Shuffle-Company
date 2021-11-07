@@ -108,7 +108,7 @@ public class KinematicMover : MonoBehaviour
             {
                 if (velocity == Vector3.zero)
                 {
-                    Snap(Utility.Round(transform.localPosition));
+                    Snap(transform.parent.TransformPoint(Utility.Round(transform.localPosition)));
                     break;
                 }
 
@@ -126,7 +126,7 @@ public class KinematicMover : MonoBehaviour
 
                     if (currentNorm != overshotNorm)
                     {
-                        Snap(closestSnapPoint);
+                        Snap(transform.parent.TransformPoint(closestSnapPoint));
                     }
                     else
                     {
