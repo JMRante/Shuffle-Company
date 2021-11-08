@@ -60,6 +60,11 @@ public class Pushable : MonoBehaviour
 
     public bool CanBePushed(Vector3 direction)
     {
+        if (mover.NetVelocity != Vector3.zero)
+        {
+            return false;
+        }
+
         if (!gravityComp.IsSolidBelow)
         {
             return false;

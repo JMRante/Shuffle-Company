@@ -15,9 +15,8 @@ public class KinematicMover : MonoBehaviour
     private Rigidbody rb;
     private KinematicMoverMode mode;
     private Vector3 velocity;
-    private Vector3 moveToSnapPointVelocity;
     private float snapSpeed;
-    // private Transform parentTransform;
+    private Vector3 netVelocity;
 
     private Vector3[] path;
     private int pathIndex;
@@ -55,11 +54,11 @@ public class KinematicMover : MonoBehaviour
         set => velocity.z = value;
     }
 
-    // public Transform ParentTransform
-    // {
-    //     get => parentTransform;
-    //     set => parentTransform = value;
-    // }
+    public Vector3 NetVelocity
+    {
+        get => netVelocity;
+        set => netVelocity = value;
+    }
 
     public Vector3[] Path
     {
@@ -89,7 +88,6 @@ public class KinematicMover : MonoBehaviour
         mode = KinematicMoverMode.snapped;
         velocity = Vector3.zero;
         snapSpeed = 0f;
-        // parentTransform = null;
 
         path = null;
         pathIndex = 0;
@@ -115,9 +113,10 @@ public class KinematicMover : MonoBehaviour
                 snapSpeed = velocity.magnitude;
 
                 Vector3 closestSnapPoint = Utility.Round(transform.localPosition);
-                moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.localPosition) * snapSpeed;
+                Vector3 moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.localPosition) * snapSpeed;
 
-                if (moveToSnapPointVelocity.normalized == velocity.normalized)
+                if (Vector3.Angle(moveToSnapPointVelocity, velocity) < 90f)
+                // if (moveToSnapPointVelocity.normalized == velocity.normalized)
                 {
                     velocity = moveToSnapPointVelocity;
 
@@ -136,7 +135,6 @@ public class KinematicMover : MonoBehaviour
                 else
                 {
                     rb.MovePosition(transform.position + (velocity * Time.deltaTime));
-                    // Debug.Log("v: " + velocity + "sp: " + closestSnapPoint + ", spv: " + moveToSnapPointVelocity);
                 }
 
                 break;
@@ -175,11 +173,38 @@ public class KinematicMover : MonoBehaviour
                 break;
             }
         }
+
+        CalculateNetVelocity();
+    }
+
+    private void CalculateNetVelocity()
+    {
+        KinematicMover[] parentMovers = GetComponentsInParent<KinematicMover>();
+
+        netVelocity = velocity;
+
+        foreach (KinematicMover parentMover in parentMovers)
+        {
+            netVelocity += parentMover.Velocity;
+        }
     }
 
     public void Snap(Vector3 snapPoint)
     {
         rb.MovePosition(snapPoint);
+        velocity = Vector3.zero;
+        mode = KinematicMoverMode.snapped;
+        snapSpeed = 0f;
+
+        path = null;
+        pathingSpeed = 0f;
+        pathIndex = 0;
+        pathStart = Vector3.zero;
+    }
+
+    public void InstantSnap(Vector3 snapPoint)
+    {
+        transform.position = snapPoint;
         velocity = Vector3.zero;
         mode = KinematicMoverMode.snapped;
         snapSpeed = 0f;

@@ -134,6 +134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3880999081713418062}
+  - component: {fileID: 4929342098849247661}
   m_Layer: 6
   m_Name: TestSolidB
   m_TagString: Untagged
@@ -157,3 +158,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4929342098849247661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8701790882189757579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementId: TestSolidB
+  elementName: Test Solid B
+  elementProperties: 

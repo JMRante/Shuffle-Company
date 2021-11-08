@@ -10,6 +10,7 @@ public class SnappingGravity : MonoBehaviour
     private bool isFalling;
     private bool isSolidBelow;
     private KinematicMover mover;
+    private Friction friction;
 
     private int solidLayerMask;
 
@@ -29,6 +30,7 @@ public class SnappingGravity : MonoBehaviour
         isFalling = false;
         isSolidBelow = true;
         mover = GetComponent<KinematicMover>();
+        friction = GetComponent<Friction>();
         
         solidLayerMask = LayerMask.GetMask("Solid");
     }
@@ -45,6 +47,7 @@ public class SnappingGravity : MonoBehaviour
                 {
                     mover.Mode = KinematicMoverMode.moving;
                     isFalling = true;
+                    SetChildrenFallingState(isFalling);
                 }
             }
             else
@@ -58,6 +61,7 @@ public class SnappingGravity : MonoBehaviour
                     else if (mover.Mode == KinematicMoverMode.snapped)
                     {
                         isFalling = false;
+                        SetChildrenFallingState(isFalling);
                     }
                 }
             }
@@ -66,6 +70,16 @@ public class SnappingGravity : MonoBehaviour
             {
                 mover.VelocityY += -9.8f * Time.deltaTime;
             }
+        }
+    }
+
+    private void SetChildrenFallingState(bool isFalling)
+    {
+        SnappingGravity[] childrenGravity = GetComponentsInChildren<SnappingGravity>();
+        
+        foreach (SnappingGravity grav in childrenGravity)
+        {
+            grav.isFalling = isFalling;
         }
     }
 

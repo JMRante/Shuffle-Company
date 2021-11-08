@@ -26,17 +26,26 @@ public class Friction : MonoBehaviour
         {
             if (CanMoveWithParent())
             {
-                transform.SetParent(parentMoverCandidate.gameObject.transform);
+                if (transform.parent != parentMoverCandidate.gameObject.transform)
+                {
+                    transform.SetParent(parentMoverCandidate.gameObject.transform);
+                }
             }
             else
             {
-                transform.SetParent(defaultParent);
-                mover.Snap(Utility.Round(transform.localPosition));
+                if (transform.parent != defaultParent)
+                {
+                    transform.SetParent(defaultParent);
+                    mover.InstantSnap(Utility.Round(transform.localPosition));
+                }
             }
         }
         else 
         {
-            transform.SetParent(defaultParent);
+            if (transform.parent != defaultParent)
+            {
+                transform.SetParent(defaultParent);
+            }
         }
     }
 
