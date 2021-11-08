@@ -181,7 +181,7 @@ public class KinematicMover : MonoBehaviour
     {
         KinematicMover[] parentMovers = GetComponentsInParent<KinematicMover>();
 
-        netVelocity = velocity;
+        netVelocity = Vector3.zero;
 
         foreach (KinematicMover parentMover in parentMovers)
         {

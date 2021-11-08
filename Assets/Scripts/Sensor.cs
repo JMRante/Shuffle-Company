@@ -14,7 +14,12 @@ public class Sensor : MonoBehaviour
 
     public bool IsCellBlocked(Vector3 direction)
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, solidLayerMask);
+        return IsCellBlocked(direction, Vector3.one * 0.49f);
+    }
+
+    public bool IsCellBlocked(Vector3 direction, Vector3 halfExtents)
+    {
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents, Quaternion.identity, solidLayerMask);
 
         foreach (Collider collider in colliders)
         {

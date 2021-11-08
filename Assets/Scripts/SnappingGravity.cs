@@ -89,7 +89,7 @@ public class SnappingGravity : MonoBehaviour
 
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.IsCellBlocked(Vector3.down))
+            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f)))
             {
                 return true;
             }
