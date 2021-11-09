@@ -412,6 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e121dd49198d037448d76ac383425257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTurnableOnConveyor: 1
 --- !u!114 &3860043117021978268
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,17 +5,23 @@ using UnityEngine;
 
 public class Conveyable : MonoBehaviour
 {
+    public bool isTurnableOnConveyor = false;
+
     private float conveyorSpeed;
+    private float conveyorTurnSpeed;
     private Vector3 previousConveyorDirection;
     private Vector3 conveyorDirection;
     private KinematicMover mover;
+    private KinematicRotater rotater;
 
     void Start()
     {
         conveyorSpeed = 1.5f;
+        conveyorTurnSpeed = 900;
         previousConveyorDirection = Vector3.zero;
         conveyorDirection = Vector3.zero;
         mover = GetComponent<KinematicMover>();
+        rotater = GetComponent<KinematicRotater>();
     }
 
     void Update()
@@ -31,6 +37,12 @@ public class Conveyable : MonoBehaviour
         {
             mover.Velocity = conveyorDirection * conveyorSpeed;
             mover.Mode = KinematicMoverMode.moving;
+
+            if (isTurnableOnConveyor)
+            {
+                rotater.TargetForwardDirection = conveyorDirection;
+                rotater.RotationSpeed = conveyorTurnSpeed;
+            }
         }
     }
 
