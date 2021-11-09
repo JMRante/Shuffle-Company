@@ -12,7 +12,7 @@ public class Conveyable : MonoBehaviour
 
     void Start()
     {
-        conveyorSpeed = 8.5f;
+        conveyorSpeed = 1.5f;
         previousConveyorDirection = Vector3.zero;
         conveyorDirection = Vector3.zero;
         mover = GetComponent<KinematicMover>();
@@ -31,6 +31,18 @@ public class Conveyable : MonoBehaviour
         {
             mover.Velocity = conveyorDirection * conveyorSpeed;
             mover.Mode = KinematicMoverMode.moving;
+        }
+    }
+
+    public bool IsOnConveyor()
+    {
+        if (conveyorDirection != Vector3.zero)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

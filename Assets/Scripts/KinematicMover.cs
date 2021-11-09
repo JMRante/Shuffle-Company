@@ -123,7 +123,7 @@ public class KinematicMover : MonoBehaviour
                     Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.localPosition);
                     Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.localPosition + (velocity * Time.deltaTime)));
 
-                    if (currentNorm != overshotNorm)
+                    if (currentNorm != overshotNorm || currentNorm == Vector3.zero)
                     {
                         Snap(transform.parent.TransformPoint(closestSnapPoint));
                     }

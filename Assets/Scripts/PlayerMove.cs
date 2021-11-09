@@ -17,6 +17,7 @@ public class PlayerMove : MonoBehaviour
     private SnappingGravity gravityComp;
     private Sensor sensor;
     private Pushable lastPushable;
+    private Conveyable conveyable;
 
     private bool isClimbing;
     private Vector3 climbDirection;
@@ -36,6 +37,7 @@ public class PlayerMove : MonoBehaviour
         gravityComp = GetComponent<SnappingGravity>();
         sensor = GetComponentInChildren<Sensor>();
         lastPushable = null;
+        conveyable = GetComponent<Conveyable>();
 
         isClimbing = false;
         climbDirection = Vector3.zero;
@@ -121,7 +123,7 @@ public class PlayerMove : MonoBehaviour
         bool isSolidAbove = sensor.IsCellPositionBlocked(transform.position + Vector3.up);
 
         // Set Motion
-        if (!gravityComp.IsFalling && mover.Mode != KinematicMoverMode.pathing)
+        if (!gravityComp.IsFalling && mover.Mode != KinematicMoverMode.pathing && !conveyable.IsOnConveyor())
         {
             // Start Falling After Climbing
             if (isClimbing && !isOnClimbable && mover.Mode != KinematicMoverMode.pathing)

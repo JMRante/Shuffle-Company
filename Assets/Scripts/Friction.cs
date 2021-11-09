@@ -61,13 +61,20 @@ public class Friction : MonoBehaviour
             {
                 KinematicMover parentMover = (KinematicMover)sensor.GetComponentFromRay(Vector3.down, typeof(KinematicMover));
                 
-                if (!parentMovers.ContainsKey(parentMover))
+                if (parentMover == null)
                 {
-                    parentMovers[parentMover] = 1;
+                    return null;
                 }
                 else
                 {
-                    parentMovers[parentMover] += 1;
+                    if (!parentMovers.ContainsKey(parentMover))
+                    {
+                        parentMovers[parentMover] = 1;
+                    }
+                    else
+                    {
+                        parentMovers[parentMover] += 1;
+                    }
                 }
             }
         }
@@ -96,7 +103,7 @@ public class Friction : MonoBehaviour
 
         if (topMovers.Count == 1)
         {
-            return topMovers[0];
+            return topMovers[0].GetComponent<KinematicMover>();
         }
 
         List<KinematicMover> fastestMovers = new List<KinematicMover>();
