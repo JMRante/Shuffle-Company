@@ -16,7 +16,7 @@ public class Conveyable : MonoBehaviour
 
     void Start()
     {
-        conveyorSpeed = 1.5f;
+        conveyorSpeed = 3.5f;
         conveyorTurnSpeed = 900;
         previousConveyorDirection = Vector3.zero;
         conveyorDirection = Vector3.zero;

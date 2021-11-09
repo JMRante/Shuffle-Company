@@ -96,7 +96,7 @@ public class KinematicMover : MonoBehaviour
         pathRotation = Quaternion.identity;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         switch (mode)
         {
@@ -106,7 +106,7 @@ public class KinematicMover : MonoBehaviour
             {
                 if (velocity == Vector3.zero)
                 {
-                    Snap(transform.parent.TransformPoint(Utility.Round(transform.localPosition)));
+                    Snap(Utility.Round(transform.localPosition));
                     break;
                 }
 
@@ -125,23 +125,23 @@ public class KinematicMover : MonoBehaviour
 
                     if (currentNorm != overshotNorm || currentNorm == Vector3.zero)
                     {
-                        Snap(transform.parent.TransformPoint(closestSnapPoint));
+                        Snap(closestSnapPoint);
                     }
                     else
                     {
-                        rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                        transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
                     }
                 }
                 else
                 {
-                    rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                    transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
                 }
 
                 break;
             }
             case KinematicMoverMode.moving:
             {
-                rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
                 break;
             }
             case KinematicMoverMode.pathing:
@@ -161,12 +161,12 @@ public class KinematicMover : MonoBehaviour
                             pathIndex++;
                         }
 
-                        rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+                        transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
                     }
                     
                     if (pathIndex >= path.Length)
                     {
-                        Snap(Utility.Round(transform.position));
+                        Snap(Utility.Round(transform.localPosition));
                     }
                 }
 
@@ -191,20 +191,7 @@ public class KinematicMover : MonoBehaviour
 
     public void Snap(Vector3 snapPoint)
     {
-        rb.MovePosition(snapPoint);
-        velocity = Vector3.zero;
-        mode = KinematicMoverMode.snapped;
-        snapSpeed = 0f;
-
-        path = null;
-        pathingSpeed = 0f;
-        pathIndex = 0;
-        pathStart = Vector3.zero;
-    }
-
-    public void InstantSnap(Vector3 snapPoint)
-    {
-        transform.position = snapPoint;
+        transform.localPosition = snapPoint;
         velocity = Vector3.zero;
         mode = KinematicMoverMode.snapped;
         snapSpeed = 0f;

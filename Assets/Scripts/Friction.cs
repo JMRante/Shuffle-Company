@@ -36,7 +36,7 @@ public class Friction : MonoBehaviour
                 if (transform.parent != defaultParent)
                 {
                     transform.SetParent(defaultParent);
-                    mover.InstantSnap(Utility.Round(transform.localPosition));
+                    mover.Snap(Utility.Round(transform.localPosition));
                 }
             }
         }
