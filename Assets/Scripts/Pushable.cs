@@ -60,7 +60,7 @@ public class Pushable : MonoBehaviour
 
     public bool CanBePushed(Vector3 direction, GameObject pusher)
     {
-        if (mover.NetVelocity != Vector3.zero)
+        if (mover.NetVelocity != Vector3.zero && pusher.transform.parent != gameObject.transform.parent)
         {
             return false;
         }

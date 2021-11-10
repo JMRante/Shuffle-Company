@@ -26,22 +26,25 @@ public class Conveyable : MonoBehaviour
 
     void Update()
     {
-        previousConveyorDirection = conveyorDirection;
-        conveyorDirection = GetConveyorDirection();
-
-        if (previousConveyorDirection != conveyorDirection)
+        if (Time.fixedTime > 0.5f)
         {
-            mover.Mode = KinematicMoverMode.snapping;
-        }
-        else if (conveyorDirection != Vector3.zero && mover.Mode == KinematicMoverMode.snapped)
-        {
-            mover.Velocity = conveyorDirection * conveyorSpeed;
-            mover.Mode = KinematicMoverMode.moving;
+            previousConveyorDirection = conveyorDirection;
+            conveyorDirection = GetConveyorDirection();
 
-            if (isTurnableOnConveyor)
+            if (previousConveyorDirection != conveyorDirection && mover.Mode != KinematicMoverMode.snapped)
             {
-                rotater.TargetForwardDirection = conveyorDirection;
-                rotater.RotationSpeed = conveyorTurnSpeed;
+                mover.Mode = KinematicMoverMode.snapping;
+            }
+            else if (conveyorDirection != Vector3.zero && mover.Mode == KinematicMoverMode.snapped)
+            {
+                mover.Velocity = conveyorDirection * conveyorSpeed;
+                mover.Mode = KinematicMoverMode.moving;
+
+                if (isTurnableOnConveyor)
+                {
+                    rotater.TargetForwardDirection = conveyorDirection;
+                    rotater.RotationSpeed = conveyorTurnSpeed;
+                }
             }
         }
     }

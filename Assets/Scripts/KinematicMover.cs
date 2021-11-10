@@ -103,6 +103,10 @@ public class KinematicMover : MonoBehaviour
         switch (mode)
         {
             case KinematicMoverMode.snapped: 
+                if (Utility.Round(transform.localPosition) != transform.localPosition)
+                {
+                    Snap(Utility.Round(transform.localPosition));
+                }
                 break;
             case KinematicMoverMode.snapping:
             {
