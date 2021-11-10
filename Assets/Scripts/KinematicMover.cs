@@ -98,30 +98,32 @@ public class KinematicMover : MonoBehaviour
 
     void Update()
     {
+        Vector3 localVelocity = Quaternion.Inverse(transform.parent.rotation) * velocity;
+
         switch (mode)
         {
             case KinematicMoverMode.snapped: 
                 break;
             case KinematicMoverMode.snapping:
             {
-                if (velocity == Vector3.zero)
+                if (localVelocity == Vector3.zero)
                 {
                     Snap(Utility.Round(transform.localPosition));
                     break;
                 }
 
-                snapSpeed = velocity.magnitude;
+                snapSpeed = localVelocity.magnitude;
 
                 Vector3 closestSnapPoint = Utility.Round(transform.localPosition);
                 Vector3 moveToSnapPointVelocity = Vector3.Normalize(closestSnapPoint - transform.localPosition) * snapSpeed;
 
-                if (Vector3.Angle(moveToSnapPointVelocity, velocity) < 90f)
-                // if (moveToSnapPointVelocity.normalized == velocity.normalized)
+                if (Vector3.Angle(moveToSnapPointVelocity, localVelocity) < 90f)
                 {
-                    velocity = moveToSnapPointVelocity;
+                    localVelocity = moveToSnapPointVelocity;
+                    velocity = transform.parent.rotation * localVelocity;
 
                     Vector3 currentNorm = Vector3.Normalize(closestSnapPoint - transform.localPosition);
-                    Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.localPosition + (velocity * Time.deltaTime)));
+                    Vector3 overshotNorm = Vector3.Normalize(closestSnapPoint - (transform.localPosition + (localVelocity * Time.deltaTime)));
 
                     if (currentNorm != overshotNorm || currentNorm == Vector3.zero)
                     {
@@ -129,19 +131,19 @@ public class KinematicMover : MonoBehaviour
                     }
                     else
                     {
-                        transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
+                        transform.localPosition = transform.localPosition + (localVelocity * Time.deltaTime);
                     }
                 }
                 else
                 {
-                    transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
+                    transform.localPosition = transform.localPosition + (localVelocity * Time.deltaTime);
                 }
 
                 break;
             }
             case KinematicMoverMode.moving:
             {
-                transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
+                transform.localPosition = transform.localPosition + (localVelocity * Time.deltaTime);
                 break;
             }
             case KinematicMoverMode.pathing:
@@ -151,17 +153,18 @@ public class KinematicMover : MonoBehaviour
                     if (pathIndex < path.Length)
                     {
                         Vector3 destinationPoint = (pathRotation * path[pathIndex]) + pathStart;
-                        velocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
+                        localVelocity = Vector3.Normalize(destinationPoint - transform.position) * pathingSpeed;
+                        velocity = transform.parent.rotation * localVelocity;
 
                         Vector3 currentNorm = Vector3.Normalize(destinationPoint - transform.position);
-                        Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (velocity * Time.deltaTime)));
+                        Vector3 overshotNorm = Vector3.Normalize(destinationPoint - (transform.position + (localVelocity * Time.deltaTime)));
 
-                        if (currentNorm != overshotNorm || velocity == Vector3.zero)
+                        if (currentNorm != overshotNorm || localVelocity == Vector3.zero)
                         {
                             pathIndex++;
                         }
 
-                        transform.localPosition = transform.localPosition + (velocity * Time.deltaTime);
+                        transform.localPosition = transform.localPosition + (localVelocity * Time.deltaTime);
                     }
                     
                     if (pathIndex >= path.Length)

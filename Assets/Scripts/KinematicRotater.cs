@@ -32,7 +32,7 @@ public class KinematicRotater : MonoBehaviour
     {
         if (targetForwardDirection != transform.forward)
         {
-            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.LookRotation(targetForwardDirection, transform.up), rotationSpeed * Time.deltaTime);
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.LookRotation(Quaternion.Inverse(transform.parent.rotation) * targetForwardDirection, transform.up), rotationSpeed * Time.deltaTime);
         }
     }
 }
