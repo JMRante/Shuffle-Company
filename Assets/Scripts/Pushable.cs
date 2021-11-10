@@ -58,7 +58,7 @@ public class Pushable : MonoBehaviour
         return mover.Mode;
     }
 
-    public bool CanBePushed(Vector3 direction)
+    public bool CanBePushed(Vector3 direction, GameObject pusher)
     {
         if (mover.NetVelocity != Vector3.zero)
         {
@@ -70,12 +70,25 @@ public class Pushable : MonoBehaviour
             return false;
         }
 
+        if (pusher.transform.IsChildOf(gameObject.transform))
+        {
+            return false;
+        }
+
         if (!gravityComp.IsFalling)
         {
             Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
             foreach (Sensor sensor in sensors)
             {
+                if (sensor.transform.position - direction == pusher.transform.position)
+                {
+                    if (!sensor.IsCellBlocked(Vector3.down))
+                    {
+                        return false;
+                    }
+                }
+
                 if (sensor.IsCellBlocked(direction))
                 {
                     return false;

@@ -108,7 +108,7 @@ public class PlayerMove : MonoBehaviour
         bool isSolidAhead = sensor.IsCellBlocked(latestInputDirection);
 
         Pushable pushableAhead = (Pushable) sensor.GetComponentFromCell(latestInputDirection, typeof(Pushable));
-        bool canPushSolidAhead = pushableAhead != null ? pushableAhead.CanBePushed(latestInputDirection) : false;
+        bool canPushSolidAhead = pushableAhead != null ? pushableAhead.CanBePushed(latestInputDirection, gameObject) : false;
 
         bool isClimbableAhead = sensor.DoesRayContainElementProperty(latestInputDirectionRaw, ElementProperty.Climbable);
         bool isClimbableFacingAhead = sensor.DoesRayContainElementProperty(latestInputDirectionRaw, ElementProperty.Climbable)
