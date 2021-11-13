@@ -62,7 +62,10 @@ public class Sensor : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            return collider.GetComponentInParent(type);
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                return collider.GetComponentInParent(type);
+            }
         }
 
         return null;
@@ -74,7 +77,10 @@ public class Sensor : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            return collider.GetComponentInParent(type);
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                return collider.GetComponentInParent(type);
+            }
         }
 
         return null;
@@ -86,7 +92,10 @@ public class Sensor : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out hit, 0.98f, solidLayerMask))
         {
-            return hit.collider.GetComponentInParent(type);
+            if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                return hit.collider.GetComponentInParent(type);
+            }
         }
 
         return null;

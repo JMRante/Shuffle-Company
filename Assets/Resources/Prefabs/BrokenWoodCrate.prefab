@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 212226087277887996}
   - component: {fileID: 212226087277887997}
   - component: {fileID: 212226087277887998}
+  - component: {fileID: 8047828745516812588}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (8)
   m_TagString: Untagged
@@ -112,6 +113,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8047828745516812588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087277887992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087302813100
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +138,7 @@ GameObject:
   - component: {fileID: 212226087302813088}
   - component: {fileID: 212226087302813089}
   - component: {fileID: 212226087302813090}
+  - component: {fileID: 8111963815041493961}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (28)
   m_TagString: Untagged
@@ -224,6 +238,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8111963815041493961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087302813100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087385893985
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +263,7 @@ GameObject:
   - component: {fileID: 212226087385893989}
   - component: {fileID: 212226087385893990}
   - component: {fileID: 212226087385893991}
+  - component: {fileID: 6095580671731368376}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (13)
   m_TagString: Untagged
@@ -336,6 +363,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6095580671731368376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087385893985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087405320535
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +388,7 @@ GameObject:
   - component: {fileID: 212226087405320523}
   - component: {fileID: 212226087405320532}
   - component: {fileID: 212226087405320533}
+  - component: {fileID: 786306160120312748}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (20)
   m_TagString: Untagged
@@ -448,6 +488,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &786306160120312748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087405320535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087419545060
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +513,7 @@ GameObject:
   - component: {fileID: 212226087419544856}
   - component: {fileID: 212226087419544857}
   - component: {fileID: 212226087419544858}
+  - component: {fileID: 1313792581995889069}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (18)
   m_TagString: Untagged
@@ -560,6 +613,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1313792581995889069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087419545060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087640110618
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +638,7 @@ GameObject:
   - component: {fileID: 212226087640110622}
   - component: {fileID: 212226087640110623}
   - component: {fileID: 212226087640110616}
+  - component: {fileID: 7268451294779390898}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (1)
   m_TagString: Untagged
@@ -672,6 +738,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7268451294779390898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087640110618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087696501408
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +763,7 @@ GameObject:
   - component: {fileID: 212226087696501412}
   - component: {fileID: 212226087696501413}
   - component: {fileID: 212226087696501414}
+  - component: {fileID: 1670396937682009758}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (12)
   m_TagString: Untagged
@@ -784,6 +863,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1670396937682009758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087696501408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087809627844
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,6 +888,7 @@ GameObject:
   - component: {fileID: 212226087809627896}
   - component: {fileID: 212226087809627897}
   - component: {fileID: 212226087809627898}
+  - component: {fileID: 9178385056150779687}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (14)
   m_TagString: Untagged
@@ -896,6 +988,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &9178385056150779687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087809627844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087819342404
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +1013,7 @@ GameObject:
   - component: {fileID: 212226087819342456}
   - component: {fileID: 212226087819342457}
   - component: {fileID: 212226087819342458}
+  - component: {fileID: 2535224471880930307}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (25)
   m_TagString: Untagged
@@ -1008,6 +1113,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2535224471880930307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087819342404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087904780423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,6 +1211,7 @@ GameObject:
   - component: {fileID: 212226087953723271}
   - component: {fileID: 212226087953723264}
   - component: {fileID: 212226087953723265}
+  - component: {fileID: 4884538888720846949}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (15)
   m_TagString: Untagged
@@ -1193,6 +1311,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4884538888720846949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087953723267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226087971390204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,6 +1336,7 @@ GameObject:
   - component: {fileID: 212226087971390192}
   - component: {fileID: 212226087971390193}
   - component: {fileID: 212226087971390194}
+  - component: {fileID: 6902338135246021453}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (23)
   m_TagString: Untagged
@@ -1305,6 +1436,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6902338135246021453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226087971390204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088115897579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1461,7 @@ GameObject:
   - component: {fileID: 212226088115897583}
   - component: {fileID: 212226088115897576}
   - component: {fileID: 212226088115897577}
+  - component: {fileID: 7357120117357404110}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (10)
   m_TagString: Untagged
@@ -1417,6 +1561,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7357120117357404110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088115897579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088131639200
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1586,7 @@ GameObject:
   - component: {fileID: 212226088131639204}
   - component: {fileID: 212226088131639205}
   - component: {fileID: 212226088131639206}
+  - component: {fileID: 5973883943527025280}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (24)
   m_TagString: Untagged
@@ -1529,6 +1686,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5973883943527025280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088131639200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088308953706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,6 +1711,7 @@ GameObject:
   - component: {fileID: 212226088308953710}
   - component: {fileID: 212226088308953711}
   - component: {fileID: 212226088308953704}
+  - component: {fileID: 2901635149390396368}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (2)
   m_TagString: Untagged
@@ -1641,6 +1811,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2901635149390396368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088308953706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088332025757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,6 +1836,7 @@ GameObject:
   - component: {fileID: 212226088332025745}
   - component: {fileID: 212226088332025746}
   - component: {fileID: 212226088332025747}
+  - component: {fileID: 684244433589989050}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (19)
   m_TagString: Untagged
@@ -1753,6 +1936,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &684244433589989050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088332025757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088376375805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1766,6 +1961,7 @@ GameObject:
   - component: {fileID: 212226088376375793}
   - component: {fileID: 212226088376375794}
   - component: {fileID: 212226088376375795}
+  - component: {fileID: 218216815312030160}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (22)
   m_TagString: Untagged
@@ -1865,6 +2061,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &218216815312030160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088376375805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088581872220
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +2086,7 @@ GameObject:
   - component: {fileID: 212226088581872208}
   - component: {fileID: 212226088581872209}
   - component: {fileID: 212226088581872210}
+  - component: {fileID: 4656936353739617456}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (17)
   m_TagString: Untagged
@@ -1977,6 +2186,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4656936353739617456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088581872220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088818843497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,6 +2211,7 @@ GameObject:
   - component: {fileID: 212226088818843501}
   - component: {fileID: 212226088818843502}
   - component: {fileID: 212226088818843503}
+  - component: {fileID: 6307482610847316423}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (6)
   m_TagString: Untagged
@@ -2089,6 +2311,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6307482610847316423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088818843497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088836791261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2102,6 +2336,7 @@ GameObject:
   - component: {fileID: 212226088836791249}
   - component: {fileID: 212226088836791250}
   - component: {fileID: 212226088836791251}
+  - component: {fileID: 3007597998592665817}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (16)
   m_TagString: Untagged
@@ -2201,6 +2436,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3007597998592665817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088836791261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088962568404
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,6 +2461,7 @@ GameObject:
   - component: {fileID: 212226088962568392}
   - component: {fileID: 212226088962568393}
   - component: {fileID: 212226088962568394}
+  - component: {fileID: 2442866193818966564}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (27)
   m_TagString: Untagged
@@ -2313,6 +2561,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2442866193818966564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088962568404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088982541489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,6 +2586,7 @@ GameObject:
   - component: {fileID: 212226088982541493}
   - component: {fileID: 212226088982541494}
   - component: {fileID: 212226088982541495}
+  - component: {fileID: 5603299828745073982}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece
   m_TagString: Untagged
@@ -2425,6 +2686,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5603299828745073982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088982541489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226088998014882
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,6 +2711,7 @@ GameObject:
   - component: {fileID: 212226088998014886}
   - component: {fileID: 212226088998014887}
   - component: {fileID: 212226088998014880}
+  - component: {fileID: 2460010491685036990}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (7)
   m_TagString: Untagged
@@ -2537,6 +2811,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2460010491685036990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226088998014882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089006480643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2836,7 @@ GameObject:
   - component: {fileID: 212226089006480647}
   - component: {fileID: 212226089006480640}
   - component: {fileID: 212226089006480641}
+  - component: {fileID: 8895709447053044573}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (4)
   m_TagString: Untagged
@@ -2649,6 +2936,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8895709447053044573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089006480643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089061854029
 GameObject:
   m_ObjectHideFlags: 0
@@ -2662,6 +2961,7 @@ GameObject:
   - component: {fileID: 212226089061854017}
   - component: {fileID: 212226089061854018}
   - component: {fileID: 212226089061854019}
+  - component: {fileID: 401189280607281166}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (21)
   m_TagString: Untagged
@@ -2761,6 +3061,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &401189280607281166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089061854029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089100485276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +3086,7 @@ GameObject:
   - component: {fileID: 212226089100485264}
   - component: {fileID: 212226089100485265}
   - component: {fileID: 212226089100485266}
+  - component: {fileID: 5104164063232659830}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (11)
   m_TagString: Untagged
@@ -2873,6 +3186,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5104164063232659830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089100485276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089289849312
 GameObject:
   m_ObjectHideFlags: 0
@@ -2886,6 +3211,7 @@ GameObject:
   - component: {fileID: 212226089289849316}
   - component: {fileID: 212226089289849317}
   - component: {fileID: 212226089289849318}
+  - component: {fileID: 2426560847928046728}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (9)
   m_TagString: Untagged
@@ -2985,6 +3311,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2426560847928046728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089289849312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089319570540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2998,6 +3336,7 @@ GameObject:
   - component: {fileID: 212226089319570528}
   - component: {fileID: 212226089319570529}
   - component: {fileID: 212226089319570530}
+  - component: {fileID: 1127711040430847142}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (5)
   m_TagString: Untagged
@@ -3097,6 +3436,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1127711040430847142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089319570540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089348564660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3110,6 +3461,7 @@ GameObject:
   - component: {fileID: 212226089348564648}
   - component: {fileID: 212226089348564649}
   - component: {fileID: 212226089348564650}
+  - component: {fileID: 443212552933900031}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (26)
   m_TagString: Untagged
@@ -3209,6 +3561,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &443212552933900031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089348564660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &212226089387544191
 GameObject:
   m_ObjectHideFlags: 0
@@ -3222,6 +3586,7 @@ GameObject:
   - component: {fileID: 212226089387544179}
   - component: {fileID: 212226089387544188}
   - component: {fileID: 212226089387544189}
+  - component: {fileID: 3885859360544198354}
   m_Layer: 0
   m_Name: BrokenWoodCratePiece (3)
   m_TagString: Untagged
@@ -3321,3 +3686,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3885859360544198354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 212226089387544191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1796645b6ec844be87ea5dc3decd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
