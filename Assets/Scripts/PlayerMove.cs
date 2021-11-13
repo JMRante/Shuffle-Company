@@ -8,6 +8,11 @@ public class PlayerMove : MonoBehaviour
     public float pushSpeed = 4.8f;
     public float walkRotationSpeed = 500f;
 
+    public KeyCode upInput;
+    public KeyCode rightInput;
+    public KeyCode downInput;
+    public KeyCode leftInput;
+
     private List<Vector3> inputDirections;
     private Vector3 latestInputDirection;
     private Vector3 latestInputDirectionRaw;
@@ -64,25 +69,25 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(upInput))
             inputDirections.Add(Vector3.forward);
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(rightInput))
             inputDirections.Add(Vector3.right);
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(downInput))
             inputDirections.Add(Vector3.back);
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(leftInput))
             inputDirections.Add(Vector3.left);
 
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (Input.GetKeyUp(upInput))
             inputDirections.Remove(Vector3.forward);
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
+        else if (Input.GetKeyUp(rightInput))
             inputDirections.Remove(Vector3.right);
-        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        else if (Input.GetKeyUp(downInput))
             inputDirections.Remove(Vector3.back);
-        else if (Input.GetKeyUp(KeyCode.LeftArrow))
+        else if (Input.GetKeyUp(leftInput))
             inputDirections.Remove(Vector3.left);
 
-        if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        if (!Input.GetKey(upInput) && !Input.GetKey(rightInput) && !Input.GetKey(downInput) && !Input.GetKey(leftInput))
             inputDirections.Clear();
 
         if (inputDirections.Count > 0)
