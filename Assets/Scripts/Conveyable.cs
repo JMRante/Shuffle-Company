@@ -13,6 +13,7 @@ public class Conveyable : MonoBehaviour
     private Vector3 conveyorDirection;
     private KinematicMover mover;
     private KinematicRotater rotater;
+    private SnappingGravity gravity;
 
     void Start()
     {
@@ -22,11 +23,12 @@ public class Conveyable : MonoBehaviour
         conveyorDirection = Vector3.zero;
         mover = GetComponent<KinematicMover>();
         rotater = GetComponent<KinematicRotater>();
+        gravity = GetComponent<SnappingGravity>();
     }
 
     void Update()
     {
-        if (Time.fixedTime > 0.5f)
+        if (Time.fixedTime > 0.5f && !gravity.IsFalling)
         {
             previousConveyorDirection = conveyorDirection;
             conveyorDirection = GetConveyorDirection();

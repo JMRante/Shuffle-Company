@@ -8,23 +8,33 @@ public class Destructable : MonoBehaviour
     public int strength;
     public GameObject destroyedForm;
 
-    private bool isDestructionEnabled;
-
+    private bool isDestructionDetectionEnabled;
+    
     public bool IsDestructionDetectionEnabled
     {
-        get => IsDestructionDetectionEnabled;
-        set => IsDestructionDetectionEnabled = value;
+        get => isDestructionDetectionEnabled;
+        set => isDestructionDetectionEnabled = value;
+    }
+
+    void Start()
+    {
+        isDestructionDetectionEnabled = true;
     }
 
     void Update()
     {
-        if (IsDestructionDetectionEnabled)
+        DetectDestruction();
+    }
+
+    public void DetectDestruction()
+    {
+        if (isDestructionDetectionEnabled)
         {
             Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
             foreach (Sensor sensor in sensors)
             {
-                Destructable collidingDestructable = (Destructable) sensor.GetComponentFromCell(Vector3.zero, typeof(Destructable));
+                Destructable collidingDestructable = (Destructable)sensor.GetComponentFromCell(Vector3.zero, typeof(Destructable));
 
                 if (collidingDestructable != null)
                 {
@@ -46,6 +56,13 @@ public class Destructable : MonoBehaviour
         {
             Element child = childElements[i];
             child.gameObject.transform.parent = gameObject.transform.parent;
+            
+            Destructable childDestructable = GetComponent<Destructable>();
+
+            if (childDestructable != null)
+            {
+                childDestructable.DetectDestruction();
+            }
         }
 
         GameObject.Instantiate(destroyedForm, transform.position, transform.rotation);

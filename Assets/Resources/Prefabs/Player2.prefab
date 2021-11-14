@@ -220,6 +220,8 @@ GameObject:
   - component: {fileID: 5044512834565324404}
   - component: {fileID: 1200517665048260276}
   - component: {fileID: 7769847247878511799}
+  - component: {fileID: 7539588572145298169}
+  - component: {fileID: 4331168031086548688}
   - component: {fileID: 4072740165524595713}
   - component: {fileID: 4737014073504083680}
   m_Layer: 6
@@ -336,6 +338,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTurnableOnConveyor: 1
+--- !u!114 &7539588572145298169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8002740513112746371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90d624cbe175834c91fcd1fdb1d6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 0
+  destroyedForm: {fileID: 3009024360716542967, guid: 41798b392f373e447a94a3e6cc87526d, type: 3}
+--- !u!114 &4331168031086548688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8002740513112746371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e222764c7a6e1142b60169b0039dd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: -100
 --- !u!114 &4072740165524595713
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,6 +23,7 @@ public class PlayerMove : MonoBehaviour
     private Sensor sensor;
     private Pushable lastPushable;
     private Conveyable conveyable;
+    private Destructable destructable;
 
     private bool isClimbing;
     private Vector3 climbDirection;
@@ -43,6 +44,7 @@ public class PlayerMove : MonoBehaviour
         sensor = GetComponentInChildren<Sensor>();
         lastPushable = null;
         conveyable = GetComponent<Conveyable>();
+        destructable = GetComponent<Destructable>();
 
         isClimbing = false;
         climbDirection = Vector3.zero;
@@ -234,6 +236,15 @@ public class PlayerMove : MonoBehaviour
                 // Stop When No Input
                 mover.Mode = KinematicMoverMode.snapping;
             }
+        }
+
+        if (mover.Mode == KinematicMoverMode.pathing)
+        {
+            destructable.IsDestructionDetectionEnabled = false;
+        }
+        else
+        {
+            destructable.IsDestructionDetectionEnabled = true;
         }
     }
 
