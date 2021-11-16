@@ -24,11 +24,13 @@ public class Friction : MonoBehaviour
         
         if (!gravityComp.IsFalling && gravityComp.isFallingEnabled && parentMoverCandidate != null)
         {
-            if (CanMoveWithParent())
+            Transform parentTransformCandidate = parentMoverCandidate.gameObject.transform;
+
+            if (CanMoveWithParent(parentTransformCandidate))
             {
-                if (transform.parent != parentMoverCandidate.gameObject.transform)
+                if (transform.parent != parentTransformCandidate)
                 {
-                    transform.SetParent(parentMoverCandidate.gameObject.transform);
+                    transform.SetParent(parentTransformCandidate);
                 }
             }
             else
@@ -131,7 +133,7 @@ public class Friction : MonoBehaviour
         return null;
     }
 
-    public bool CanMoveWithParent()
+    public bool CanMoveWithParent(Transform parentTransform)
     {
         if (!gravityComp.IsSolidBelow)
         {
@@ -142,9 +144,11 @@ public class Friction : MonoBehaviour
         {
             Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
+            Vector3 positionOnParentCandidate = parentTransform.TransformPoint(Utility.Round(parentTransform.InverseTransformPoint(transform.position)));
+
             foreach (Sensor sensor in sensors)
             {
-                if (sensor.IsCellBlocked(Vector3.zero))
+                if (sensor.IsCellPositionBlocked(positionOnParentCandidate))
                 {
                     return false;
                 }

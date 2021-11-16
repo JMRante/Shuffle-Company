@@ -7,8 +7,10 @@ public class Destructable : MonoBehaviour
 {
     public int strength;
     public GameObject destroyedForm;
+    private Transform defaultParent;
 
     private bool isDestructionDetectionEnabled;
+    private bool markedForDestruction;
     
     public bool IsDestructionDetectionEnabled
     {
@@ -18,7 +20,10 @@ public class Destructable : MonoBehaviour
 
     void Start()
     {
+        defaultParent = transform.parent;
+
         isDestructionDetectionEnabled = true;
+        markedForDestruction = false;
     }
 
     void Update()
@@ -50,23 +55,21 @@ public class Destructable : MonoBehaviour
 
     public void Destruct()
     {
-        Element[] childElements = Utility.GetComponentsInDirectChildren(gameObject, typeof(Element)).Cast<Element>().ToArray();
-
-        for (int i = 0; i < childElements.Length; i++)
+        if (!markedForDestruction)
         {
-            Element child = childElements[i];
-            child.gameObject.transform.parent = gameObject.transform.parent;
-            
-            Destructable childDestructable = GetComponent<Destructable>();
+            markedForDestruction = true;
 
-            if (childDestructable != null)
+            Element[] childElements = Utility.GetComponentsInDirectChildren(gameObject, typeof(Element)).Cast<Element>().ToArray();
+
+            for (int i = 0; i < childElements.Length; i++)
             {
-                childDestructable.DetectDestruction();
+                Element child = childElements[i];
+                child.gameObject.transform.parent = defaultParent;
             }
-        }
 
-        GameObject.Instantiate(destroyedForm, transform.position, transform.rotation);
-        GameObject.Destroy(gameObject);
+            GameObject.Instantiate(destroyedForm, transform.position, transform.rotation);
+            GameObject.Destroy(gameObject);
+        }
     }
 
     public void DestructCollision(Destructable otherDestructable)
