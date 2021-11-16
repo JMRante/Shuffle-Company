@@ -7,6 +7,7 @@ public class Destructable : MonoBehaviour
 {
     public int strength;
     public GameObject destroyedForm;
+
     private Transform defaultParent;
 
     private bool isDestructionDetectionEnabled;

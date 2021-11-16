@@ -19035,6 +19035,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: RealtimeLargeWoodCrate (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4904105851371511541, guid: 2d1bafb374faa3f4583f2a57e9f7b3bc, type: 3}
+      propertyPath: offset.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4904105851371511541, guid: 2d1bafb374faa3f4583f2a57e9f7b3bc, type: 3}
+      propertyPath: offset.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4904105851371511541, guid: 2d1bafb374faa3f4583f2a57e9f7b3bc, type: 3}
+      propertyPath: offset.z
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d1bafb374faa3f4583f2a57e9f7b3bc, type: 3}
 --- !u!4 &1313562790 stripped

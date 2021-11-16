@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Conveyor
   elementName: Conveyor
-  elementProperties: 0100000003000000
+  elementProperties: 010000000300000004000000
 --- !u!54 &7582508517072344091
 Rigidbody:
   m_ObjectHideFlags: 0

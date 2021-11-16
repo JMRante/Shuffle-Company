@@ -187,6 +187,8 @@ GameObject:
   - component: {fileID: 3691216913897617786}
   - component: {fileID: 581018043033029437}
   - component: {fileID: 5253732221210329264}
+  - component: {fileID: 4904105851371511541}
+  - component: {fileID: 8377009985428339371}
   - component: {fileID: 2750704435238998621}
   m_Layer: 6
   m_Name: LargeWoodCrate
@@ -299,6 +301,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e121dd49198d037448d76ac383425257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTurnableOnConveyor: 0
+--- !u!114 &4904105851371511541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904474738556189345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90d624cbe175834c91fcd1fdb1d6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 10
+  destroyedForm: {fileID: 212226087904780423, guid: bb3568a236cf65d43a0a990f7159e3ce, type: 3}
+--- !u!114 &8377009985428339371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904474738556189345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e222764c7a6e1142b60169b0039dd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: -100
 --- !u!114 &2750704435238998621
 MonoBehaviour:
   m_ObjectHideFlags: 0
