@@ -56,6 +56,7 @@ public class Friction : MonoBehaviour
         Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         Dictionary<KinematicMover, int> parentMovers = new Dictionary<KinematicMover, int>();
+        int stageParentShare = 0;
 
         foreach (Sensor sensor in sensors)
         {
@@ -65,7 +66,7 @@ public class Friction : MonoBehaviour
                 
                 if (parentMover == null)
                 {
-                    return null;
+                    stageParentShare += 1;
                 }
                 else
                 {
@@ -87,7 +88,7 @@ public class Friction : MonoBehaviour
         }
 
         List<KinematicMover> topMovers = new List<KinematicMover>();
-        int candidateMaxParentCoverage = 0;
+        int candidateMaxParentCoverage = stageParentShare;
 
         foreach (KeyValuePair<KinematicMover, int> entry in parentMovers)
         {
@@ -103,7 +104,11 @@ public class Friction : MonoBehaviour
             }
         }
 
-        if (topMovers.Count == 1)
+        if (topMovers.Count == 0)
+        {
+            return null;
+        }
+        else if (topMovers.Count == 1)
         {
             return topMovers[0].GetComponent<KinematicMover>();
         }
@@ -144,10 +149,10 @@ public class Friction : MonoBehaviour
         {
             Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
-            Vector3 positionOnParentCandidate = parentTransform.TransformPoint(Utility.Round(parentTransform.InverseTransformPoint(transform.position)));
-
             foreach (Sensor sensor in sensors)
             {
+                Vector3 positionOnParentCandidate = parentTransform.TransformPoint(Utility.Round(parentTransform.InverseTransformPoint(sensor.transform.position)));
+
                 if (sensor.IsCellPositionBlocked(positionOnParentCandidate))
                 {
                     return false;
