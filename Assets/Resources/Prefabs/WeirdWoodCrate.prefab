@@ -319,6 +319,8 @@ GameObject:
   - component: {fileID: 8573546805954178874}
   - component: {fileID: 4364159558812837917}
   - component: {fileID: 8171761317248630941}
+  - component: {fileID: -716520789972555443}
+  - component: {fileID: 8251502325468103456}
   - component: {fileID: 7200968011280385053}
   m_Layer: 6
   m_Name: WeirdWoodCrate
@@ -430,6 +432,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e121dd49198d037448d76ac383425257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTurnableOnConveyor: 0
+--- !u!114 &-716520789972555443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7893764777735761121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90d624cbe175834c91fcd1fdb1d6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 10
+  destroyedForm: {fileID: 212226087904780423, guid: 7aec24712f18c8843988513f9d33be7c, type: 3}
+--- !u!114 &8251502325468103456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7893764777735761121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e222764c7a6e1142b60169b0039dd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: -100
 --- !u!114 &7200968011280385053
 MonoBehaviour:
   m_ObjectHideFlags: 0
