@@ -22,7 +22,7 @@ public class Pushable : MonoBehaviour
         {
             if (gravityComp.IsFalling)
             {
-                pusher = null;
+                DisconnectFromPusher();
             }
             else
             {
@@ -31,7 +31,7 @@ public class Pushable : MonoBehaviour
 
                 if (pusher.Mode == KinematicMoverMode.snapped)
                 {
-                    pusher = null;
+                    DisconnectFromPusher();
                 }
             }
         }
@@ -49,8 +49,13 @@ public class Pushable : MonoBehaviour
         if (pusher != null)
         {
             mover.Mode = KinematicMoverMode.snapping;
-            pusher = null;
+            DisconnectFromPusher();
         }
+    }
+
+    private void DisconnectFromPusher()
+    {
+        pusher = null;
     }
 
     public KinematicMoverMode GetMode()

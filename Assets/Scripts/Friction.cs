@@ -26,7 +26,7 @@ public class Friction : MonoBehaviour
         {
             Transform parentTransformCandidate = parentMoverCandidate.gameObject.transform;
 
-            if (CanMoveWithParent(parentTransformCandidate))
+            if (CanMoveWithParent(parentTransformCandidate) || parentMoverCandidate.NetVelocity == Vector3.zero)
             {
                 if (transform.parent != parentTransformCandidate)
                 {
