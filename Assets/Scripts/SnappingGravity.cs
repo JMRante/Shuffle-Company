@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SnappingGravity : MonoBehaviour
@@ -9,6 +10,7 @@ public class SnappingGravity : MonoBehaviour
     private bool isFalling;
     private bool isSolidBelow;
     private KinematicMover mover;
+    private Friction friction;
 
     private int solidLayerMask;
 
@@ -28,11 +30,12 @@ public class SnappingGravity : MonoBehaviour
         isFalling = false;
         isSolidBelow = true;
         mover = GetComponent<KinematicMover>();
+        friction = GetComponent<Friction>();
         
         solidLayerMask = LayerMask.GetMask("Solid");
     }
 
-    void FixedUpdate()
+    void Update()
     {
         isSolidBelow = CalculateIsSolidBelow();
 
@@ -44,6 +47,7 @@ public class SnappingGravity : MonoBehaviour
                 {
                     mover.Mode = KinematicMoverMode.moving;
                     isFalling = true;
+                    SetChildrenFallingState(isFalling);
                 }
             }
             else
@@ -57,6 +61,7 @@ public class SnappingGravity : MonoBehaviour
                     else if (mover.Mode == KinematicMoverMode.snapped)
                     {
                         isFalling = false;
+                        SetChildrenFallingState(isFalling);
                     }
                 }
             }
@@ -68,13 +73,23 @@ public class SnappingGravity : MonoBehaviour
         }
     }
 
+    private void SetChildrenFallingState(bool isFalling)
+    {
+        SnappingGravity[] childrenGravity = GetComponentsInChildren<SnappingGravity>();
+        
+        foreach (SnappingGravity grav in childrenGravity)
+        {
+            grav.isFalling = isFalling;
+        }
+    }
+
     private bool CalculateIsSolidBelow()
     {
-        Sensor[] sensors = GetComponentsInChildren<Sensor>();
+        Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.IsRayBlocked(Vector3.down))
+            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f)))
             {
                 return true;
             }

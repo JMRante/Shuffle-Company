@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Pushable : MonoBehaviour
@@ -15,13 +16,13 @@ public class Pushable : MonoBehaviour
         gravityComp = GetComponent<SnappingGravity>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (pusher != null)
         {
             if (gravityComp.IsFalling)
             {
-                pusher = null;
+                DisconnectFromPusher();
             }
             else
             {
@@ -30,7 +31,7 @@ public class Pushable : MonoBehaviour
 
                 if (pusher.Mode == KinematicMoverMode.snapped)
                 {
-                    pusher = null;
+                    DisconnectFromPusher();
                 }
             }
         }
@@ -48,8 +49,13 @@ public class Pushable : MonoBehaviour
         if (pusher != null)
         {
             mover.Mode = KinematicMoverMode.snapping;
-            pusher = null;
+            DisconnectFromPusher();
         }
+    }
+
+    private void DisconnectFromPusher()
+    {
+        pusher = null;
     }
 
     public KinematicMoverMode GetMode()
@@ -57,19 +63,37 @@ public class Pushable : MonoBehaviour
         return mover.Mode;
     }
 
-    public bool CanBePushed(Vector3 direction)
+    public bool CanBePushed(Vector3 direction, GameObject pusher)
     {
+        if (mover.NetVelocity != Vector3.zero && pusher.transform.parent != gameObject.transform.parent)
+        {
+            return false;
+        }
+
         if (!gravityComp.IsSolidBelow)
+        {
+            return false;
+        }
+
+        if (pusher.transform.IsChildOf(gameObject.transform))
         {
             return false;
         }
 
         if (!gravityComp.IsFalling)
         {
-            Sensor[] sensors = GetComponentsInChildren<Sensor>();
+            Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
             foreach (Sensor sensor in sensors)
             {
+                if (sensor.transform.position - direction == pusher.transform.position)
+                {
+                    if (!sensor.IsCellBlocked(Vector3.down))
+                    {
+                        return false;
+                    }
+                }
+
                 if (sensor.IsCellBlocked(direction))
                 {
                     return false;

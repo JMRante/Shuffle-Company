@@ -7,7 +7,8 @@ public enum ElementProperty
     Slotable,
     Loose,
     Climbable,
-    Conveyor
+    Conveyor,
+    Frictional
 }
 
 public class Element : MonoBehaviour

@@ -28,11 +28,11 @@ public class KinematicRotater : MonoBehaviour
         rotationSpeed = 0f;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (targetForwardDirection != transform.forward)
         {
-            rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetForwardDirection, transform.up), rotationSpeed * Time.deltaTime));
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.LookRotation(Quaternion.Inverse(transform.parent.rotation) * targetForwardDirection, transform.up), rotationSpeed * Time.deltaTime);
         }
     }
 }
