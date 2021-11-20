@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+  isBuoyant: 1
 --- !u!114 &4364159558812837917
 MonoBehaviour:
   m_ObjectHideFlags: 0

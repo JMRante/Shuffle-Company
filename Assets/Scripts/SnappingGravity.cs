@@ -6,9 +6,11 @@ using UnityEngine;
 public class SnappingGravity : MonoBehaviour
 {
     public bool isFallingEnabled = true;
+    public bool isBuoyant = false;
 
     private bool isFalling;
     private bool isSolidBelow;
+    private bool isInWater;
     private KinematicMover mover;
     private Friction friction;
 
@@ -24,7 +26,6 @@ public class SnappingGravity : MonoBehaviour
         get => isSolidBelow;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         isFalling = false;
@@ -37,11 +38,11 @@ public class SnappingGravity : MonoBehaviour
 
     void Update()
     {
-        isSolidBelow = CalculateIsSolidBelow();
+        CalculateCollisions();
 
         if (isFallingEnabled)
         {
-            if (!isSolidBelow)
+            if (!isSolidBelow && (!isInWater || !isBuoyant))
             {
                 if (mover.Mode == KinematicMoverMode.snapped)
                 {
@@ -83,18 +84,24 @@ public class SnappingGravity : MonoBehaviour
         }
     }
 
-    private bool CalculateIsSolidBelow()
+    private void CalculateCollisions()
     {
         Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
+        isSolidBelow = false;
+        isInWater = false;
+
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f)))
+            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f), sensor.SolidLayerMask))
             {
-                return true;
+                isSolidBelow = true;
+            }
+
+            if (sensor.IsCellBlocked(Vector3.zero, new Vector3(0.47f, 0.49f, 0.45f), sensor.WaterLayerMask))
+            {
+                isInWater = true;
             }
         }
-
-        return false;
     }
 }

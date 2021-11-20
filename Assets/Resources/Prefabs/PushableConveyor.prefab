@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementId: Conveyor
-  elementName: Conveyor
+  elementId: PushableConveyor
+  elementName: Pushable Conveyor
   elementProperties: 010000000300000004000000
 --- !u!54 &7582508517072344091
 Rigidbody:
@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+  isBuoyant: 0
 --- !u!114 &7582508517072344092
 MonoBehaviour:
   m_ObjectHideFlags: 0

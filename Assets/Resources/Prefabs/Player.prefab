@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 2143149570472678441}
   - component: {fileID: 7404179190039062058}
   - component: {fileID: 7310172179941873723}
+  - component: {fileID: -5887170947619094191}
   - component: {fileID: 5198039592442889256}
   - component: {fileID: 3860043117021978268}
   - component: {fileID: 5524129395909514365}
@@ -394,6 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+  isBuoyant: 0
 --- !u!114 &2143149570472678441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,6 +435,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: 0
   destroyedForm: {fileID: 3009024360716542967, guid: 41798b392f373e447a94a3e6cc87526d, type: 3}
+--- !u!114 &-5887170947619094191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7069408150569358110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 455215759da0fd14c8c307a79db107e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5198039592442889256
 MonoBehaviour:
   m_ObjectHideFlags: 0

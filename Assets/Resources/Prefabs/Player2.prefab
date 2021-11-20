@@ -278,8 +278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementId: Player
-  elementName: Player
+  elementId: Player2
+  elementName: Player2
   elementProperties: 01000000
 --- !u!114 &8588812433456359508
 MonoBehaviour:
@@ -313,6 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFallingEnabled: 1
+  isBuoyant: 0
 --- !u!114 &1200517665048260276
 MonoBehaviour:
   m_ObjectHideFlags: 0

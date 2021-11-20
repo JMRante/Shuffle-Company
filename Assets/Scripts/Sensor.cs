@@ -6,20 +6,38 @@ using UnityEngine;
 public class Sensor : MonoBehaviour
 {
     private int solidLayerMask;
+    private int waterLayerMask;
+
+    public int SolidLayerMask
+    {
+        get => solidLayerMask;
+    }
+
+    public int WaterLayerMask
+    {
+        get => waterLayerMask;
+    }
+
 
     void Start()
     {
         solidLayerMask = LayerMask.GetMask("Solid");
+        waterLayerMask = LayerMask.GetMask("Water");
     }
 
     public bool IsCellBlocked(Vector3 direction)
     {
-        return IsCellBlocked(direction, Vector3.one * 0.49f);
+        return IsCellBlocked(direction, Vector3.one * 0.49f, solidLayerMask);
     }
 
-    public bool IsCellBlocked(Vector3 direction, Vector3 halfExtents)
+    public bool IsCellBlockedByLiquid(Vector3 direction)
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents, Quaternion.identity, solidLayerMask);
+        return IsCellBlocked(direction, Vector3.one * 0.49f, waterLayerMask);
+    }
+
+    public bool IsCellBlocked(Vector3 direction, Vector3 halfExtents, int layerMask)
+    {
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents, Quaternion.identity, layerMask);
 
         foreach (Collider collider in colliders)
         {
