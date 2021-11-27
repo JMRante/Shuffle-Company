@@ -54,76 +54,123 @@ public class Liquid : MonoBehaviour
         {
             liquidAmount = 1f;
 
-            if (isFall)
-            {
-                if (sensor.IsCellBlocked(Vector3.zero, Vector3.one * 0.49f, liquidMask))
+            if (!sensor.IsCellBlocked(Vector3.zero, Vector3.one * 0.49f, solidMask))
+            { 
+                if (isFall)
                 {
-                    Destroy(gameObject);
-                }
-
-                GameObject liquidSeedObject = null;
-
-                if (!sensor.IsCellBlocked(Vector3.down, Vector3.one * 0.49f, totalMask))
-                {
-                    liquidSeedObject = Instantiate(liquidFallCell, transform.position + Vector3.down, transform.rotation, transform.parent);
-                    liquidSeedObject.name = "WCF";
-                }
-                else if (sensor.IsCellBlocked(Vector3.down, Vector3.one * 0.49f, solidMask) && !sensor.IsCellBlocked(Vector3.zero, Vector3.one * 0.49f, liquidMask))
-                {
-                    liquidSeedObject = Instantiate(liquidCell, transform.position, Quaternion.identity, transform.parent);
-                    liquidSeedObject.name = "WC";
-                    Destroy(gameObject);
-                }
-
-                if (liquidSeedObject != null)
-                {
-                    Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
-                    liquidSeed.liquidHeight = 1;
-                    liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
-                }
-            }
-            else
-            {
-                foreach (Vector3 direction in fillDirections)
-                {
-                    if (direction != Vector3.up || liquidHeight < liquidMaxHeight)
+                    if (sensor.IsCellBlocked(Vector3.zero, Vector3.one * 0.49f, liquidMask))
                     {
-                        if (!sensor.IsCellBlocked(direction, Vector3.one * 0.49f, filledMask))
+                        Destroy(gameObject);
+                    }
+
+                    if (!sensor.IsCellBlocked(Vector3.up, Vector3.one * 0.49f, fallMask) && sensor.IsCellBlocked(-transform.forward, Vector3.one * 0.49f, solidMask))
+                    {
+                        Destroy(gameObject);
+                    }
+
+                    GameObject liquidSeedObject = null;
+
+                    if (!sensor.IsCellBlocked(Vector3.down, Vector3.one * 0.49f, filledMask))
+                    {
+                        bool fallInSameDirectionExists = false;
+                        Collider[] colliders = Physics.OverlapBox(transform.position + Vector3.down, Vector3.one * 0.49f, Quaternion.identity, fallMask);
+
+                        foreach (Collider collider in colliders)
                         {
-                            GameObject liquidSeedObject = null;
+                            Transform tf = collider.transform.GetComponent<Transform>();
 
-                            if (sensor.IsCellBlocked(direction + Vector3.down, Vector3.one * 0.49f, filledMask))
+                            if (tf.forward == transform.forward)
                             {
-                                liquidSeedObject = Instantiate(liquidCell, transform.position + direction, Quaternion.identity, transform.parent);
-                                liquidSeedObject.name = "WC";
+                                fallInSameDirectionExists = true;
+                                break;
                             }
-                            else if (!sensor.IsCellBlocked(direction, Vector3.one * 0.49f, fallMask))
-                            {
-                                liquidSeedObject = Instantiate(liquidFallCell, transform.position + direction, Quaternion.LookRotation(direction, Vector3.up), transform.parent);
-                                liquidSeedObject.name = "WCF";
-                            }
+                        }
 
-                            if (liquidSeedObject != null)
-                            {
-                                Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
+                        if (!fallInSameDirectionExists)
+                        {
+                            liquidSeedObject = Instantiate(liquidFallCell, transform.position + Vector3.down, transform.rotation, transform.parent);
+                            liquidSeedObject.name = "WCF";
+                        }
+                    }
+                    else if (sensor.IsCellBlocked(Vector3.down, Vector3.one * 0.49f, solidMask) && !sensor.IsCellBlocked(Vector3.zero, Vector3.one * 0.49f, liquidMask))
+                    {
+                        liquidSeedObject = Instantiate(liquidCell, transform.position, Quaternion.identity, transform.parent);
+                        liquidSeedObject.name = "WC";
+                        Destroy(gameObject);
+                    }
 
-                                if (direction == Vector3.up)
+                    if (liquidSeedObject != null)
+                    {
+                        Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
+                        liquidSeed.liquidHeight = 1;
+                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                    }
+                }
+                else
+                {
+                    foreach (Vector3 direction in fillDirections)
+                    {
+                        if (direction != Vector3.up || liquidHeight < liquidMaxHeight)
+                        {
+                            if (!sensor.IsCellBlocked(direction, Vector3.one * 0.49f, filledMask))
+                            {
+                                GameObject liquidSeedObject = null;
+
+                                if (sensor.IsCellBlocked(direction + Vector3.down, Vector3.one * 0.49f, filledMask))
                                 {
-                                    liquidSeed.liquidHeight = this.liquidHeight + 1;
-                                    liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                    Liquid liquidBelow = (Liquid) sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
+
+                                    if (liquidBelow == null || (liquidBelow != null && liquidBelow.liquidHeight < liquidMaxHeight))
+                                    {
+                                        liquidSeedObject = Instantiate(liquidCell, transform.position + direction, Quaternion.identity, transform.parent);
+                                        liquidSeedObject.name = "WC";
+                                    }
                                 }
                                 else
                                 {
-                                    liquidSeed.liquidHeight = this.liquidHeight;
-                                    liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                    bool fallInSameDirectionExists = false;
+                                    Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, fallMask);
+
+                                    foreach (Collider collider in colliders)
+                                    {
+                                        Transform tf = collider.transform.GetComponent<Transform>();
+
+                                        if (tf.forward == direction)
+                                        {
+                                            fallInSameDirectionExists = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!fallInSameDirectionExists)
+                                    {
+                                        liquidSeedObject = Instantiate(liquidFallCell, transform.position + direction, Quaternion.LookRotation(direction, Vector3.up), transform.parent);
+                                        liquidSeedObject.name = "WCF";
+                                    }
+                                }
+
+                                if (liquidSeedObject != null)
+                                {
+                                    Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
+
+                                    if (direction == Vector3.up)
+                                    {
+                                        liquidSeed.liquidHeight = this.liquidHeight + 1;
+                                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                    }
+                                    else
+                                    {
+                                        liquidSeed.liquidHeight = this.liquidHeight;
+                                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (direction == Vector3.up)
+                            else
                             {
-                                model.SetActive(false);
+                                if (direction == Vector3.up)
+                                {
+                                    model.SetActive(false);
+                                }
                             }
                         }
                     }
