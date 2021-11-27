@@ -16,13 +16,11 @@ public class Button : MonoBehaviour
     public GameObject normalModel;
     public GameObject pressedModel;
 
-    private bool isPressed;
     private bool lastPressState;
     private Sensor sensor;
 
     void Start()
     {
-        isPressed = false;
         lastPressState = false;
         sensor = GetComponentInChildren<Sensor>();
     }

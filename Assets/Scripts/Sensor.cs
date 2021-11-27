@@ -18,7 +18,6 @@ public class Sensor : MonoBehaviour
         get => waterLayerMask;
     }
 
-
     void Start()
     {
         solidLayerMask = LayerMask.GetMask("Solid");
@@ -61,6 +60,19 @@ public class Sensor : MonoBehaviour
         return false;
     }
 
+    public bool IsCellPositionBlocked(Vector3 position, Vector3 halfExtents, int layerMask)
+    {
+        Collider[] colliders = Physics.OverlapBox(position, halfExtents, Quaternion.identity, layerMask);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
+                return true;
+        }
+
+        return false;
+    }
+
     public bool IsRayBlocked(Vector3 direction)
     {
         RaycastHit hit;
@@ -77,6 +89,21 @@ public class Sensor : MonoBehaviour
     public Component GetComponentFromCell(Vector3 direction, Type type)
     {
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, solidLayerMask);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                return collider.GetComponentInParent(type);
+            }
+        }
+
+        return null;
+    }
+
+    public Component GetComponentFromCell(Vector3 direction, Type type, int layerMask)
+    {
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, layerMask);
 
         foreach (Collider collider in colliders)
         {
