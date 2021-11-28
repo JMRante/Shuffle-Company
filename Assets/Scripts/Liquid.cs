@@ -12,9 +12,9 @@ public class Liquid : MonoBehaviour
     private float liquidAmount;
 
     private int liquidHeight = 1;
-    public int liquidMaxHeight;
 
     public float fillSpeed = 1f;
+    private Pump parentPump;
 
     private Sensor sensor;
 
@@ -26,6 +26,12 @@ public class Liquid : MonoBehaviour
     private int liquidMask;
     private int solidMask;
     private int fallMask;
+
+    public Pump ParentPump
+    {
+        get => parentPump;
+        set => parentPump = value;
+    }
 
     void Start()
     {
@@ -46,12 +52,28 @@ public class Liquid : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (liquidAmount < 1f)
+        if (liquidHeight > parentPump.pumpMaxHeight)
         {
-            liquidAmount += fillSpeed * Time.deltaTime;
+            if (liquidAmount > 0f)
+            {
+                liquidAmount -= fillSpeed * Time.deltaTime;
+            }
+        }
+        else
+        {
+            if (liquidAmount < 1f)
+            {
+                liquidAmount += fillSpeed * Time.deltaTime;
+            }
         }
 
-        if (liquidAmount >= 1f)
+        if (liquidAmount <= 0f && liquidHeight > parentPump.pumpMaxHeight)
+        {
+            liquidAmount = 0f;
+            Destroy(gameObject);
+        }
+
+        if (liquidAmount >= 1f && liquidHeight <= parentPump.pumpMaxHeight)
         {
             liquidAmount = 1f;
 
@@ -104,7 +126,7 @@ public class Liquid : MonoBehaviour
                     {
                         Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
                         liquidSeed.liquidHeight = 1;
-                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                        liquidSeed.ParentPump = this.parentPump;
                     }
                 }
                 else
@@ -117,7 +139,7 @@ public class Liquid : MonoBehaviour
                         {
                             exemptDirections[i] = true;
                         }
-                        else if (direction != Vector3.up || liquidHeight < liquidMaxHeight)
+                        else if (direction != Vector3.up || liquidHeight < parentPump.pumpMaxHeight)
                         {
                             if (!sensor.IsCellBlocked(direction, Vector3.one * 0.49f, filledMask))
                             {
@@ -127,7 +149,7 @@ public class Liquid : MonoBehaviour
                                 {
                                     Liquid liquidBelow = (Liquid) sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
 
-                                    if (liquidBelow == null || liquidBelow.liquidHeight < this.liquidMaxHeight)
+                                    if (liquidBelow == null || liquidBelow.liquidHeight < parentPump.pumpMaxHeight)
                                     {
                                         liquidSeedObject = Instantiate(liquidCell, transform.position + direction, Quaternion.identity, transform.parent);
                                         liquidSeedObject.name = "WC";
@@ -163,7 +185,7 @@ public class Liquid : MonoBehaviour
                                     if (direction == Vector3.up)
                                     {
                                         liquidSeed.liquidHeight = this.liquidHeight + 1;
-                                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                        liquidSeed.ParentPump = this.parentPump;
                                     }
                                     else
                                     {
@@ -178,7 +200,7 @@ public class Liquid : MonoBehaviour
                                             liquidSeed.liquidHeight = this.liquidHeight;
                                         }
 
-                                        liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
+                                        liquidSeed.ParentPump = this.parentPump;
                                     }
                                 }
                             }
@@ -190,7 +212,7 @@ public class Liquid : MonoBehaviour
 
         if (!isFall)
         {
-            if (liquidHeight < liquidMaxHeight - 1)
+            if (liquidHeight < parentPump.pumpMaxHeight - 1)
             {
                 model.transform.localPosition = new Vector3(0f, Mathf.Lerp(-0.5f, 0.5f, liquidAmount), 0f);
             }
@@ -199,7 +221,7 @@ public class Liquid : MonoBehaviour
                 model.transform.localPosition = new Vector3(0f, Mathf.Lerp(-0.5f, 0.3f, liquidAmount), 0f);
             }
 
-            if (liquidHeight < liquidMaxHeight)
+            if (liquidHeight < parentPump.pumpMaxHeight)
             {
                 model.SetActive(false);
             }

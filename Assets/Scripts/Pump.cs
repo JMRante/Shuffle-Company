@@ -19,12 +19,12 @@ public class Pump : MonoBehaviour
 
     void Update()
     {
-        if (!sensor.IsCellBlocked(Vector3.up, Vector3.one * 0.49f, totalMask))
+        if (!sensor.IsCellBlocked(Vector3.up, Vector3.one * 0.49f, totalMask) && pumpMaxHeight > 0)
         {
             GameObject liquidSeedObject = Instantiate(liquidCell, transform.position + Vector3.up, Quaternion.identity, transform.parent);
             liquidSeedObject.name = "WC";
             Liquid liquidSeed = liquidSeedObject.GetComponent<Liquid>();
-            liquidSeed.liquidMaxHeight = pumpMaxHeight;
+            liquidSeed.ParentPump = this;
         }
     }
 
