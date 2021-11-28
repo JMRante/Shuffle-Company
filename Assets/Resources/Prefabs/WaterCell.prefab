@@ -64,7 +64,7 @@ MonoBehaviour:
   liquidFallCell: {fileID: 6962635902098872258, guid: 29002c1369a43054eaab33a3aa8ede0e, type: 3}
   model: {fileID: 7926580425952674383}
   liquidMaxHeight: 0
-  fillSpeed: 3
+  fillSpeed: 4
 --- !u!1 &7926580425952674383
 GameObject:
   m_ObjectHideFlags: 0

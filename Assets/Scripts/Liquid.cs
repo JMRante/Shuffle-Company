@@ -19,6 +19,7 @@ public class Liquid : MonoBehaviour
     private Sensor sensor;
 
     private Vector3[] fillDirections = new Vector3[] { Vector3.forward, Vector3.right, Vector3.back, Vector3.left, Vector3.up };
+    private bool[] exemptDirections = new bool[] { false, false, false, false, false};
 
     private int totalMask;
     private int filledMask;
@@ -108,9 +109,15 @@ public class Liquid : MonoBehaviour
                 }
                 else
                 {
-                    foreach (Vector3 direction in fillDirections)
+                    for (int i = 0; i < fillDirections.Length; i++)
                     {
-                        if (direction != Vector3.up || liquidHeight < liquidMaxHeight)
+                        Vector3 direction = fillDirections[i];
+
+                        if (exemptDirections[i] == true || sensor.IsCellBlocked(direction, Vector3.one * 0.49f, liquidMask))
+                        {
+                            exemptDirections[i] = true;
+                        }
+                        else if (direction != Vector3.up || liquidHeight < liquidMaxHeight)
                         {
                             if (!sensor.IsCellBlocked(direction, Vector3.one * 0.49f, filledMask))
                             {
@@ -120,7 +127,7 @@ public class Liquid : MonoBehaviour
                                 {
                                     Liquid liquidBelow = (Liquid) sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
 
-                                    if (liquidBelow == null || (liquidBelow != null && liquidBelow.liquidHeight < liquidMaxHeight))
+                                    if (liquidBelow == null || liquidBelow.liquidHeight < this.liquidMaxHeight)
                                     {
                                         liquidSeedObject = Instantiate(liquidCell, transform.position + direction, Quaternion.identity, transform.parent);
                                         liquidSeedObject.name = "WC";
@@ -160,16 +167,19 @@ public class Liquid : MonoBehaviour
                                     }
                                     else
                                     {
-                                        liquidSeed.liquidHeight = this.liquidHeight;
+                                        Liquid liquidBelow = (Liquid)sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
+                                        
+                                        if (liquidBelow != null)
+                                        {
+                                            liquidSeed.liquidHeight = liquidBelow.liquidHeight + 1;
+                                        }
+                                        else
+                                        {
+                                            liquidSeed.liquidHeight = this.liquidHeight;
+                                        }
+
                                         liquidSeed.liquidMaxHeight = this.liquidMaxHeight;
                                     }
-                                }
-                            }
-                            else
-                            {
-                                if (direction == Vector3.up)
-                                {
-                                    model.SetActive(false);
                                 }
                             }
                         }
@@ -187,6 +197,15 @@ public class Liquid : MonoBehaviour
             else
             {
                 model.transform.localPosition = new Vector3(0f, Mathf.Lerp(-0.5f, 0.3f, liquidAmount), 0f);
+            }
+
+            if (liquidHeight < liquidMaxHeight)
+            {
+                model.SetActive(false);
+            }
+            else
+            {
+                model.SetActive(true);
             }
         }
     }
