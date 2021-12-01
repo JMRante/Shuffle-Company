@@ -8,12 +8,14 @@ public class Pushable : MonoBehaviour
     private KinematicMover mover;
     private KinematicMover pusher;
     private SnappingGravity gravityComp;
+    private Conveyable conveyable;
 
     void Start()
     {
         mover = GetComponent<KinematicMover>();
         pusher = null;
         gravityComp = GetComponent<SnappingGravity>();
+        conveyable = GetComponent<Conveyable>();
     }
 
     void Update()
@@ -81,6 +83,11 @@ public class Pushable : MonoBehaviour
         }
 
         if (pusher.transform.IsChildOf(gameObject.transform))
+        {
+            return false;
+        }
+
+        if (conveyable != null && conveyable.IsOnConveyor())
         {
             return false;
         }
