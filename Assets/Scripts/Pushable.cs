@@ -75,6 +75,11 @@ public class Pushable : MonoBehaviour
             return false;
         }
 
+        if (!gravityComp.IsSolidBelowRay)
+        {
+            return false;
+        }
+
         if (pusher.transform.IsChildOf(gameObject.transform))
         {
             return false;

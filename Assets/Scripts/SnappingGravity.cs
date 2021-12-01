@@ -10,6 +10,7 @@ public class SnappingGravity : MonoBehaviour
 
     private bool isFalling;
     private bool isSolidBelow;
+    private bool isSolidBelowRay;
     private bool isInWater;
     private KinematicMover mover;
     private Friction friction;
@@ -26,10 +27,16 @@ public class SnappingGravity : MonoBehaviour
         get => isSolidBelow;
     }
 
+    public bool IsSolidBelowRay
+    {
+        get => isSolidBelowRay;
+    }
+
     void Start()
     {
         isFalling = false;
         isSolidBelow = true;
+        isSolidBelowRay = true;
         mover = GetComponent<KinematicMover>();
         friction = GetComponent<Friction>();
         
@@ -89,13 +96,19 @@ public class SnappingGravity : MonoBehaviour
         Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
 
         isSolidBelow = false;
+        isSolidBelowRay = false;
         isInWater = false;
 
         foreach (Sensor sensor in sensors)
         {
-            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f), sensor.SolidLayerMask))
+            if (sensor.IsRayBlocked(Vector3.down * 0.49f))
             {
-                isSolidBelow = true;
+                isSolidBelowRay = true;
+
+                if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f), sensor.SolidLayerMask))
+                {
+                    isSolidBelow = true;
+                }
             }
 
             if (sensor.IsCellBlocked(Vector3.zero, new Vector3(0.47f, 0.49f, 0.45f), sensor.WaterLayerMask))
