@@ -166,6 +166,26 @@ public class Sensor : MonoBehaviour
         return false;
     }
 
+    public bool DoesCellContainElementProperty(Vector3 direction, ElementProperty elementProperty, Vector3 halfExtents, int layerMask)
+    {
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents, Quaternion.identity, layerMask);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                Element element = collider.GetComponentInParent<Element>();
+
+                if (element != null && element.HasProperty(elementProperty))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public bool DoesCellPositionContainElementProperty(Vector3 position, ElementProperty elementProperty)
     {
         Collider[] colliders = Physics.OverlapBox(position, Vector3.one * 0.49f, Quaternion.identity, solidLayerMask);

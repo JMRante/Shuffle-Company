@@ -27,7 +27,8 @@ public class Button : MonoBehaviour
 
     void Update()
     {
-        bool isPressed = sensor.DoesRayContainElementProperty(Vector3.up, ElementProperty.Loose);
+        //bool isPressed = sensor.DoesRayContainElementProperty(Vector3.up, ElementProperty.Loose);
+        bool isPressed = sensor.DoesCellContainElementProperty(Vector3.up, ElementProperty.Loose, Vector3.one * 0.1f, sensor.SolidLayerMask);
 
         if (isPressed && !lastPressState)
         {
