@@ -33,6 +33,31 @@ public class Conveyable : MonoBehaviour
             previousConveyorDirection = conveyorDirection;
             conveyorDirection = GetConveyorDirection();
 
+            Sensor[] sensors = Utility.GetComponentsInDirectChildren(gameObject, typeof(Sensor)).Cast<Sensor>().ToArray();
+
+            foreach (Sensor sensor in sensors)
+            {
+                Pushable pushableAhead = (Pushable)sensor.GetComponentFromCell(conveyorDirection, typeof(Pushable));
+                bool canPushSolidAhead = pushableAhead != null ? pushableAhead.CanBePushed(conveyorDirection, gameObject) : false;
+
+                if (pushableAhead != null)
+                {
+                    if (canPushSolidAhead && mover.Mode == KinematicMoverMode.snapped && pushableAhead.GetMode() == KinematicMoverMode.snapped)
+                    {
+                        mover.Velocity = conveyorDirection * conveyorSpeed;
+                        mover.Mode = KinematicMoverMode.moving;
+                        pushableAhead.Push(mover);
+                    }
+                    else if (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)
+                    {
+                        if (mover.Mode == KinematicMoverMode.moving)
+                        {
+                            mover.Mode = KinematicMoverMode.snapping;
+                        }
+                    }
+                }
+            }
+
             if (previousConveyorDirection != conveyorDirection && mover.Mode != KinematicMoverMode.snapped)
             {
                 mover.Mode = KinematicMoverMode.snapping;
@@ -47,6 +72,7 @@ public class Conveyable : MonoBehaviour
                     rotater.TargetForwardDirection = conveyorDirection;
                     rotater.RotationSpeed = conveyorTurnSpeed;
                 }
+
             }
         }
     }
