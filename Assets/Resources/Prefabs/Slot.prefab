@@ -109,8 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Slot
   elementName: Slot
-  sortOrder: 0
-  elementProperties: 
+  elementProperties: 05000000
 --- !u!114 &4284092895271831310
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,7 +8,11 @@ public enum ElementProperty
     Loose,
     Climbable,
     Conveyor,
-    Frictional
+    Frictional,
+    Fillable,
+    Collectable,
+    Liquid,
+    Collector
 }
 
 public class Element : MonoBehaviour

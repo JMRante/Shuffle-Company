@@ -68,7 +68,8 @@ public class Destructable : MonoBehaviour
                 child.gameObject.transform.parent = defaultParent;
             }
 
-            GameObject.Instantiate(destroyedForm, transform.position, transform.rotation);
+            GameObject destroyedFormObject = GameObject.Instantiate(destroyedForm, transform.position, transform.rotation);
+            destroyedFormObject.name = destroyedForm.name;
             GameObject.Destroy(gameObject);
         }
     }

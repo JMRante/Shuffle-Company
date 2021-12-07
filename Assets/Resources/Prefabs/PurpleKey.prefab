@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: PurpleKey
   elementName: Purple Key
-  elementProperties: 
+  elementProperties: 0500000006000000
 --- !u!1 &4675751960980524730
 GameObject:
   m_ObjectHideFlags: 0

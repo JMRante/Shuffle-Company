@@ -280,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Player2
   elementName: Player2
-  elementProperties: 01000000
+  elementProperties: 010000000500000008000000
 --- !u!114 &8588812433456359508
 MonoBehaviour:
   m_ObjectHideFlags: 0

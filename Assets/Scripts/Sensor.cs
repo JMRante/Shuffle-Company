@@ -7,6 +7,7 @@ public class Sensor : MonoBehaviour
 {
     private int solidLayerMask;
     private int waterLayerMask;
+    private Dictionary<ElementProperty, ElementProperty> collisionExceptionList;
 
     public int SolidLayerMask
     {
@@ -22,6 +23,10 @@ public class Sensor : MonoBehaviour
     {
         solidLayerMask = LayerMask.GetMask("Solid");
         waterLayerMask = LayerMask.GetMask("Water");
+
+        collisionExceptionList = new Dictionary<ElementProperty, ElementProperty>();
+        collisionExceptionList.Add(ElementProperty.Liquid, ElementProperty.Fillable);
+        collisionExceptionList.Add(ElementProperty.Collector, ElementProperty.Collectable);
     }
 
     public bool IsCellBlocked(Vector3 direction)
@@ -41,7 +46,14 @@ public class Sensor : MonoBehaviour
         foreach (Collider collider in colliders)
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 return true;
+            }
         }
 
         return false;
@@ -54,7 +66,14 @@ public class Sensor : MonoBehaviour
         foreach (Collider collider in colliders)
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 return true;
+            }
         }
 
         return false;
@@ -67,7 +86,14 @@ public class Sensor : MonoBehaviour
         foreach (Collider collider in colliders)
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 return true;
+            }
         }
 
         return false;
@@ -80,7 +106,14 @@ public class Sensor : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out hit, 0.98f, solidLayerMask))
         {
             if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
+            {
+                if (HasElementCollisionException(hit.collider))
+                {
+                    return false;
+                }
+
                 return true;
+            }
         }
 
         return false;
@@ -94,6 +127,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return null;
+                }
+
                 return collider.GetComponentInParent(type);
             }
         }
@@ -109,6 +147,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return null;
+                }
+
                 return collider.GetComponentInParent(type);
             }
         }
@@ -124,6 +167,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return null;
+                }
+
                 return collider.GetComponentInParent(type);
             }
         }
@@ -139,6 +187,11 @@ public class Sensor : MonoBehaviour
         {
             if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(hit.collider))
+                {
+                    return null;
+                }
+
                 return hit.collider.GetComponentInParent(type);
             }
         }
@@ -154,6 +207,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 Element element = collider.GetComponentInParent<Element>();
 
                 if (element != null && element.HasProperty(elementProperty))
@@ -174,6 +232,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 Element element = collider.GetComponentInParent<Element>();
 
                 if (element != null && element.HasProperty(elementProperty))
@@ -194,6 +257,11 @@ public class Sensor : MonoBehaviour
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(collider))
+                {
+                    return false;
+                }
+
                 Element element = collider.GetComponentInParent<Element>();
 
                 if (element != null && element.HasProperty(elementProperty))
@@ -215,9 +283,33 @@ public class Sensor : MonoBehaviour
         {
             if (hit.collider.transform.parent.gameObject != transform.parent.gameObject)
             {
+                if (HasElementCollisionException(hit.collider))
+                {
+                    return false;
+                }
+
                 Element element = hit.collider.GetComponentInParent<Element>();
 
                 if (element != null && element.HasProperty(elementProperty))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasElementCollisionException(Collider otherCollider)
+    {
+        Element thisElement = transform.gameObject.GetComponentInParent<Element>();
+        Element otherElement = otherCollider.transform.gameObject.GetComponentInParent<Element>();
+
+        if (thisElement != null && otherElement != null)
+        {
+            foreach (ElementProperty property in thisElement.elementProperties)
+            {
+                if (collisionExceptionList.ContainsKey(property) && otherElement.HasProperty(collisionExceptionList[property]))
                 {
                     return true;
                 }

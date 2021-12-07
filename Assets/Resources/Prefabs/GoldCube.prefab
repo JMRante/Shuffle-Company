@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: GoldCube
   elementName: Gold Cube
-  elementProperties: 
+  elementProperties: 0500000006000000
 --- !u!1 &4918433886530395754
 GameObject:
   m_ObjectHideFlags: 0

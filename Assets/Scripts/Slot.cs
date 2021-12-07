@@ -10,6 +10,11 @@ public class Slot : MonoBehaviour
     private bool isFilled = false;
     private MeshRenderer meshRenderer;
 
+    public bool IsFilled
+    {
+        get => isFilled;
+    }
+
     void Start()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();

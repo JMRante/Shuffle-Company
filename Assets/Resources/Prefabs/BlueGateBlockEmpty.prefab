@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: BlueGateBlockEmpty
   elementName: Blue Gate Block Empty
-  elementProperties: 
+  elementProperties: 05000000
 --- !u!114 &-5719974287373369321
 MonoBehaviour:
   m_ObjectHideFlags: 0
