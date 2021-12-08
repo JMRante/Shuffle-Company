@@ -139,15 +139,15 @@ public class Sensor : MonoBehaviour
         return null;
     }
 
-    public Component GetComponentFromCell(Vector3 direction, Type type, int layerMask)
+    public Component GetComponentFromCell(Vector3 direction, Vector3 halfExtents, Type type, int layerMask, bool noExceptions)
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position + direction, Vector3.one * 0.49f, Quaternion.identity, layerMask);
+        Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents, Quaternion.identity, layerMask);
 
         foreach (Collider collider in colliders)
         {
             if (collider.transform.parent.gameObject != transform.parent.gameObject)
             {
-                if (HasElementCollisionException(collider))
+                if (!noExceptions && HasElementCollisionException(collider))
                 {
                     return null;
                 }

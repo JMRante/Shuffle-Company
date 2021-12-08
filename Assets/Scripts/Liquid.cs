@@ -147,7 +147,7 @@ public class Liquid : MonoBehaviour
 
                                 if (sensor.IsCellBlocked(direction + Vector3.down, Vector3.one * 0.49f, filledMask))
                                 {
-                                    Liquid liquidBelow = (Liquid) sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
+                                    Liquid liquidBelow = (Liquid) sensor.GetComponentFromCell(direction + Vector3.down, Vector3.one * 0.49f, typeof(Liquid), liquidMask, false);
 
                                     if (liquidBelow == null || liquidBelow.liquidHeight < parentPump.pumpMaxHeight)
                                     {
@@ -189,7 +189,7 @@ public class Liquid : MonoBehaviour
                                     }
                                     else
                                     {
-                                        Liquid liquidBelow = (Liquid)sensor.GetComponentFromCell(direction + Vector3.down, typeof(Liquid), liquidMask);
+                                        Liquid liquidBelow = (Liquid)sensor.GetComponentFromCell(direction + Vector3.down, Vector3.one * 0.49f, typeof(Liquid), liquidMask, false);
                                         
                                         if (liquidBelow != null)
                                         {

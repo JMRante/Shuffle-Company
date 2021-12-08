@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6887085902113950988}
   - component: {fileID: 8576381729233037924}
+  - component: {fileID: 5813849121384564360}
   m_Layer: 6
   m_Name: GoldCube
-  m_TagString: Untagged
+  m_TagString: GoldCube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +49,21 @@ MonoBehaviour:
   elementId: GoldCube
   elementName: Gold Cube
   elementProperties: 0500000006000000
+--- !u!114 &5813849121384564360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030918789673260640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4029fbe42258b449f0a752704e0479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectableName: GoldCube
+  collectableValue: 1
+  collectableDestroy: {fileID: 0}
 --- !u!1 &4918433886530395754
 GameObject:
   m_ObjectHideFlags: 0

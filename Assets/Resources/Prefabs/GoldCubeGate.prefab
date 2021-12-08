@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5025966800403885424}
   - component: {fileID: 7865932231384320536}
+  - component: {fileID: 2740857489500264770}
   m_Layer: 6
   m_Name: GoldCubeGate
   m_TagString: Untagged
@@ -48,6 +49,20 @@ MonoBehaviour:
   elementId: GoldCubeGate
   elementName: Gold Cube Gate
   elementProperties: 04000000
+--- !u!114 &2740857489500264770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3304719937738421788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b846abb0ad79ab042bb12e49879085b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: GoldCube
+  itemTag: GoldCube
 --- !u!1 &6804309574905232918
 GameObject:
   m_ObjectHideFlags: 0
