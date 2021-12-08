@@ -13,7 +13,8 @@ public enum ElementProperty
     Collectable,
     Liquid,
     Collector,
-    Player
+    Player,
+    KeyGate
 }
 
 public class Element : MonoBehaviour

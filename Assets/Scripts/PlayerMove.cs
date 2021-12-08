@@ -24,6 +24,7 @@ public class PlayerMove : MonoBehaviour
     private Pushable lastPushable;
     private Conveyable conveyable;
     private Destructable destructable;
+    private Collector collector;
 
     private bool isClimbing;
     private Vector3 climbDirection;
@@ -45,6 +46,7 @@ public class PlayerMove : MonoBehaviour
         lastPushable = null;
         conveyable = GetComponent<Conveyable>();
         destructable = GetComponent<Destructable>();
+        collector = GetComponent<Collector>();
 
         isClimbing = false;
         climbDirection = Vector3.zero;
@@ -129,6 +131,10 @@ public class PlayerMove : MonoBehaviour
         bool isSolidBelowAheadForClimbable = sensor.IsCellPositionBlocked(transform.position + Vector3.down + latestInputDirectionRaw);
         bool isSolidAbove = sensor.IsCellPositionBlocked(transform.position + Vector3.up);
 
+        // Can walk into key gates when you have the key
+        KeyGate keyGateAhead = (KeyGate) sensor.GetComponentFromRay(latestInputDirection, typeof(KeyGate));
+        bool openableKeyGateAhead = keyGateAhead != null && collector.GetCollectableCount(keyGateAhead.keyMatch) > 0 ? true : false;
+        
         // Set Motion
         if (!gravityComp.IsFalling && mover.Mode != KinematicMoverMode.pathing && !conveyable.IsOnConveyor())
         {
@@ -158,6 +164,13 @@ public class PlayerMove : MonoBehaviour
                 {
                     rotator.TargetForwardDirection = latestInputDirection;
                     rotator.RotationSpeed = walkRotationSpeed;
+                }
+
+                // Unlock key gate
+                if (mover.Mode == KinematicMoverMode.snapped && openableKeyGateAhead && !keyGateAhead.IsUnlocked)
+                {
+                    keyGateAhead.Unlock();
+                    collector.ReduceCollectableCount(keyGateAhead.keyMatch, 1);
                 }
 
                 // Climb Onto Climbable From Above
@@ -201,7 +214,7 @@ public class PlayerMove : MonoBehaviour
                     pushableAhead.Push(mover);
                 }
                 // Stop
-                else if (((!canPushSolidAhead || (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)) && isSolidAhead) || (!gravityComp.IsSolidBelow && gravityComp.isFallingEnabled))
+                else if (((!canPushSolidAhead || (canPushSolidAhead && pushableAhead.GetMode() == KinematicMoverMode.snapped)) && isSolidAhead && !openableKeyGateAhead) || (!gravityComp.IsSolidBelow && gravityComp.isFallingEnabled))
                 {
                     if (mover.Mode == KinematicMoverMode.moving)
                     {
@@ -256,146 +269,3 @@ public class PlayerMove : MonoBehaviour
         mover.Mode = KinematicMoverMode.snapping;
     }
 }
-
-// bool isClimbableBelow = sensor.DoesCellContainElementProperty(Vector3.down, ElementProperty.Climbable);
-
-
-// if (isClimbing && !isOnClimbable)
-// {
-//     // Climb On Top Of Climbable
-//     if (!isSolidAhead && mover.Velocity.normalized == Vector3.up && mover.Mode == KinematicMoverMode.snapped)
-//     {
-//         mover.Velocity = transform.forward * walkSpeed;
-//         mover.Mode = KinematicMoverMode.moving;
-//         climbDirection = Vector3.zero;
-//         isClimbing = false;
-//         gravityComp.isFallingEnabled = true;
-//     }
-//     // Fall From Climbing
-//     else if (mover.Mode == KinematicMoverMode.moving)
-//     {
-//         mover.Mode = KinematicMoverMode.snapping;
-//         // climbDirection = Vector3.zero;
-//         // isClimbing = false;
-//         // gravityComp.isFallingEnabled = true;
-//     }
-// }
-
-// Element elementAhead = colliderAhead.GetComponentInParent<Element>();
-// if (elementAhead != null && elementAhead.HasProperty(ElementProperty.Ladder))
-// {
-//     Transform ladderTransform = colliderAhead.transform.parent;
-
-//     if (ladderTransform.forward + latestInputDirection == Vector3.zero)
-//     {
-//         climbDirection = latestInputDirection;
-//         isLadderAhead = true;
-//     }
-// }
-
-// Element elementAhead = colliderAhead.GetComponentInParent<Element>();
-// if (elementAhead != null && elementAhead.elementId == "Ladder")
-// {
-//     Transform ladderTransform = colliderAhead.transform.parent;
-
-//     if (ladderTransform.forward + latestInputDirection == Vector3.zero)
-//     {
-//         climbDirection = latestInputDirection;
-//         isLadderAhead = true;
-//     }
-// }
-
-// if (pushableAhead != null && pushableAhead.IsMoving())
-// {
-//     pushableAhead.StopPushing();
-// }
-
-// if (pushableAhead != null && pushableAhead.CanBePushed(latestInputDirection))
-// {
-//     pushableAhead.Push(latestInputDirection * pushSpeed);
-//     mover.Velocity = latestInputDirection * pushSpeed;
-// }
-// else
-// {
-//     mover.Velocity = latestInputDirection * walkSpeed;
-// }
-
-// void OnDrawGizmos()
-// {
-//     if (inputDirections.Count > 0)
-//     {
-//         Vector3 latestInputDirection = inputDirections[inputDirections.Count - 1];
-//         Gizmos.color = Color.green;
-//         Gizmos.DrawWireCube(transform.position + latestInputDirection, new Vector3(1, 1, 1));
-//     }
-// }
-
-
-
-
-// Collider[] collidersBelow = Physics.OverlapBox(transform.position + Vector3.down, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
-// bool isLadderBelow = false;
-
-// foreach (Collider colliderBelow in collidersBelow)
-// {
-//     Element elementBelow = colliderBelow.GetComponentInParent<Element>();
-//     if (elementBelow != null && elementBelow.elementId == "Ladder")
-//     {
-//         Transform ladderTransform = colliderBelow.transform.parent;
-
-//         if (ladderTransform.forward - latestInputDirection == Vector3.zero)
-//         {
-//             climbDirection = -latestInputDirection;
-//             isLadderBelow = true;
-//         }
-//     }
-// }
-
-// Collider[] collidersAbove = Physics.OverlapBox(transform.position + Vector3.up, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
-// bool isSolidAbove = false;
-
-// foreach (Collider colliderAbove in collidersAbove)
-// {
-//     if (colliderAbove.transform.parent.gameObject != transform.gameObject)
-//     {
-//         isSolidAbove = true;
-//     }
-// }
-
-// Collider[] collidersAboveAhead = Physics.OverlapBox(transform.position + latestInputDirection + Vector3.up, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
-// bool isSolidAboveAhead = false;
-
-// foreach (Collider colliderAboveAhead in collidersAboveAhead)
-// {
-//     if (colliderAboveAhead.transform.parent.gameObject != transform.gameObject)
-//     {
-//         isSolidAboveAhead = true;
-//     }
-// }
-
-// Collider[] collidersBelowAhead = Physics.OverlapBox(transform.position + latestInputDirection + Vector3.down, Vector3.one * 0.45f, Quaternion.identity, solidLayerMask);
-// bool isSolidBelowAhead = false;
-
-// foreach (Collider colliderBelowAhead in collidersBelowAhead)
-// {
-//     if (colliderBelowAhead.transform.parent.gameObject != transform.gameObject)
-//     {
-//         isSolidBelowAhead = true;
-//     }
-// }
-
-// Act on Surroundings
-// if (isLadderAhead || isLadderBelow || isClimbing)
-// {
-//     Vector3 climbInputDirection = Quaternion.AngleAxis(90f, Vector3.Cross(climbDirection, Vector3.up)) * latestInputDirection;
-
-//     if (mover.Mode == KinematicMoverMode.snapped)
-//     {
-//         isClimbing = true;
-//         gravityComp.enabled = false;
-//     }
-//     else
-//     {
-
-//     }
-// }

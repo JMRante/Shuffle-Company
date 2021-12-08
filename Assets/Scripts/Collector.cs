@@ -43,4 +43,12 @@ public class Collector : MonoBehaviour
             return itemCollection[collectableName];
         }
     }
+
+    public void ReduceCollectableCount(string collectableName, int amount)
+    {
+        if (itemCollection.ContainsKey(collectableName))
+        {
+            itemCollection[collectableName] -= amount;
+        }
+    }
 }
