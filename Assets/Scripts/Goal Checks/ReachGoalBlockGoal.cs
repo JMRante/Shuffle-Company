@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReachGoalBlockGoal : MonoBehaviour
+public class ReachGoalBlockGoal : Goal
 {
-    // Start is called before the first frame update
+    private GoalBlock[] goalBlocks;
+
     void Start()
     {
-        
+        goalBlocks = GameObject.Find("Stage").GetComponentsInChildren<GoalBlock>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override bool IsGoalMet()
     {
-        
+        foreach (GoalBlock gb in goalBlocks)
+        {
+            if (gb.IsPlayerOnGoal)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

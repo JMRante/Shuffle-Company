@@ -12,7 +12,8 @@ public enum ElementProperty
     Fillable,
     Collectable,
     Liquid,
-    Collector
+    Collector,
+    Player
 }
 
 public class Element : MonoBehaviour

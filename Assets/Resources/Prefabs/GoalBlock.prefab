@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3244226366021521470}
   - component: {fileID: 401800228017338198}
+  - component: {fileID: 5389779792863087830}
   m_Layer: 6
   m_Name: GoalBlock
   m_TagString: Untagged
@@ -174,6 +175,18 @@ MonoBehaviour:
   elementId: GoalBlock
   elementName: Goal Block
   elementProperties: 04000000
+--- !u!114 &5389779792863087830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5000866799887911762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 942865502a52e1e419aa1f42270ba89f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6408491622520519240
 GameObject:
   m_ObjectHideFlags: 0
