@@ -34,7 +34,7 @@ public class Collector : MonoBehaviour
 
     public int GetCollectableCount(string collectableName)
     {
-        if (!itemCollection.ContainsKey(collectableName))
+        if (itemCollection == null || !itemCollection.ContainsKey(collectableName))
         {
             return 0;
         }

@@ -38,9 +38,7 @@ public class Slot : MonoBehaviour
         
         if (slottable.HasProperty(ElementProperty.Slotable))
         {
-            KinematicMover slottableMover = slottable.GetComponent<KinematicMover>();
-
-            if (slottableMover != null && slottableMover.Mode == KinematicMoverMode.snapped)
+            if (Utility.IsSnapped(slottable.transform.position))
             {
                 isFilled = true;
                 return;

@@ -8,6 +8,8 @@ public abstract class Goal : MonoBehaviour
 {
     public string nextSceneName;
 
+    public GameObject blackScreen;
+
     public abstract bool IsGoalMet();
 
     void Update()
@@ -20,16 +22,22 @@ public abstract class Goal : MonoBehaviour
 
     protected void GoToNextStage()
     {
+        blackScreen.SetActive(true);
+
         if (nextSceneName == "EXIT")
         {
             Application.Quit();
         }
-
-        StartCoroutine(LoadSceneAsync(nextSceneName));
+        else
+        {
+            StartCoroutine(LoadSceneAsync(nextSceneName));
+        }
     }
 
     IEnumerator LoadSceneAsync(string nextSceneName)
     {
+        yield return new WaitForSeconds(0.5f);
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(nextSceneName);
 
         while (!asyncLoad.isDone)
