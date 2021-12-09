@@ -10,6 +10,8 @@ public class Pushable : MonoBehaviour
     private SnappingGravity gravityComp;
     private Conveyable conveyable;
 
+    private Vector3 pusherStartVelocity;
+
     void Start()
     {
         mover = GetComponent<KinematicMover>();
@@ -23,6 +25,10 @@ public class Pushable : MonoBehaviour
         if (pusher != null)
         {
             if (gravityComp.IsFalling)
+            {
+                DisconnectFromPusher();
+            }
+            else if (pusher.Velocity != pusherStartVelocity)
             {
                 DisconnectFromPusher();
             }
@@ -43,6 +49,7 @@ public class Pushable : MonoBehaviour
     {
         this.pusher = pusher;
         mover.Velocity = pusher.Velocity;
+        pusherStartVelocity = pusher.Velocity;
         mover.Mode = pusher.Mode;
     }
 
@@ -100,7 +107,7 @@ public class Pushable : MonoBehaviour
             {
                 if (sensor.transform.position - direction == pusher.transform.position)
                 {
-                    if (!sensor.IsCellBlocked(Vector3.down))
+                    if (!sensor.IsRayBlocked(Vector3.down))
                     {
                         return false;
                     }

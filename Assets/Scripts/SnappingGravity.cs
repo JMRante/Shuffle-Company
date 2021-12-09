@@ -67,6 +67,13 @@ public class SnappingGravity : MonoBehaviour
                     SetChildrenFallingState(isFalling);
                 }
             }
+            else if (!isSolidBelowRay && (!isInWater || !isBuoyant))
+            {
+                if (mover.Mode == KinematicMoverMode.moving)
+                {
+                    mover.Mode = KinematicMoverMode.snapping;
+                }
+            }
             else
             {
                 if (isFalling)

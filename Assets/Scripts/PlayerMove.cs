@@ -21,7 +21,6 @@ public class PlayerMove : MonoBehaviour
     private KinematicRotater rotator;
     private SnappingGravity gravityComp;
     private Sensor sensor;
-    private Pushable lastPushable;
     private Conveyable conveyable;
     private Destructable destructable;
     private Collector collector;
@@ -43,7 +42,6 @@ public class PlayerMove : MonoBehaviour
         rotator = GetComponent<KinematicRotater>();
         gravityComp = GetComponent<SnappingGravity>();
         sensor = GetComponentInChildren<Sensor>();
-        lastPushable = null;
         conveyable = GetComponent<Conveyable>();
         destructable = GetComponent<Destructable>();
         collector = GetComponent<Collector>();
@@ -234,14 +232,14 @@ public class PlayerMove : MonoBehaviour
                 }
 
                 // Stop Push
-                if (lastPushable != pushableAhead)
+                if (pushableAhead != null && !canPushSolidAhead)
                 {
-                    if (lastPushable != null)
-                    {
-                        lastPushable.StopPushing();
-                    }
+                    pushableAhead.StopPushing();
 
-                    lastPushable = pushableAhead;
+                    if (mover.Mode == KinematicMoverMode.moving)
+                    {
+                        mover.Mode = KinematicMoverMode.snapping;
+                    }
                 }
             }
             else if (mover.Mode != KinematicMoverMode.snapped)
