@@ -30,7 +30,7 @@ public class Pushable : MonoBehaviour
             }
             else if (pusher.Velocity != pusherStartVelocity)
             {
-                DisconnectFromPusher();
+                StopPushing();
             }
             else
             {
