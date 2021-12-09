@@ -86,6 +86,10 @@ public class Friction : MonoBehaviour
         {
             return null;
         }
+        else if (parentMovers.Count == 1)
+        {
+            return parentMovers.Keys.First();
+        }
 
         List<KinematicMover> topMovers = new List<KinematicMover>();
         int candidateMaxParentCoverage = stageParentShare;
