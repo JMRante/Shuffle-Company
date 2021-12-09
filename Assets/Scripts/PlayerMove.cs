@@ -151,7 +151,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     Transform climbableTransform = (Transform)sensor.GetComponentFromCell(latestInputDirectionRaw, typeof(Transform));
 
-                    if (climbableTransform.forward + transform.forward == Vector3.zero)
+                    if (climbableTransform.forward + transform.forward == Vector3.zero && transform.forward == latestInputDirectionRaw)
                     {
                         climbDirection = latestInputDirection;
                         isClimbing = true;
