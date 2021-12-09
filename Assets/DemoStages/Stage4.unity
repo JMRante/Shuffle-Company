@@ -979,7 +979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb044405ae36afc4d8294f529d1a6a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: EXIT
+  nextSceneName: Stage5
   blackScreen: {fileID: 151308331}
 --- !u!4 &505282712
 Transform:

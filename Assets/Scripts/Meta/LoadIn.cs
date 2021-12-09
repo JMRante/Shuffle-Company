@@ -13,7 +13,7 @@ public class LoadIn : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeSinceLevelLoad > 0.2)
+        if (blackScreen.activeSelf && Time.timeSinceLevelLoad > 0.2)
         {
             blackScreen.SetActive(false);
         }
