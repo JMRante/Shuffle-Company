@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementId: Water
   elementName: Water
-  elementProperties: 
+  elementProperties: 07000000
 --- !u!1 &2293726877259904573
 GameObject:
   m_ObjectHideFlags: 0

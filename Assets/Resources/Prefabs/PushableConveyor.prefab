@@ -52,12 +52,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7582508517072344081}
-  - component: {fileID: 1311649374665138440}
   - component: {fileID: 7582508517072344091}
+  - component: {fileID: 1311649374665138440}
   - component: {fileID: 7582508517072344090}
   - component: {fileID: 7582508517072344093}
   - component: {fileID: 7582508517072344092}
   - component: {fileID: 7582508517072344095}
+  - component: {fileID: 862858782244775245}
+  - component: {fileID: 1497061101505805753}
   - component: {fileID: 7582508517072344094}
   m_Layer: 6
   m_Name: PushableConveyor
@@ -74,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7582508517072344080}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 9, y: 1, z: -20}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7582508518746143303}
@@ -83,21 +85,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &1311649374665138440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7582508517072344080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementId: PushableConveyor
-  elementName: Pushable Conveyor
-  elementProperties: 010000000300000004000000
 --- !u!54 &7582508517072344091
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -114,6 +101,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1311649374665138440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7582508517072344080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bac56a22f1b218489194369ab16c438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementId: PushableConveyor
+  elementName: Pushable Conveyor
+  elementProperties: 010000000300000004000000
 --- !u!114 &7582508517072344090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +167,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTurnableOnConveyor: 0
+--- !u!114 &862858782244775245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7582508517072344080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90d624cbe175834c91fcd1fdb1d6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 25
+  destroyedForm: {fileID: 0}
+--- !u!114 &1497061101505805753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7582508517072344080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e222764c7a6e1142b60169b0039dd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: -100
 --- !u!114 &7582508517072344094
 MonoBehaviour:
   m_ObjectHideFlags: 0
