@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Liquid : MonoBehaviour
@@ -221,13 +219,13 @@ public class Liquid : MonoBehaviour
                 model.transform.localPosition = new Vector3(0f, Mathf.Lerp(-0.5f, 0.3f, liquidAmount), 0f);
             }
 
-            if (liquidHeight < parentPump.pumpMaxHeight)
+            if (liquidHeight == parentPump.pumpMaxHeight || !sensor.IsCellBlocked(Vector3.up, Vector3.one * 0.49f, liquidMask))
             {
-                model.SetActive(false);
+                model.SetActive(true);
             }
             else
             {
-                model.SetActive(true);
+                model.SetActive(false);
             }
         }
     }
