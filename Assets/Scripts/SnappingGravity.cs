@@ -166,17 +166,17 @@ public class SnappingGravity : MonoBehaviour
                 isSolidBelowRay = true;
             }
 
-            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f), sensor.SolidLayerMask))
+            if (sensor.IsCellBlocked(Vector3.down, new Vector3(0.47f, 0.49f, 0.45f), sensor.solidLayerMask))
             {
                 isSolidBelow = true;
             }
 
-            if (sensor.IsCellBlocked(Vector3.zero, new Vector3(0.49f, 0.49f, 0.49f), sensor.WaterLayerMask))
+            if (sensor.IsCellBlocked(Vector3.zero, new Vector3(0.49f, 0.49f, 0.49f), sensor.waterLayerMask))
             {
                 isInWater = true;
             }
 
-            if (sensor.IsCellBlocked(Vector3.up * 1.2f, new Vector3(0.49f, 0.49f, 0.49f), sensor.WaterLayerMask))
+            if (sensor.IsCellBlocked(Vector3.up * 1.2f, new Vector3(0.49f, 0.49f, 0.49f), sensor.waterLayerMask))
             {
                 isWaterAbove = true;
             }

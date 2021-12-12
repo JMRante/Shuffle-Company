@@ -5,24 +5,16 @@ using UnityEngine;
 
 public class Sensor : MonoBehaviour
 {
-    private int solidLayerMask;
-    private int waterLayerMask;
+    [HideInInspector] public int solidLayerMask;
+    [HideInInspector] public int waterLayerMask;
+    [HideInInspector] public int filledLayerMask;
     private Dictionary<ElementProperty, ElementProperty> collisionExceptionList;
-
-    public int SolidLayerMask
-    {
-        get => solidLayerMask;
-    }
-
-    public int WaterLayerMask
-    {
-        get => waterLayerMask;
-    }
 
     void Start()
     {
         solidLayerMask = LayerMask.GetMask("Solid");
         waterLayerMask = LayerMask.GetMask("Water");
+        filledLayerMask = LayerMask.GetMask("Solid", "Water");
 
         collisionExceptionList = new Dictionary<ElementProperty, ElementProperty>();
         collisionExceptionList.Add(ElementProperty.Liquid, ElementProperty.Fillable);

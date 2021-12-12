@@ -20,7 +20,7 @@ public class GoalBlock : MonoBehaviour
 
     void Update()
     {
-        bool isPlayerAboveGoal = sensor.DoesCellContainElementProperty(Vector3.up, ElementProperty.Player, Vector3.one * 0.1f, sensor.SolidLayerMask);
+        bool isPlayerAboveGoal = sensor.DoesCellContainElementProperty(Vector3.up, ElementProperty.Player, Vector3.one * 0.1f, sensor.solidLayerMask);
 
         if (isPlayerAboveGoal)
         {

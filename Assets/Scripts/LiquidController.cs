@@ -44,7 +44,7 @@ public class LiquidController : MonoBehaviour
             {
                 for (int z = 0; z < WORLD_SIM_DEPTH; z++)
                 {
-                    if (sensor.IsCellPositionBlocked(TransformSimToWorldCoords(new Vector3(x, y, z)), Vector3.one * 0.49f, sensor.SolidLayerMask))
+                    if (sensor.IsCellPositionBlocked(TransformSimToWorldCoords(new Vector3(x, y, z)), Vector3.one * 0.49f, sensor.solidLayerMask))
                     {
                         liquidSim[x, y, z].Type = 1;
                         liquidSim[x, y, z].Amount = 1f;

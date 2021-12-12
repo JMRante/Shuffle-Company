@@ -113,7 +113,7 @@ public class Pushable : MonoBehaviour
                     }
                 }
 
-                if (sensor.IsCellBlocked(direction))
+                if (sensor.IsCellBlocked(direction, Vector3.one * 0.49f, sensor.filledLayerMask))
                 {
                     return false;
                 }

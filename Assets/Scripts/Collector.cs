@@ -15,7 +15,7 @@ public class Collector : MonoBehaviour
 
     void Update()
     {
-        Collectable collectable = (Collectable) sensor.GetComponentFromCell(Vector3.zero, Vector3.one * 0.3f, typeof(Collectable), sensor.SolidLayerMask, true);
+        Collectable collectable = (Collectable) sensor.GetComponentFromCell(Vector3.zero, Vector3.one * 0.3f, typeof(Collectable), sensor.solidLayerMask, true);
 
         if (collectable != null)
         {
