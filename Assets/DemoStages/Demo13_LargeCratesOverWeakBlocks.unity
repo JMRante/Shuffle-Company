@@ -6196,7 +6196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb044405ae36afc4d8294f529d1a6a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: EXIT
+  nextSceneName: Demo14_PushableConveyors
   blackScreen: {fileID: 1281933656}
 --- !u!4 &1367850734
 Transform:

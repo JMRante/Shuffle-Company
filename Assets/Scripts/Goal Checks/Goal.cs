@@ -14,7 +14,7 @@ public abstract class Goal : MonoBehaviour
 
     void Update()
     {
-        if (IsGoalMet())
+        if (IsGoalMet() || Input.GetKeyDown(KeyCode.N))
         {
             GoToNextStage();
         }
@@ -22,7 +22,10 @@ public abstract class Goal : MonoBehaviour
 
     protected void GoToNextStage()
     {
-        blackScreen.SetActive(true);
+        if (blackScreen != null)
+        {
+            blackScreen.SetActive(true);
+        }
 
         if (nextSceneName == "EXIT")
         {

@@ -1594,7 +1594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc2b8ffc17ba2d4e9b36d829f184085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Stage4
+  nextSceneName: Demo4_Buttons
   blackScreen: {fileID: 30647031}
 --- !u!4 &1021589140
 Transform:

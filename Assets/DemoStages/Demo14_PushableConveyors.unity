@@ -5778,7 +5778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5931257370252515358, guid: e78826d94d5227547bdf837ee4dff24b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e78826d94d5227547bdf837ee4dff24b, type: 3}
@@ -6138,7 +6138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb044405ae36afc4d8294f529d1a6a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: EXIT
+  nextSceneName: Demo15_Channels
   blackScreen: {fileID: 1281933656}
 --- !u!4 &1367850734
 Transform:

@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc2b8ffc17ba2d4e9b36d829f184085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Stage3
+  nextSceneName: Demo3_BasicWeakBlocks
   blackScreen: {fileID: 1489240069}
 --- !u!4 &178422116
 Transform:
@@ -435,6 +435,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3323970907743130147, guid: 5b9c4fc6f85ade447892d4168b771921, type: 3}
+      propertyPath: blackScreen
+      value: 
+      objectReference: {fileID: 1489240069}
     - target: {fileID: 8978957817906611456, guid: 5b9c4fc6f85ade447892d4168b771921, type: 3}
       propertyPath: m_Name
       value: Meta
