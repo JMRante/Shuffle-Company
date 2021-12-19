@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk
+public class Chunk : MonoBehaviour
 {
     public const int CHUNK_WIDTH = 5;
     public const int CHUNK_HEIGHT = 20;

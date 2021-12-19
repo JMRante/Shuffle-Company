@@ -14,6 +14,8 @@ public class StageChunks : MonoBehaviour
     public const int STAGE_HEIGHT = TOTAL_CELL_HEIGHT / Chunk.CHUNK_HEIGHT;
     public const int STAGE_DEPTH = TOTAL_CELL_DEPTH / Chunk.CHUNK_DEPTH;
 
+    public Chunk[,,] chunks;
+
     void Start()
     {
         GenerateChunks();
@@ -26,6 +28,8 @@ public class StageChunks : MonoBehaviour
 
     public void GenerateChunks()
     {
+        chunks = new Chunk[STAGE_WIDTH, STAGE_HEIGHT, STAGE_DEPTH];
+
         for (int z = 0; z < STAGE_DEPTH; z++)
         {
             for (int y = 0; y < STAGE_HEIGHT; y++)
@@ -39,6 +43,7 @@ public class StageChunks : MonoBehaviour
 
                     GameObject chunk = GameObject.Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, transform);
                     chunk.name = "Chunk_" + x + "_" + y + "_" + z;
+                    chunks[x, y, z] = chunk.GetComponent<Chunk>();
                 }
             }
         }
