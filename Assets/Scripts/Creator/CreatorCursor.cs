@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class CreatorCursor : MonoBehaviour
 {
-    public Collider creatorGridCollider;
+    public GameObject creatorGrid;
+    public GameObject creatorCamera;
+
+    private Collider creatorGridCollider;
     private MeshRenderer creatorCursorRenderer;
 
     void Start()
     {
+        creatorGridCollider = creatorGrid.GetComponent<Collider>();
+
         creatorCursorRenderer = GetComponent<MeshRenderer>();
         creatorCursorRenderer.enabled = false;
     }
@@ -26,6 +31,17 @@ public class CreatorCursor : MonoBehaviour
         else
         {
             creatorCursorRenderer.enabled = false;
+        }
+
+        if (Input.mouseScrollDelta.y > 0 && creatorGrid.transform.position.y < StageChunks.TOTAL_CELL_HEIGHT - 2)
+        {
+            creatorGrid.transform.position += Vector3.up;
+            creatorCamera.transform.position += Vector3.up;
+        }
+        else if (Input.mouseScrollDelta.y < 0 && creatorGrid.transform.position.y > 0f)
+        {
+            creatorGrid.transform.position += Vector3.down;
+            creatorCamera.transform.position += Vector3.down;
         }
     }
 }
