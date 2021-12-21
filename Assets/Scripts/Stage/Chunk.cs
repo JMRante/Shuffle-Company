@@ -14,4 +14,9 @@ public class Chunk : MonoBehaviour
     {
         chunkData = new ChunkCell[CHUNK_WIDTH, CHUNK_HEIGHT, CHUNK_DEPTH];
     }
+
+    public void GenerateColliders()
+    {
+        
+    }
 }
