@@ -7,6 +7,8 @@ public class CreatorCursor : MonoBehaviour
     public GameObject creatorGrid;
     public GameObject creatorCamera;
 
+    public StageChunks stageChunks;
+
     private Collider creatorGridCollider;
     private MeshRenderer creatorCursorRenderer;
 
@@ -42,6 +44,16 @@ public class CreatorCursor : MonoBehaviour
         {
             creatorGrid.transform.position += Vector3.down;
             creatorCamera.transform.position += Vector3.down;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            stageChunks.Draw(transform.position, new ChunkCell(1));
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            stageChunks.Erase(transform.position);
         }
     }
 }

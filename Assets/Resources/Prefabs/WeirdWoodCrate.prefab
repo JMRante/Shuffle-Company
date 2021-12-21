@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31533ec48a9bf914ea772d098aa70991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solidLayerMask: 0
+  waterLayerMask: 0
+  filledLayerMask: 0
 --- !u!1 &2006084741876878950
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,6 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31533ec48a9bf914ea772d098aa70991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solidLayerMask: 0
+  waterLayerMask: 0
+  filledLayerMask: 0
 --- !u!1 &2025268469690987948
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31533ec48a9bf914ea772d098aa70991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solidLayerMask: 0
+  waterLayerMask: 0
+  filledLayerMask: 0
 --- !u!1 &4043581628033998660
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +225,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31533ec48a9bf914ea772d098aa70991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solidLayerMask: 0
+  waterLayerMask: 0
+  filledLayerMask: 0
 --- !u!1 &5473818842260287101
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,3 +609,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31533ec48a9bf914ea772d098aa70991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  solidLayerMask: 0
+  waterLayerMask: 0
+  filledLayerMask: 0

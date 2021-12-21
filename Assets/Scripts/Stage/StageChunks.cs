@@ -72,17 +72,25 @@ public class StageChunks : MonoBehaviour
         }
         else
         {
-            return chunks[Mathf.FloorToInt(position.x / STAGE_WIDTH), Mathf.FloorToInt(position.y / STAGE_HEIGHT), Mathf.FloorToInt(position.z / STAGE_DEPTH)];
+            return chunks[Mathf.FloorToInt(position.x / (float)Chunk.CHUNK_WIDTH), Mathf.FloorToInt(position.y / (float)Chunk.CHUNK_HEIGHT), Mathf.FloorToInt(position.z / (float)Chunk.CHUNK_DEPTH)];
         }
     }
 
-    public void Draw(Vector3Int position, ChunkCell brush)
+    public void Draw(Vector3 position, ChunkCell brush)
     {
+        Chunk chunk = GetChunkAtPosition(position);
 
+        if (chunk != null)
+        {
+            Vector3Int chunkPosition = WorldPositionToChunkPosition(Vector3Int.RoundToInt(position));
+            chunk.chunkData[chunkPosition.x, chunkPosition.y, chunkPosition.z] = brush;
+            chunk.GenerateMesh();
+            chunk.GenerateColliders();
+        }
     }
 
-    public void Erase(Vector3Int position)
+    public void Erase(Vector3 position)
     {
-
+        Draw(position, new ChunkCell(0));
     }
 }
