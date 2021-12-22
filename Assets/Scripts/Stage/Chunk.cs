@@ -88,30 +88,21 @@ public class Chunk : MonoBehaviour
 
                         while (gy < CHUNK_HEIGHT && chunkData[gx - 1, gy, z].tilesetIndex != 0 && !colliderMask[gx - 1, gy, z])
                         {
-                            // bool colliderContainsHole = false;
-
-                            // for (int gx2 = x; gx2 < gx; gx2++)
-                            // {
-                            //     for (int gy2 = y; gy2 < gy; gy2++)
-                            //     {
-                            //         Debug.Log(gx2 + "," + gy2);
-                            //         if (chunkData[gx2, gy2, z].tilesetIndex == 0 && colliderMask[gx2, gy2, z])
-                            //         {
-                            //             colliderContainsHole = true;
-                            //         }
-                            //     }
-                            // }
-
-                            // if (colliderContainsHole)
-                            // {
-                            //     break;
-                            // }
+                            if (RangeContainsHoles(x, y, z, gx, gy + 1, gz))
+                            {
+                                break;
+                            }
 
                             gy++;
                         }
 
                         while (gz < CHUNK_DEPTH && chunkData[gx - 1, gy - 1, gz].tilesetIndex != 0 && !colliderMask[gx - 1, gy - 1, gz])
                         {
+                            if (RangeContainsHoles(x, y, z, gx, gy, gz + 1))
+                            {
+                                break;
+                            }
+
                             gz++;
                         }
 
@@ -141,5 +132,24 @@ public class Chunk : MonoBehaviour
                 }
             }
         }
+    }
+
+    private bool RangeContainsHoles(int x, int y, int z, int gx, int gy, int gz)
+    {
+        for (int k = z; k < gz; k++)
+        {
+            for (int j = y; j < gy; j++)
+            {
+                for (int i = x; i < gx; i++)
+                {
+                    if (chunkData[i, j, k].tilesetIndex == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
