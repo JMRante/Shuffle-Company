@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CreatorCursor : MonoBehaviour
 {
-    public float lastModifiedCellCooldown = 1f;
+    public float lastModifiedCellCooldown = 2f;
 
     public GameObject creatorGrid;
     public GameObject creatorCamera;
