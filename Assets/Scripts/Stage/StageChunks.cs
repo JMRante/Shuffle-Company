@@ -93,4 +93,17 @@ public class StageChunks : MonoBehaviour
     {
         Draw(position, new ChunkCell(0));
     }
+
+    public ChunkCell GetChunkCell(Vector3 position)
+    {
+        Chunk chunk = GetChunkAtPosition(position);
+
+        if (chunk != null)
+        {
+            Vector3Int chunkPosition = WorldPositionToChunkPosition(Vector3Int.RoundToInt(position));
+            return chunk.chunkData[chunkPosition.x, chunkPosition.y, chunkPosition.z];
+        }
+
+        return new ChunkCell(0);
+    }
 }

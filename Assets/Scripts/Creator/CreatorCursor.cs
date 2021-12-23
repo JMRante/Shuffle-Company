@@ -6,6 +6,8 @@ public class CreatorCursor : MonoBehaviour
 {
     public float lastModifiedCellCooldown = 2f;
 
+    public CreatorManager creatorManager;
+
     public GameObject creatorGrid;
     public GameObject creatorCamera;
 
@@ -16,7 +18,7 @@ public class CreatorCursor : MonoBehaviour
 
     private float lastModifiedCellCooldownTimer = 0f;
     private Vector3 lastModifiedCellPosition;
-    private int lastOperation = 0;
+    private CreatorOperationType lastOperation = CreatorOperationType.None;
 
     void Start()
     {
@@ -52,25 +54,27 @@ public class CreatorCursor : MonoBehaviour
             creatorCamera.transform.position += Vector3.down;
         }
 
-        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != 1)
+        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != CreatorOperationType.Point)
         {
             if (Input.GetMouseButton(0))
             {
-                stageChunks.Draw(transform.position, new ChunkCell(1));
+                creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(1), stageChunks, false));
+
                 lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
                 lastModifiedCellPosition = transform.position;
-                lastOperation = 1;
+                lastOperation = CreatorOperationType.Point;
             }
         }
 
-        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != 2)
+        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != CreatorOperationType.ErasePoint)
         {
             if (Input.GetMouseButton(1))
             {
-                stageChunks.Erase(transform.position);
+                creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(0), stageChunks, true));
+
                 lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
                 lastModifiedCellPosition = transform.position;
-                lastOperation = 2;
+                lastOperation = CreatorOperationType.ErasePoint;
             }
         }
 
