@@ -2,19 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CreatorOperationType
-{
-    None,
-    Point,
-    Line,
-    Box,
-    ErasePoint,
-    EraseLine,
-    EraseBox,
-    Select,
-    Paste
-}
-
 public class CreatorManager : MonoBehaviour
 {
     public float undoCooldown = 0.1f;

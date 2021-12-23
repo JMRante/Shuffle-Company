@@ -10,9 +10,9 @@ public class DrawPoint : CreatorOperation
     public ChunkCell previousBrush;
     public StageChunks stageChunks;
 
-    public DrawPoint(Vector3 position, ChunkCell brush, StageChunks stageChunks, bool isErase)
+    public DrawPoint(Vector3 position, ChunkCell brush, StageChunks stageChunks)
     {
-        this.type = isErase ? CreatorOperationType.Point : CreatorOperationType.ErasePoint;
+        this.type = CreatorOperationType.Point;
         this.position = position;
         this.brush = brush;
         this.stageChunks = stageChunks;

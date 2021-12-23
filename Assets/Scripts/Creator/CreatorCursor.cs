@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CreatorOperationType
+{
+    None,
+    Point,
+    BoxPivotPlace,
+    Box,
+    SelectPivotPlace,
+    Select,
+    Paste
+}
+
 public class CreatorCursor : MonoBehaviour
 {
     public float lastModifiedCellCooldown = 2f;
@@ -10,15 +21,17 @@ public class CreatorCursor : MonoBehaviour
 
     public GameObject creatorGrid;
     public GameObject creatorCamera;
+    public GameObject creatorCursorPivot;
 
     public StageChunks stageChunks;
 
     private Collider creatorGridCollider;
     private MeshRenderer creatorCursorRenderer;
 
-    private float lastModifiedCellCooldownTimer = 0f;
+    private float lastModifiedCellCooldownTimer;
     private Vector3 lastModifiedCellPosition;
-    private CreatorOperationType lastOperation = CreatorOperationType.None;
+    private bool wasLastOperationErase;
+    private CreatorOperationType operationMode;
 
     void Start()
     {
@@ -26,6 +39,10 @@ public class CreatorCursor : MonoBehaviour
 
         creatorCursorRenderer = GetComponent<MeshRenderer>();
         creatorCursorRenderer.enabled = false;
+
+        lastModifiedCellCooldownTimer = 0f;
+        wasLastOperationErase = false;
+        operationMode = CreatorOperationType.Point;
     }
 
     void Update()
@@ -54,27 +71,104 @@ public class CreatorCursor : MonoBehaviour
             creatorCamera.transform.position += Vector3.down;
         }
 
-        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != CreatorOperationType.Point)
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            operationMode = CreatorOperationType.Point;
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            operationMode = CreatorOperationType.BoxPivotPlace;
+        }
+
+        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || wasLastOperationErase)
         {
             if (Input.GetMouseButton(0))
             {
-                creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(1), stageChunks, false));
+                switch(operationMode)
+                {
+                    case CreatorOperationType.Point:
+                    {
+                        creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(1), stageChunks));
 
-                lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
-                lastModifiedCellPosition = transform.position;
-                lastOperation = CreatorOperationType.Point;
+                        lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                        lastModifiedCellPosition = transform.position;
+                        wasLastOperationErase = false;
+
+                        break;
+                    }
+                    case CreatorOperationType.BoxPivotPlace:
+                    {
+                        creatorCursorPivot.SetActive(true);
+                        creatorCursorPivot.transform.position = transform.position;
+                        operationMode = CreatorOperationType.Box;
+
+                        lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                        lastModifiedCellPosition = transform.position;
+                        wasLastOperationErase = false;
+
+                        break;
+                    }
+                    case CreatorOperationType.Box:
+                    {
+                        creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(1), stageChunks));
+
+                        creatorCursorPivot.SetActive(false);
+                        operationMode = CreatorOperationType.BoxPivotPlace;
+
+                        lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                        lastModifiedCellPosition = transform.position;
+                        wasLastOperationErase = false;
+
+                        break;
+                    }
+                    default: break;
+                }
             }
         }
 
-        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || lastOperation != CreatorOperationType.ErasePoint)
+        if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || !wasLastOperationErase)
         {
             if (Input.GetMouseButton(1))
             {
-                creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(0), stageChunks, true));
+                switch (operationMode)
+                {
+                    case CreatorOperationType.Point:
+                        {
+                            creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(0), stageChunks));
 
-                lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
-                lastModifiedCellPosition = transform.position;
-                lastOperation = CreatorOperationType.ErasePoint;
+                            lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                            lastModifiedCellPosition = transform.position;
+                            wasLastOperationErase = true;
+
+                            break;
+                        }
+                    case CreatorOperationType.BoxPivotPlace:
+                        {
+                            creatorCursorPivot.SetActive(true);
+                            creatorCursorPivot.transform.position = transform.position;
+                            operationMode = CreatorOperationType.Box;
+
+                            lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                            lastModifiedCellPosition = transform.position;
+                            wasLastOperationErase = true;
+
+                            break;
+                        }
+                    case CreatorOperationType.Box:
+                        {
+                            creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(0), stageChunks));
+
+                            creatorCursorPivot.SetActive(false);
+                            operationMode = CreatorOperationType.BoxPivotPlace;
+
+                            lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
+                            lastModifiedCellPosition = transform.position;
+                            wasLastOperationErase = true;
+
+                            break;
+                        }
+                    default: break;
+                }
             }
         }
 
