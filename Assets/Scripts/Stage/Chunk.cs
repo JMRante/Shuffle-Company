@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,14 +13,16 @@ public class Chunk : MonoBehaviour
 
     public GameObject testMeshSource;
     public GameObject model;
-    private Mesh testMesh;
     private MeshFilter meshFilter;
+
+    public StageMeshCreator stageMeshCreator;
+
+    public StageChunks chunkManager;
 
     void Start()
     {
         chunkData = new ChunkCell[CHUNK_WIDTH, CHUNK_HEIGHT, CHUNK_DEPTH];
 
-        testMesh = testMeshSource.GetComponent<MeshFilter>().sharedMesh;
         meshFilter = GetComponentInChildren<MeshFilter>();
 
         model.transform.position = model.transform.position - new Vector3(CHUNK_WIDTH / 2f, CHUNK_HEIGHT / 2f, CHUNK_DEPTH / 2f) + new Vector3(0.5f, 0.5f, 0.5f);
@@ -37,11 +40,7 @@ public class Chunk : MonoBehaviour
                 {
                     if (chunkData[x, y, z].tilesetIndex != 0)
                     {
-                        CombineInstance ci = new CombineInstance();
-                        ci.mesh = testMesh;
-                        ci.transform = Matrix4x4.Translate(new Vector3(x, y, z));
-
-                        combineList.Add(ci);
+                        combineList.AddRange(stageMeshCreator.GetCellMesh(this, new Vector3Int(x, y, z)));
                     }
                 }
             }
@@ -49,6 +48,20 @@ public class Chunk : MonoBehaviour
 
         meshFilter.mesh.Clear();
         meshFilter.mesh.CombineMeshes(combineList.ToArray(), true);
+    }
+
+    public ChunkCell GetChunkCell(Vector3Int position)
+    {
+        if (position.x < 0 || position.x >= CHUNK_WIDTH || position.y < 0 || position.y >= CHUNK_HEIGHT || position.z < 0 || position.z >= CHUNK_DEPTH)
+        {
+            Vector3Int worldPosition = chunkManager.ChunkPositionToWorldPosition(position, transform.position);
+            Debug.Log(position + " -> " + worldPosition + " -> " + chunkManager.WorldPositionToChunkPosition(worldPosition));
+            return chunkManager.GetChunkCell(worldPosition);
+        }
+        else
+        {
+            return chunkData[position.x, position.y, position.z];
+        }
     }
 
     public void GenerateColliders()

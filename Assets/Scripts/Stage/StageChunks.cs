@@ -36,6 +36,8 @@ public class StageChunks : MonoBehaviour
 
     public void GenerateChunks()
     {
+        StageMeshCreator stageMeshCreator = new StageMeshCreator();
+
         chunks = new Chunk[STAGE_WIDTH, STAGE_HEIGHT, STAGE_DEPTH];
 
         for (int z = 0; z < STAGE_DEPTH; z++)
@@ -52,6 +54,8 @@ public class StageChunks : MonoBehaviour
                     GameObject chunk = GameObject.Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, transform);
                     chunk.name = "Chunk_" + x + "_" + y + "_" + z;
                     chunks[x, y, z] = chunk.GetComponent<Chunk>();
+                    chunks[x, y, z].stageMeshCreator = stageMeshCreator;
+                    chunks[x, y, z].chunkManager = this;
                 }
             }
         }
@@ -60,6 +64,15 @@ public class StageChunks : MonoBehaviour
     public Vector3Int WorldPositionToChunkPosition(Vector3Int position)
     {
         return new Vector3Int(position.x % Chunk.CHUNK_WIDTH, position.y % Chunk.CHUNK_HEIGHT, position.z % Chunk.CHUNK_DEPTH);
+    }
+
+    public Vector3Int ChunkPositionToWorldPosition(Vector3Int position, Vector3 chunkPosition)
+    {
+        Vector3Int chunkPositionInt = new Vector3Int(
+            Mathf.FloorToInt(chunkPosition.x - Mathf.FloorToInt(Chunk.CHUNK_WIDTH / 2f)), 
+            Mathf.FloorToInt(chunkPosition.y - Mathf.FloorToInt(Chunk.CHUNK_HEIGHT / 2f)),
+            Mathf.FloorToInt(chunkPosition.z - Mathf.FloorToInt(Chunk.CHUNK_DEPTH / 2f)));
+        return new Vector3Int(chunkPositionInt.x + position.x, chunkPositionInt.y + position.y, chunkPositionInt.z + position.z);
     }
 
     public Chunk GetChunkAtPosition(Vector3 position)
@@ -73,6 +86,21 @@ public class StageChunks : MonoBehaviour
         else
         {
             return chunks[Mathf.FloorToInt(position.x / (float)Chunk.CHUNK_WIDTH), Mathf.FloorToInt(position.y / (float)Chunk.CHUNK_HEIGHT), Mathf.FloorToInt(position.z / (float)Chunk.CHUNK_DEPTH)];
+        }
+    }
+
+    public ChunkCell GetChunkCell(Vector3Int position)
+    {
+        Chunk chunk = GetChunkAtPosition(position);
+
+        if (chunk != null)
+        {
+            Vector3Int chunkPosition = WorldPositionToChunkPosition(position);
+            return chunk.GetChunkCell(chunkPosition);
+        }
+        else
+        {
+            return new ChunkCell(0);
         }
     }
 
