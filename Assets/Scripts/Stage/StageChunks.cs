@@ -61,35 +61,40 @@ public class StageChunks : MonoBehaviour
         }
     }
 
-    public Vector3Int WorldPositionToChunkPosition(Vector3Int position)
+    public Vector3Int WorldPositionToChunkPosition(Vector3 position)
     {
-        return new Vector3Int(position.x % Chunk.CHUNK_WIDTH, position.y % Chunk.CHUNK_HEIGHT, position.z % Chunk.CHUNK_DEPTH);
+        return new Vector3Int(
+            Mathf.CeilToInt(position.x) % Chunk.CHUNK_WIDTH, 
+            Mathf.CeilToInt(position.y) % Chunk.CHUNK_HEIGHT, 
+            Mathf.CeilToInt(position.z) % Chunk.CHUNK_DEPTH);
     }
 
-    public Vector3Int ChunkPositionToWorldPosition(Vector3Int position, Vector3 chunkPosition)
+    public Vector3 ChunkPositionToWorldPosition(Vector3Int position, Vector3 chunkPosition)
     {
-        Vector3Int chunkPositionInt = new Vector3Int(
-            Mathf.FloorToInt(chunkPosition.x - Mathf.FloorToInt(Chunk.CHUNK_WIDTH / 2f)), 
-            Mathf.FloorToInt(chunkPosition.y - Mathf.FloorToInt(Chunk.CHUNK_HEIGHT / 2f)),
-            Mathf.FloorToInt(chunkPosition.z - Mathf.FloorToInt(Chunk.CHUNK_DEPTH / 2f)));
-        return new Vector3Int(chunkPositionInt.x + position.x, chunkPositionInt.y + position.y, chunkPositionInt.z + position.z);
+        return new Vector3(
+            (chunkPosition.x - Mathf.RoundToInt(Chunk.CHUNK_WIDTH / 2f)) + position.x, 
+            (chunkPosition.y - Mathf.RoundToInt(Chunk.CHUNK_HEIGHT / 2f)) + position.y, 
+            (chunkPosition.z - Mathf.RoundToInt(Chunk.CHUNK_DEPTH / 2f)) + position.z);
     }
 
     public Chunk GetChunkAtPosition(Vector3 position)
     {
-        if (position.x < CHUNK_START_X || position.x > CHUNK_START_X + TOTAL_CELL_WIDTH
-            || position.y < CHUNK_START_Y || position.y > CHUNK_START_Y + TOTAL_CELL_HEIGHT
-            || position.z < CHUNK_START_Z || position.z > CHUNK_START_Z + TOTAL_CELL_DEPTH)
+        if (position.x < CHUNK_START_X || position.x >= CHUNK_START_X + TOTAL_CELL_WIDTH
+            || position.y < CHUNK_START_Y || position.y >= CHUNK_START_Y + TOTAL_CELL_HEIGHT
+            || position.z < CHUNK_START_Z || position.z >= CHUNK_START_Z + TOTAL_CELL_DEPTH)
         {
             return null;
         }
         else
         {
-            return chunks[Mathf.FloorToInt(position.x / (float)Chunk.CHUNK_WIDTH), Mathf.FloorToInt(position.y / (float)Chunk.CHUNK_HEIGHT), Mathf.FloorToInt(position.z / (float)Chunk.CHUNK_DEPTH)];
+            return chunks[
+                Mathf.FloorToInt(position.x / (float)Chunk.CHUNK_WIDTH), 
+                Mathf.FloorToInt(position.y / (float)Chunk.CHUNK_HEIGHT), 
+                Mathf.FloorToInt(position.z / (float)Chunk.CHUNK_DEPTH)];
         }
     }
 
-    public ChunkCell GetChunkCell(Vector3Int position)
+    public ChunkCell GetChunkCell(Vector3 position)
     {
         Chunk chunk = GetChunkAtPosition(position);
 
@@ -110,10 +115,17 @@ public class StageChunks : MonoBehaviour
 
         if (chunk != null)
         {
-            Vector3Int chunkPosition = WorldPositionToChunkPosition(Vector3Int.RoundToInt(position));
+            Vector3Int chunkPosition = WorldPositionToChunkPosition(position);
             chunk.chunkData[chunkPosition.x, chunkPosition.y, chunkPosition.z] = brush;
             chunk.GenerateMesh();
             chunk.GenerateColliders();
+
+            List<Chunk> surroundingChunks = GetChunksSurroundingPosition(position);
+            foreach (Chunk surroundingChunk in surroundingChunks)
+            {
+                surroundingChunk.GenerateMesh();
+                surroundingChunk.GenerateColliders();
+            }
         }
     }
 
@@ -122,16 +134,71 @@ public class StageChunks : MonoBehaviour
         Draw(position, new ChunkCell(0));
     }
 
-    public ChunkCell GetChunkCell(Vector3 position)
+    public List<Chunk> GetChunksSurroundingPosition(Vector3 position)
     {
-        Chunk chunk = GetChunkAtPosition(position);
+        List<Chunk> surroundingChunks = new List<Chunk>();
+        Vector3Int chunkPosition = WorldPositionToChunkPosition(position);
 
-        if (chunk != null)
+        if (chunkPosition.x == 0)
         {
-            Vector3Int chunkPosition = WorldPositionToChunkPosition(Vector3Int.RoundToInt(position));
-            return chunk.chunkData[chunkPosition.x, chunkPosition.y, chunkPosition.z];
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.left);
+            
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
+        }
+        
+        if (chunkPosition.x == Chunk.CHUNK_WIDTH - 1)
+        {
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.right);
+
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
         }
 
-        return new ChunkCell(0);
+        if (chunkPosition.y == 0)
+        {
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.down);
+
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
+        }
+
+        if (chunkPosition.y == Chunk.CHUNK_HEIGHT - 1)
+        {
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.up);
+
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
+        }
+
+        if (chunkPosition.z == 0)
+        {
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.back);
+
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
+        }
+
+        if (chunkPosition.z == Chunk.CHUNK_DEPTH - 1)
+        {
+            Chunk surroundingChunk = GetChunkAtPosition(position + Vector3.forward);
+
+            if (surroundingChunk != null)
+            {
+                surroundingChunks.Add(surroundingChunk);
+            }
+        }
+
+        return surroundingChunks;
     }
 }

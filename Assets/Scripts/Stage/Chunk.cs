@@ -6,7 +6,7 @@ using UnityEngine;
 public class Chunk : MonoBehaviour
 {
     public const int CHUNK_WIDTH = 5;
-    public const int CHUNK_HEIGHT = 20;
+    public const int CHUNK_HEIGHT = 25;
     public const int CHUNK_DEPTH = 5;
 
     public ChunkCell[,,] chunkData;
@@ -54,8 +54,7 @@ public class Chunk : MonoBehaviour
     {
         if (position.x < 0 || position.x >= CHUNK_WIDTH || position.y < 0 || position.y >= CHUNK_HEIGHT || position.z < 0 || position.z >= CHUNK_DEPTH)
         {
-            Vector3Int worldPosition = chunkManager.ChunkPositionToWorldPosition(position, transform.position);
-            Debug.Log(position + " -> " + worldPosition + " -> " + chunkManager.WorldPositionToChunkPosition(worldPosition));
+            Vector3 worldPosition = chunkManager.ChunkPositionToWorldPosition(position, transform.position);
             return chunkManager.GetChunkCell(worldPosition);
         }
         else
