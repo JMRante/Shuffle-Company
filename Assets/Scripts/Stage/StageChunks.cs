@@ -24,9 +24,20 @@ public class StageChunks : MonoBehaviour
 
     public Chunk[,,] chunks;
 
+    private StageTextureRepo stageTextureRepo;
+    private StageGeometryRepo stageGeometryRepo;
+
     void Start()
     {
+        stageTextureRepo = new StageTextureRepo();
+        stageGeometryRepo = new StageGeometryRepo();
+
+        stageTextureRepo.LoadTextures("Base");
+
         GenerateChunks();
+
+        Material chunkMaterial = chunks[0, 0, 0].GetComponentInChildren<MeshRenderer>().material;
+        stageTextureRepo.LoadTexturesToMaterial(chunkMaterial);
     }
 
     void Update()
@@ -36,7 +47,7 @@ public class StageChunks : MonoBehaviour
 
     public void GenerateChunks()
     {
-        StageMeshCreator stageMeshCreator = new StageMeshCreator();
+        StageMeshCreator stageMeshCreator = new StageMeshCreator(stageGeometryRepo);
 
         chunks = new Chunk[STAGE_WIDTH, STAGE_HEIGHT, STAGE_DEPTH];
 

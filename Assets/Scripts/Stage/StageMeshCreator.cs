@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class StageMeshCreator
 {
-    private JaggedStageMeshDefinition jaggedStageMeshDefinition;
-
     private ChunkCell emptyCell = new ChunkCell(0);
 
     private Dictionary<int, Vector3Int[]> quadrantChecks;
+    
+    private StageGeometryRepo geometryRepo;
 
-    public StageMeshCreator()
+    public StageMeshCreator(StageGeometryRepo geometryRepo)
     {
-        jaggedStageMeshDefinition = new JaggedStageMeshDefinition();
+        this.geometryRepo = geometryRepo;
 
         quadrantChecks = new Dictionary<int, Vector3Int[]>();
         quadrantChecks.Add(1, new Vector3Int[] { Vector3Int.forward, Vector3Int.right });
@@ -42,7 +42,7 @@ public class StageMeshCreator
                 quadrantType = "EdgeX";
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -51,7 +51,7 @@ public class StageMeshCreator
                 quadrantType = "EdgeZ";
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -60,12 +60,12 @@ public class StageMeshCreator
                 quadrantType = "Corner";
 
                 CombineInstance ciL = new CombineInstance();
-                ciL.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "L");
+                ciL.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "L"), 0, 0f);
                 ciL.transform = transformationMatrix;
                 combineList.Add(ciL);
 
                 CombineInstance ciR = new CombineInstance();
-                ciR.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "R");
+                ciR.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "R"), 0, 0f);
                 ciR.transform = transformationMatrix;
                 combineList.Add(ciR);
             }
@@ -80,7 +80,7 @@ public class StageMeshCreator
                 chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0] + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -91,73 +91,68 @@ public class StageMeshCreator
                 chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0] + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
         }
 
-
-        // foreach (Vector3 octantPosition in octantPositions)
-        // {
-        //     float octantRotation = 0f;
-
-        //     if (octantPosition.x == -1f && octantPosition.z == 1f)
-        //     {
-        //         octantRotation = 90f;
-        //     }
-        //     else if (octantPosition.x == -1f && octantPosition.z == -1f)
-        //     {
-        //         octantRotation = 180f;
-        //     }
-        //     else if (octantPosition.x == 1f && octantPosition.z == -1f)
-        //     {
-        //         octantRotation = 270f;
-        //     }
-
-        //     Vector3Int octantLeft = Vector3Int.RoundToInt(Quaternion.AngleAxis(octantRotation, Vector3.up) * Vector3.forward);
-        //     Vector3Int octantRight = Vector3Int.RoundToInt(Quaternion.AngleAxis(octantRotation, Vector3.up) * Vector3.right);
-
-        //     bool isLeftFilled = chunk.GetChunkCell(cell + octantLeft).tilesetIndex != 0;
-        //     // bool isCenterFilled = chunk.GetChunkCell(cell + octantLeft + octantRight).tilesetIndex != 0;
-        //     bool isRightFilled = chunk.GetChunkCell(cell + octantRight).tilesetIndex != 0;
-
-        //     if (isLeftFilled && !isRightFilled)
-        //     {
-        //         CombineInstance ci = new CombineInstance();
-        //         ci.mesh = octantPosition.y > 0 ? cubicStageMeshDefinition.edgeAboveLeft : cubicStageMeshDefinition.edgeBelowLeft;
-        //         ci.transform = Matrix4x4.Translate(cell + (octantPosition * 0.25f)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-180f - octantRotation, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(90f, Vector3.right));
-        //         combineList.Add(ci);
-        //     } 
-        //     else if (!isLeftFilled && isRightFilled)
-        //     {
-        //         CombineInstance ci = new CombineInstance();
-        //         ci.mesh = octantPosition.y > 0 ? cubicStageMeshDefinition.edgeAboveRight : cubicStageMeshDefinition.edgeBelowRight;
-        //         ci.transform = Matrix4x4.Translate(cell + (octantPosition * 0.25f)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-90f - octantRotation, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(90f, Vector3.right));
-        //         combineList.Add(ci);
-        //     }
-        //     else if (!isLeftFilled && !isRightFilled)
-        //     {
-        //         CombineInstance ciL = new CombineInstance();
-        //         ciL.mesh = octantPosition.y > 0 ? cubicStageMeshDefinition.outerCornerAboveLeft : cubicStageMeshDefinition.outerCornerBelowLeft;
-        //         ciL.transform = Matrix4x4.Translate(cell + (octantPosition * 0.25f)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-90f - octantRotation, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(90f, Vector3.right));
-        //         combineList.Add(ciL);
-
-        //         CombineInstance ciR = new CombineInstance();
-        //         ciR.mesh = octantPosition.y > 0 ? cubicStageMeshDefinition.outerCornerAboveRight : cubicStageMeshDefinition.outerCornerBelowRight;
-        //         ciR.transform = Matrix4x4.Translate(cell + (octantPosition * 0.25f)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-90f - octantRotation, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(90f, Vector3.right));
-        //         combineList.Add(ciR);
-        //     }
-
-        //     if (chunk.GetChunkCell(cell + Vector3Int.up).tilesetIndex == emptyCell.tilesetIndex)
-        //     {
-        //         CombineInstance ci = new CombineInstance();
-        //         ci.mesh = cubicStageMeshDefinition.centerCap;
-        //         ci.transform = Matrix4x4.Translate(cell + (octantPosition * 0.25f)) * Matrix4x4.Rotate(Quaternion.AngleAxis(90f * octantPosition.y, Vector3.right));
-        //         combineList.Add(ci);
-        //     }
-        // }
-
         return combineList;
+    }
+
+    private Mesh CreateMeshPart(Mesh meshPrototype, int layer, float textureIndex)
+    {
+        Mesh mesh = new Mesh();
+
+        List<Vector3> vertices = new List<Vector3>();
+        foreach (Vector3 vertex in meshPrototype.vertices)
+        {
+            vertices.Add(vertex);
+        }
+        mesh.SetVertices(vertices);
+
+        List<int> triangles = new List<int>();
+        foreach (int triangle in meshPrototype.triangles)
+        {
+            triangles.Add(triangle);
+        }
+        mesh.SetTriangles(triangles, 0);
+
+        List<Vector2> uvs = new List<Vector2>();
+        foreach (Vector2 uv in meshPrototype.uv)
+        {
+            uvs.Add(uv);
+        }
+        mesh.SetUVs(0, uvs);
+
+        List<Vector2> uvs2 = new List<Vector2>();
+        foreach (Vector2 uv in meshPrototype.uv)
+        {
+            uvs2.Add(new Vector2(textureIndex, 0f));
+        }
+        mesh.SetUVs(1, uvs2);
+
+        List<Vector3> normals = new List<Vector3>();
+        foreach (Vector3 normal in meshPrototype.normals)
+        {
+            normals.Add(normal);
+        }
+        mesh.SetNormals(normals);
+
+        List<Vector4> tangents = new List<Vector4>();
+        foreach (Vector4 tangent in meshPrototype.tangents)
+        {
+            tangents.Add(tangent);
+        }
+        mesh.SetTangents(tangents);
+
+        List<Color> colors = new List<Color>();
+        foreach (Color color in meshPrototype.colors)
+        {
+            colors.Add(color);
+        }
+        mesh.SetColors(colors);
+
+        return mesh;
     }
 }
