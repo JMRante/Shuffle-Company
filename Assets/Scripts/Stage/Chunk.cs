@@ -38,7 +38,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int x = 0; x < CHUNK_WIDTH; x++)
                 {
-                    if (chunkData[x, y, z].tilesetIndex != 0)
+                    if (chunkData[x, y, z].isFilled != 0)
                     {
                         combineList.AddRange(stageMeshCreator.GetCellMesh(this, new Vector3Int(x, y, z)));
                     }
@@ -81,7 +81,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int x = 0; x < CHUNK_WIDTH; x++)
                 {
-                    if (chunkData[x, y, z].tilesetIndex != 0 && !colliderMask[x, y, z])
+                    if (chunkData[x, y, z].isFilled != 0 && !colliderMask[x, y, z])
                     {
                         GameObject colliderObject = new GameObject("Collider_" + j);
                         colliderObject.layer = LayerMask.NameToLayer("Solid");
@@ -93,12 +93,12 @@ public class Chunk : MonoBehaviour
                         int gy = y + 1;
                         int gz = z + 1;
 
-                        while (gx < CHUNK_WIDTH && chunkData[gx, y, z].tilesetIndex != 0 && !colliderMask[gx, y, z])
+                        while (gx < CHUNK_WIDTH && chunkData[gx, y, z].isFilled != 0 && !colliderMask[gx, y, z])
                         {
                             gx++;
                         }
 
-                        while (gy < CHUNK_HEIGHT && chunkData[gx - 1, gy, z].tilesetIndex != 0 && !colliderMask[gx - 1, gy, z])
+                        while (gy < CHUNK_HEIGHT && chunkData[gx - 1, gy, z].isFilled != 0 && !colliderMask[gx - 1, gy, z])
                         {
                             if (RangeContainsHoles(x, y, z, gx, gy + 1, gz))
                             {
@@ -108,7 +108,7 @@ public class Chunk : MonoBehaviour
                             gy++;
                         }
 
-                        while (gz < CHUNK_DEPTH && chunkData[gx - 1, gy - 1, gz].tilesetIndex != 0 && !colliderMask[gx - 1, gy - 1, gz])
+                        while (gz < CHUNK_DEPTH && chunkData[gx - 1, gy - 1, gz].isFilled != 0 && !colliderMask[gx - 1, gy - 1, gz])
                         {
                             if (RangeContainsHoles(x, y, z, gx, gy, gz + 1))
                             {
@@ -154,7 +154,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int i = x; i < gx; i++)
                 {
-                    if (chunkData[i, j, k].tilesetIndex == 0)
+                    if (chunkData[i, j, k].isFilled == 0)
                     {
                         return true;
                     }

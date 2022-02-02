@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StageMeshCreator
 {
-    private ChunkCell emptyCell = new ChunkCell(0);
+    private ChunkCell emptyCell = new ChunkCell(0, 0);
 
     private Dictionary<int, Vector3Int[]> quadrantChecks;
     
@@ -34,8 +34,8 @@ public class StageMeshCreator
 
             Vector3Int[] quadrantCheck = quadrantChecks[i];
 
-            bool quadrantZCheck = chunk.GetChunkCell(cell + quadrantCheck[0]).tilesetIndex != 0;
-            bool quadrantXCheck = chunk.GetChunkCell(cell + quadrantCheck[1]).tilesetIndex != 0;
+            bool quadrantZCheck = chunk.GetChunkCell(cell + quadrantCheck[0]).isFilled != 0;
+            bool quadrantXCheck = chunk.GetChunkCell(cell + quadrantCheck[1]).isFilled != 0;
 
             if (quadrantZCheck && !quadrantXCheck)
             {
@@ -74,10 +74,10 @@ public class StageMeshCreator
                 quadrantType = "Center";
             }
 
-            if (chunk.GetChunkCell(cell + Vector3Int.up).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0]).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0] + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex)
+            if (chunk.GetChunkCell(cell + Vector3Int.up).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0]).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[1]).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0] + quadrantCheck[1]).isFilled == emptyCell.isFilled)
             {
                 CombineInstance ci = new CombineInstance();
                 ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i), 0, 1f);
@@ -85,10 +85,10 @@ public class StageMeshCreator
                 combineList.Add(ci);
             }
 
-            if (chunk.GetChunkCell(cell + Vector3Int.down).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0]).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex ||
-                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0] + quadrantCheck[1]).tilesetIndex == emptyCell.tilesetIndex)
+            if (chunk.GetChunkCell(cell + Vector3Int.down).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0]).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[1]).isFilled == emptyCell.isFilled ||
+                chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0] + quadrantCheck[1]).isFilled == emptyCell.isFilled)
             {
                 CombineInstance ci = new CombineInstance();
                 ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i), 0, 1f);
@@ -125,10 +125,10 @@ public class StageMeshCreator
         }
         mesh.SetUVs(0, uvs);
 
-        List<Vector2> uvs2 = new List<Vector2>();
+        List<Vector4> uvs2 = new List<Vector4>();
         foreach (Vector2 uv in meshPrototype.uv)
         {
-            uvs2.Add(new Vector2(textureIndex, 0f));
+            uvs2.Add(new Vector4(textureIndex, 0f, 0f, 0f));
         }
         mesh.SetUVs(1, uvs2);
 

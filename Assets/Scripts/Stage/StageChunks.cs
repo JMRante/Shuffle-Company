@@ -116,7 +116,7 @@ public class StageChunks : MonoBehaviour
         }
         else
         {
-            return new ChunkCell(0);
+            return new ChunkCell(0, 0);
         }
     }
 
@@ -142,7 +142,7 @@ public class StageChunks : MonoBehaviour
 
     public void Erase(Vector3 position)
     {
-        Draw(position, new ChunkCell(0));
+        Draw(position, new ChunkCell(0, 0));
     }
 
     public List<Chunk> GetChunksSurroundingPosition(Vector3 position)

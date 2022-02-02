@@ -88,7 +88,7 @@ public class CreatorCursor : MonoBehaviour
                 {
                     case CreatorOperationType.Point:
                     {
-                        creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(1), stageChunks));
+                        creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(1, 0), stageChunks));
 
                         lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
                         lastModifiedCellPosition = transform.position;
@@ -110,7 +110,7 @@ public class CreatorCursor : MonoBehaviour
                     }
                     case CreatorOperationType.Box:
                     {
-                        creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(1), stageChunks));
+                        creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(1, 0), stageChunks));
 
                         creatorCursorPivot.SetActive(false);
                         operationMode = CreatorOperationType.BoxPivotPlace;
@@ -134,7 +134,7 @@ public class CreatorCursor : MonoBehaviour
                 {
                     case CreatorOperationType.Point:
                         {
-                            creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(0), stageChunks));
+                            creatorManager.DoOperation(new DrawPoint(transform.position, new ChunkCell(0, 0), stageChunks));
 
                             lastModifiedCellCooldownTimer = lastModifiedCellCooldown;
                             lastModifiedCellPosition = transform.position;
@@ -156,7 +156,7 @@ public class CreatorCursor : MonoBehaviour
                         }
                     case CreatorOperationType.Box:
                         {
-                            creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(0), stageChunks));
+                            creatorManager.DoOperation(new DrawBox(creatorCursorPivot.transform.position, transform.position, new ChunkCell(0, 0), stageChunks));
 
                             creatorCursorPivot.SetActive(false);
                             operationMode = CreatorOperationType.BoxPivotPlace;
