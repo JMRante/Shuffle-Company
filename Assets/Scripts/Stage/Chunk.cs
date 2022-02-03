@@ -164,4 +164,79 @@ public class Chunk : MonoBehaviour
 
         return false;
     }
+
+    public bool IsFilled(Vector3Int position)
+    {
+        return chunkData[position.x, position.y, position.z].isFilled == 1 ? true : false;
+    }
+
+    public void SetFilled(Vector3Int position, bool isFilled)
+    {
+        if (isFilled)
+        {
+            chunkData[position.x, position.y, position.z].isFilled = 1;
+        }
+        else
+        {
+            chunkData[position.x, position.y, position.z].isFilled = 0;
+        }
+    }
+
+    public StageGeometryType GetGeometryType(Vector3Int position)
+    {
+        return (StageGeometryType) chunkData[position.x, position.y, position.z].geometryType;
+    }
+
+    public void SetGeometryType(Vector3Int position, StageGeometryType geometryType)
+    {
+        chunkData[position.x, position.y, position.z].geometryType = (byte) geometryType;
+    }
+
+    public bool IsInsetForward(Vector3Int position)
+    {
+        byte checkByte = 0b0000_0001;
+        int resultByte = checkByte & chunkData[position.x, position.y, position.z].inset;
+        return resultByte != 0;
+    }
+
+    public void SetInsetForward(Vector3Int position, bool isInset)
+    {
+        chunkData[position.x, position.y, position.z].inset += 1;
+    }
+
+    public bool IsInsetBack(Vector3Int position)
+    {
+        byte checkByte = 0b0000_0010;
+        int resultByte = checkByte & chunkData[position.x, position.y, position.z].inset;
+        return resultByte != 0;
+    }
+
+    public void SetInsetBack(Vector3Int position, bool isInset)
+    {
+        chunkData[position.x, position.y, position.z].inset += 2;
+    }
+
+    public bool IsInsetRight(Vector3Int position)
+    {
+        byte checkByte = 0b0000_0100;
+        int resultByte = checkByte & chunkData[position.x, position.y, position.z].inset;
+        return resultByte != 0;
+    }
+
+    public void SetInsetRight(Vector3Int position, bool isInset)
+    {
+        chunkData[position.x, position.y, position.z].inset += 4;
+    }
+
+    public bool IsInsetLeft(Vector3Int position)
+    {
+        byte checkByte = 0b0000_1000;
+        int resultByte = checkByte & chunkData[position.x, position.y, position.z].inset;
+        return resultByte != 0;
+    }
+
+    public void SetInsetLeft(Vector3Int position, bool isInset)
+    {
+        chunkData[position.x, position.y, position.z].inset += 8;
+    }
 }
