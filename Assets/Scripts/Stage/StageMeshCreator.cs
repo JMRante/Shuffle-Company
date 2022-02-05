@@ -31,18 +31,52 @@ public class StageMeshCreator
         for (int i = 1; i <= 4; i++)
         {
             string quadrantType = "";
+            string insetType = "";
 
             Vector3Int[] quadrantCheck = quadrantChecks[i];
 
             bool quadrantZCheck = chunk.GetChunkCell(cell + quadrantCheck[0]).IsFilled();
             bool quadrantXCheck = chunk.GetChunkCell(cell + quadrantCheck[1]).IsFilled();
 
+            bool insetZCheck = (chunk.GetChunkCell(cell).IsInsetForward() && quadrantCheck[0] == Vector3Int.forward) 
+                || (chunk.GetChunkCell(cell).IsInsetBack() && quadrantCheck[0] == Vector3Int.back);
+            bool insetXCheck = (chunk.GetChunkCell(cell).IsInsetLeft() && quadrantCheck[1] == Vector3Int.left) 
+                || (chunk.GetChunkCell(cell).IsInsetRight() && quadrantCheck[1] == Vector3Int.right);
+
+            bool insetAdjacentZCheck = quadrantZCheck
+                && ((chunk.GetChunkCell(cell + quadrantCheck[0]).IsInsetLeft() && (i == 2 || i == 3) && !chunk.GetChunkCell(cell).IsInsetLeft())
+                    || (chunk.GetChunkCell(cell + quadrantCheck[0]).IsInsetRight() && (i == 1 || i == 4) && !chunk.GetChunkCell(cell).IsInsetRight()));
+            bool insetAdjacentXCheck = quadrantXCheck 
+                && ((chunk.GetChunkCell(cell + quadrantCheck[1]).IsInsetForward() && (i == 1 || i == 2) && !chunk.GetChunkCell(cell).IsInsetForward())
+                    || (chunk.GetChunkCell(cell + quadrantCheck[1]).IsInsetBack() && (i == 3 || i == 4) && !chunk.GetChunkCell(cell).IsInsetBack()));
+
+            if (insetAdjacentZCheck)
+            {
+                CombineInstance ci = new CombineInstance();
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart("EdgeZ_W" + i + "_IS"), 0, 0f);
+                ci.transform = transformationMatrix;
+                combineList.Add(ci);
+            }
+
+            if (insetAdjacentXCheck)
+            {
+                CombineInstance ci = new CombineInstance();
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart("EdgeX_W" + i + "_IS"), 0, 0f);
+                ci.transform = transformationMatrix;
+                combineList.Add(ci);
+            }
+
             if (quadrantZCheck && !quadrantXCheck)
             {
                 quadrantType = "EdgeX";
 
+                if (insetXCheck)
+                {
+                    insetType = "_I";
+                }
+
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i), 0, 0f);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + insetType), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -50,8 +84,13 @@ public class StageMeshCreator
             {
                 quadrantType = "EdgeZ";
 
+                if (insetZCheck)
+                {
+                    insetType = "_I";
+                }
+
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i), 0, 0f);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + insetType), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -59,13 +98,26 @@ public class StageMeshCreator
             {
                 quadrantType = "Corner";
 
+                if (insetXCheck && insetZCheck)
+                {
+                    insetType = "_IXZ";
+                }
+                else if (insetXCheck)
+                {
+                    insetType = "_IZ";
+                }
+                else if (insetZCheck)
+                {
+                    insetType = "_IX";
+                }
+
                 CombineInstance ciL = new CombineInstance();
-                ciL.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "L"), 0, 0f);
+                ciL.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "L" + insetType), 0, 0f);
                 ciL.transform = transformationMatrix;
                 combineList.Add(ciL);
 
                 CombineInstance ciR = new CombineInstance();
-                ciR.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "R"), 0, 0f);
+                ciR.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "R" + insetType), 0, 0f);
                 ciR.transform = transformationMatrix;
                 combineList.Add(ciR);
             }
@@ -77,10 +129,14 @@ public class StageMeshCreator
             if (!chunk.GetChunkCell(cell + Vector3Int.up).IsFilled() ||
                 (!chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0]).IsFilled()) ||
                 (!chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[1]).IsFilled()) ||
-                (!chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0] + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0] + quadrantCheck[1]).IsFilled()))
+                (!chunk.GetChunkCell(cell + Vector3Int.up + quadrantCheck[0] + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0] + quadrantCheck[1]).IsFilled()) ||
+                (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetForward() && (i == 1 || i == 2)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetBack() && (i == 3 || i == 4)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetLeft() && (i == 2 || i == 3)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i), 0, 1f);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i + insetType), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -88,10 +144,14 @@ public class StageMeshCreator
             if (!chunk.GetChunkCell(cell + Vector3Int.down).IsFilled() ||
                 (!chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0]).IsFilled()) ||
                 (!chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[1]).IsFilled()) ||
-                (!chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0] + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0] + quadrantCheck[1]).IsFilled()))
+                (!chunk.GetChunkCell(cell + Vector3Int.down + quadrantCheck[0] + quadrantCheck[1]).IsFilled() && chunk.GetChunkCell(cell + quadrantCheck[0] + quadrantCheck[1]).IsFilled()) ||
+                (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetForward() && (i == 1 || i == 2)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetBack() && (i == 3 || i == 4)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetLeft() && (i == 2 || i == 3)) ||
+                (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i), 0, 1f);
+                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i + insetType), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }

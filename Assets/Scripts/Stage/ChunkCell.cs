@@ -72,16 +72,17 @@ public struct ChunkCell
     {
         if (isInset)
         {
-            this.inset = (byte) (this.inset | 0b0000_0001);
+            this.inset |= 0b0000_0001;
         }
         else
         {
-            this.inset = (byte) (this.inset & 0b1111_1110);
+            this.inset &= 0b1111_1110;
         }
     }
 
     public bool IsInsetBack()
     {
+
         return (byte) (0b0000_0010 & this.inset) != 0;
     }
 
@@ -89,11 +90,11 @@ public struct ChunkCell
     {
         if (isInset)
         {
-            this.inset = (byte)(this.inset | 0b0000_0010);
+            this.inset |= 0b0000_0010;
         }
         else
         {
-            this.inset = (byte)(this.inset & 0b1111_1101);
+            this.inset &= 0b1111_1101;
         }
     }
 
@@ -106,11 +107,11 @@ public struct ChunkCell
     {
         if (isInset)
         {
-            this.inset = (byte)(this.inset | 0b0000_0100);
+            this.inset |= 0b0000_0100;
         }
         else
         {
-            this.inset = (byte)(this.inset & 0b1111_1011);
+            this.inset &= 0b1111_1011;
         }
     }
 
@@ -123,11 +124,11 @@ public struct ChunkCell
     {
         if (isInset)
         {
-            this.inset = (byte)(this.inset | 0b0000_1000);
+            this.inset |= 0b0000_1000;
         }
         else
         {
-            this.inset = (byte)(this.inset & 0b1111_0111);
+            this.inset &= 0b1111_0111;
         }
     }
 }

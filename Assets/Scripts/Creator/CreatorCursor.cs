@@ -88,7 +88,7 @@ public class CreatorCursor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I)) 
         {
-            if (brush.IsInsetBack())
+            if (!brush.IsInsetBack())
             {
                 brush.SetInsetBack(true);
             }
