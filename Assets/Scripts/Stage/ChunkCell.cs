@@ -8,7 +8,7 @@ public struct ChunkCell
 
     public byte geometryType;
 
-    public short textureDefinition;
+    public byte cellDefinition;
 
     public byte decalDefinitionTop;
     public byte decalDefinitionLeft;
@@ -18,13 +18,13 @@ public struct ChunkCell
 
     public byte inset;
 
-    public ChunkCell(byte isFilled, short tilesetPatternIndex)
+    public ChunkCell(byte isFilled, byte cellDefinition)
     {
         this.isFilled = isFilled;
 
         this.geometryType = 0;
 
-        this.textureDefinition = tilesetPatternIndex;
+        this.cellDefinition = cellDefinition;
 
         this.decalDefinitionTop = 0;
         this.decalDefinitionLeft = 0;

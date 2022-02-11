@@ -8,11 +8,11 @@ public class StageMeshCreator
 
     private Dictionary<int, Vector3Int[]> quadrantChecks;
     
-    private StageGeometryRepo geometryRepo;
+    private StageRepository repo;
 
-    public StageMeshCreator(StageGeometryRepo geometryRepo)
+    public StageMeshCreator(StageRepository repo)
     {
-        this.geometryRepo = geometryRepo;
+        this.repo = repo;
 
         quadrantChecks = new Dictionary<int, Vector3Int[]>();
         quadrantChecks.Add(1, new Vector3Int[] { Vector3Int.forward, Vector3Int.right });
@@ -27,6 +27,8 @@ public class StageMeshCreator
         Matrix4x4 translationMatrix = Matrix4x4.Translate(cell);
         Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.AngleAxis(-90f, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-90f, Vector3.right));
         Matrix4x4 transformationMatrix = translationMatrix * rotationMatrix;
+
+        StageGeometryType cellGeometryType = chunk.GetChunkCell(cell).GetGeometryType();
 
         for (int i = 1; i <= 4; i++)
         {
@@ -53,7 +55,7 @@ public class StageMeshCreator
             if (insetAdjacentZCheck)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart("EdgeZ_W" + i + "_IS"), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeZ_W" + i + "_IS"), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -61,7 +63,7 @@ public class StageMeshCreator
             if (insetAdjacentXCheck)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart("EdgeX_W" + i + "_IS"), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeX_W" + i + "_IS"), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -76,7 +78,7 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + insetType), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -90,7 +92,7 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + insetType), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), 0, 0f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -112,12 +114,12 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ciL = new CombineInstance();
-                ciL.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "L" + insetType), 0, 0f);
+                ciL.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "L" + insetType), 0, 0f);
                 ciL.transform = transformationMatrix;
                 combineList.Add(ciL);
 
                 CombineInstance ciR = new CombineInstance();
-                ciR.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_W" + i + "R" + insetType), 0, 0f);
+                ciR.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "R" + insetType), 0, 0f);
                 ciR.transform = transformationMatrix;
                 combineList.Add(ciR);
             }
@@ -136,7 +138,7 @@ public class StageMeshCreator
                 (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_T" + i + insetType), 0, 1f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_T" + i + insetType), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -151,7 +153,7 @@ public class StageMeshCreator
                 (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(geometryRepo.jaggedStageMeshDefinition.GetStageMeshPart(quadrantType + "_B" + i + insetType), 0, 1f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_B" + i + insetType), 0, 1f);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
