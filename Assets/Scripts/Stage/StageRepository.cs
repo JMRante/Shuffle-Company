@@ -33,6 +33,63 @@ public class StageRepository : MonoBehaviour
     private StageCellDefinition[] cellRepo;
     private GameObject[] propRepo;
 
+    private static readonly Dictionary<int, int> stageNormalTable = new Dictionary<int, int>
+    {
+        { 0, 0 },
+        { 4, 1 },
+        { 92, 2 },
+        { 124, 3 },
+        { 116, 4 },
+        { 80, 5 },
+
+        { 16, 8 },
+        { 20, 9 },
+        { 87, 10 },
+        { 223, 11 },
+        { 241, 12 },
+        { 21, 13 },
+        { 64, 14 },
+
+        { 29, 16 },
+        { 117, 17 },
+        { 85, 18 },
+        { 71, 19 },
+        { 221, 20 },
+        { 125, 21 },
+        { 112, 22 },
+
+        { 31, 24 },
+        { 253, 25 },
+        { 113, 26 },
+        { 28, 27 },
+        { 127, 28 },
+        { 247, 29 },
+        { 209, 30 },
+
+        { 23, 32 },
+        { 199, 33 },
+        { 213, 34 },
+        { 95, 35 },
+        { 255, 36 },
+        { 245, 37 },
+        { 81, 38 },
+
+        { 5, 40 },
+        { 84, 41 },
+        { 93, 42 },
+        { 119, 43 },
+        { 215, 44 },
+        { 193, 45 },
+        { 17, 46 },
+
+        { 1, 49 },
+        { 7, 50 },
+        { 197, 51 },
+        { 69, 52 },
+        { 68, 53 },
+        { 65, 54 }
+    };
+
     void Start()
     {
         geometryRepo = new Dictionary<string, Mesh>[Enum.GetNames(typeof(StageGeometryType)).Length];
@@ -105,5 +162,110 @@ public class StageRepository : MonoBehaviour
     private void LoadStageProps(string themeName)
     {
 
+    }
+
+    public int CalculateStageNormalIndex(Vector3Int cellPosition, Chunk chunk, Vector3Int direction)
+    {
+        Vector3Int north = Vector3Int.zero;
+        Vector3Int east = Vector3Int.zero;
+
+        if (direction == Vector3Int.up)
+        {
+            north = Vector3Int.forward;
+            east = Vector3Int.right;
+        }
+        else if (direction == Vector3Int.down)
+        {
+            north = Vector3Int.forward;
+            east = Vector3Int.right;
+        }
+        else if (direction == Vector3Int.forward)
+        {
+            north = Vector3Int.up;
+            east = Vector3Int.left;
+        }
+        else if (direction == Vector3Int.back)
+        {
+            north = Vector3Int.up;
+            east = Vector3Int.right;
+        }
+        else if (direction == Vector3Int.right)
+        {
+            north = Vector3Int.up;
+            east = Vector3Int.forward;
+        }
+        else if (direction == Vector3Int.left)
+        {
+            north = Vector3Int.up;
+            east = Vector3Int.back;
+        }
+
+        int stageNormalBlobIndex = 0;
+
+        bool n = chunk.GetChunkCell(cellPosition + north).IsFilled();
+        bool ne = chunk.GetChunkCell(cellPosition + north + east).IsFilled();
+        bool e = chunk.GetChunkCell(cellPosition + east).IsFilled();
+        bool se = chunk.GetChunkCell(cellPosition + -north + east).IsFilled();
+        bool s = chunk.GetChunkCell(cellPosition + -north).IsFilled();
+        bool sw = chunk.GetChunkCell(cellPosition + -north + -east).IsFilled();
+        bool w = chunk.GetChunkCell(cellPosition + -east).IsFilled();
+        bool nw = chunk.GetChunkCell(cellPosition + north + -east).IsFilled();
+
+        // N
+        if (n)
+        {
+            stageNormalBlobIndex += 1;
+        }
+
+        // NE
+        if (ne && n && e)
+        {
+            stageNormalBlobIndex += 2;
+        }
+
+        // E
+        if (e)
+        {
+            stageNormalBlobIndex += 4;
+        }
+
+        // SE
+        if (se && s && e)
+        {
+            stageNormalBlobIndex += 8;
+        }
+
+        // S
+        if (s)
+        {
+            stageNormalBlobIndex += 16;
+        }
+
+        // SW
+        if (sw && s && w)
+        {
+            stageNormalBlobIndex += 32;
+        }
+
+        // W
+        if (w)
+        {
+            stageNormalBlobIndex += 64;
+        }
+
+        // NW
+        if (nw && n && w)
+        {
+            stageNormalBlobIndex += 128;
+        }
+
+        if (stageNormalTable.ContainsKey(stageNormalBlobIndex))
+        {
+            return stageNormalTable[stageNormalBlobIndex];
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

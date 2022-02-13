@@ -28,7 +28,8 @@ public class StageMeshCreator
         Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.AngleAxis(-90f, Vector3.up)) * Matrix4x4.Rotate(Quaternion.AngleAxis(-90f, Vector3.right));
         Matrix4x4 transformationMatrix = translationMatrix * rotationMatrix;
 
-        StageGeometryType cellGeometryType = chunk.GetChunkCell(cell).GetGeometryType();
+        ChunkCell cellDef = chunk.GetChunkCell(cell);
+        StageGeometryType cellGeometryType = cellDef.GetGeometryType();
 
         for (int i = 1; i <= 4; i++)
         {
@@ -55,7 +56,7 @@ public class StageMeshCreator
             if (insetAdjacentZCheck)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeZ_W" + i + "_IS"), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeZ_W" + i + "_IS"), cellDef, cell, chunk, quadrantCheck[0]);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -63,7 +64,7 @@ public class StageMeshCreator
             if (insetAdjacentXCheck)
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeX_W" + i + "_IS"), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, "EdgeX_W" + i + "_IS"), cellDef, cell, chunk, quadrantCheck[1]);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -78,7 +79,7 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), cellDef, cell, chunk, quadrantCheck[1]);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -92,7 +93,7 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), 0, 0f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + insetType), cellDef, cell, chunk, quadrantCheck[0]);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -114,12 +115,12 @@ public class StageMeshCreator
                 }
 
                 CombineInstance ciL = new CombineInstance();
-                ciL.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "L" + insetType), 0, 0f);
+                ciL.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "L" + insetType), cellDef, cell, chunk, (i == 2 || i == 4) ? quadrantCheck[1] : quadrantCheck[0]);
                 ciL.transform = transformationMatrix;
                 combineList.Add(ciL);
 
                 CombineInstance ciR = new CombineInstance();
-                ciR.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "R" + insetType), 0, 0f);
+                ciR.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_W" + i + "R" + insetType), cellDef, cell, chunk, (i == 2 || i == 4) ? quadrantCheck[0] : quadrantCheck[1]);
                 ciR.transform = transformationMatrix;
                 combineList.Add(ciR);
             }
@@ -138,7 +139,7 @@ public class StageMeshCreator
                 (chunk.GetChunkCell(cell + Vector3Int.up).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_T" + i + insetType), 0, 1f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_T" + i + insetType), cellDef, cell, chunk, Vector3Int.up);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -153,7 +154,7 @@ public class StageMeshCreator
                 (chunk.GetChunkCell(cell + Vector3Int.down).IsInsetRight() && (i == 1 || i == 4)))
             {
                 CombineInstance ci = new CombineInstance();
-                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_B" + i + insetType), 0, 1f);
+                ci.mesh = CreateMeshPart(repo.GetStageMeshPart(cellGeometryType, quadrantType + "_B" + i + insetType), cellDef, cell, chunk, Vector3Int.down);
                 ci.transform = transformationMatrix;
                 combineList.Add(ci);
             }
@@ -162,8 +163,10 @@ public class StageMeshCreator
         return combineList;
     }
 
-    private Mesh CreateMeshPart(Mesh meshPrototype, int layer, float textureIndex)
+    private Mesh CreateMeshPart(Mesh meshPrototype, ChunkCell cellDef, Vector3Int cellPosition, Chunk chunk, Vector3Int direction)
     {
+        int layer = 0;
+        float textureIndex = 0;
         Mesh mesh = new Mesh();
 
         List<Vector3> vertices = new List<Vector3>();
@@ -193,6 +196,22 @@ public class StageMeshCreator
             uvs2.Add(new Vector4(textureIndex, 0f, 0f, 0f));
         }
         mesh.SetUVs(1, uvs2);
+
+        List<Vector4> uvs3 = new List<Vector4>();
+        foreach (Vector2 uv in meshPrototype.uv)
+        {
+            uvs3.Add(new Vector4(0f, 0f, 0f, cellDef.geometryType));
+        }
+        mesh.SetUVs(2, uvs3);
+
+        float stageNormalIndex = repo.CalculateStageNormalIndex(cellPosition, chunk, direction);
+
+        List<Vector4> uvs4 = new List<Vector4>();
+        foreach (Vector2 uv in meshPrototype.uv)
+        {
+            uvs4.Add(new Vector4(stageNormalIndex, 0f, 0f, 0f));
+        }
+        mesh.SetUVs(3, uvs4);
 
         List<Vector3> normals = new List<Vector3>();
         foreach (Vector3 normal in meshPrototype.normals)
