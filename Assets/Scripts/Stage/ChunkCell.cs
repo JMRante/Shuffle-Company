@@ -6,8 +6,6 @@ public struct ChunkCell
 {
     public byte isFilled;
 
-    public byte geometryType;
-
     public byte cellDefinition;
 
     public byte decalDefinitionTop;
@@ -21,8 +19,6 @@ public struct ChunkCell
     public ChunkCell(byte isFilled, byte cellDefinition)
     {
         this.isFilled = isFilled;
-
-        this.geometryType = 0;
 
         this.cellDefinition = cellDefinition;
 
@@ -51,16 +47,6 @@ public struct ChunkCell
         {
             this.isFilled = 0;
         }
-    }
-
-    public StageGeometryType GetGeometryType()
-    {
-        return (StageGeometryType) geometryType;
-    }
-
-    public void SetGeometryType(StageGeometryType geometryType)
-    {
-        this.geometryType = (byte) geometryType;
     }
 
     public bool IsInsetForward()

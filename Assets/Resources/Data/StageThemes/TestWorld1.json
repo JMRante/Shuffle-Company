@@ -1,0 +1,23 @@
+{
+    "name": "TestWorld1",
+    "stageCellDefinitions": [
+        {
+            "name": "CanyonBlock",
+            "geometryType": 5,
+
+            "textureDefinitionTop": 0,
+            "textureDefinitionBottom": 1,
+            "textureDefinitionLeft": 2,
+            "textureDefinitionRight": 2,
+            "textureDefinitionForward": 2,
+            "textureDefinitionBack": 2,
+
+            "edgeTop": 255,
+            "edgeBottom": 255,
+            "edgeLeft": 255,
+            "edgeRight": 255,
+            "edgeForward": 255,
+            "edgeBack": 255
+        }
+    ]
+}

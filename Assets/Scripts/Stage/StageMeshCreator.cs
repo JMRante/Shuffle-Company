@@ -29,7 +29,7 @@ public class StageMeshCreator
         Matrix4x4 transformationMatrix = translationMatrix * rotationMatrix;
 
         ChunkCell cellDef = chunk.GetChunkCell(cell);
-        StageGeometryType cellGeometryType = cellDef.GetGeometryType();
+        StageGeometryType cellGeometryType = repo.GetStageThemeDefinition().stageCellDefinitions[cellDef.cellDefinition].GetGeometryType();
 
         for (int i = 1; i <= 4; i++)
         {
@@ -165,9 +165,36 @@ public class StageMeshCreator
 
     private Mesh CreateMeshPart(Mesh meshPrototype, ChunkCell cellDef, Vector3Int cellPosition, Chunk chunk, Vector3Int direction)
     {
+        StageCellDefinition cellDefinition = repo.GetStageThemeDefinition().stageCellDefinitions[cellDef.cellDefinition];
+        StageGeometryType cellGeometryType = cellDefinition.GetGeometryType();
         int layer = 0;
         float textureIndex = 0;
         Mesh mesh = new Mesh();
+
+        if (direction == Vector3Int.up)
+        {
+            textureIndex = cellDefinition.textureDefinitionTop;
+        }
+        else if (direction == Vector3Int.down)
+        {
+            textureIndex = cellDefinition.textureDefinitionBottom;
+        }
+        else if (direction == Vector3Int.forward)
+        {
+            textureIndex = cellDefinition.textureDefinitionForward;
+        }
+        else if (direction == Vector3Int.back)
+        {
+            textureIndex = cellDefinition.textureDefinitionBack;
+        }
+        else if (direction == Vector3Int.right)
+        {
+            textureIndex = cellDefinition.textureDefinitionRight;
+        }
+        else if (direction == Vector3Int.left)
+        {
+            textureIndex = cellDefinition.textureDefinitionLeft;
+        }
 
         List<Vector3> vertices = new List<Vector3>();
         foreach (Vector3 vertex in meshPrototype.vertices)
@@ -200,7 +227,7 @@ public class StageMeshCreator
         List<Vector4> uvs3 = new List<Vector4>();
         foreach (Vector2 uv in meshPrototype.uv)
         {
-            uvs3.Add(new Vector4(0f, 0f, 0f, cellDef.geometryType));
+            uvs3.Add(new Vector4(0f, 0f, 0f, (float) cellGeometryType));
         }
         mesh.SetUVs(2, uvs3);
 

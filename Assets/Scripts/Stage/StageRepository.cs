@@ -18,19 +18,22 @@ public enum StageGeometryType
 
 public enum StageTextureSheetType
 {
-    stageTexture256,
-    stageTexture512,
-    stageTexture1024,
-    stageTextureBlob,
-    stageTextureEdge,
-    stageTextureDecal
+    stage256,
+    stage512,
+    stage1024,
+    stageBlob1,
+    stageBlob2,
+    stageBlob3,
+    stageBlob4,
+    stageEdge,
+    stageDecal
 }
 
 public class StageRepository : MonoBehaviour
 {
     private Dictionary<string, Mesh>[] geometryRepo;
     private Texture2DArray[] textureRepo;
-    private StageCellDefinition[] cellRepo;
+    private StageThemeDefinition themeRepo;
     private GameObject[] propRepo;
 
     private static readonly Dictionary<int, int> stageNormalTable = new Dictionary<int, int>
@@ -151,12 +154,31 @@ public class StageRepository : MonoBehaviour
     private void LoadStageTexture(StageTextureSheetType sheetType, string themeName)
     {
         string name = Enum.GetName(typeof(StageTextureSheetType), sheetType);
-        Texture2DArray textureArray = Resources.Load<Texture2DArray>("Textures/StageTextures/" + name + themeName);
+        Texture2DArray textureArray = Resources.Load<Texture2DArray>("Textures/StageTextures/" + themeName + "/" + name + "Albedo" + themeName);
+        textureRepo[(int)sheetType] = textureArray;
+    }
+
+    public void LoadStageTexturesToMaterial(Material material)
+    {
+        if (textureRepo != null && textureRepo.Length > 0)
+        {
+            for (int i = 0; i < textureRepo.Length; i++)
+            {
+                Debug.Log(Enum.GetName(typeof(StageTextureSheetType), i) + "Albedo  = " + textureRepo[i]);
+                material.SetTexture(Enum.GetName(typeof(StageTextureSheetType), i) + "Albedo", textureRepo[i]);
+            }
+        }
     }
 
     private void LoadStageCellDefinition(string themeName)
     {
-        TextAsset definitionDataFile = Resources.Load<TextAsset>("Data/StageCells/StageCellDefinitions" + themeName + ".json");
+        TextAsset definitionDataFile = Resources.Load<TextAsset>("Data/StageThemes/" + themeName);
+        themeRepo = StageThemeDefinition.createFromJSON(definitionDataFile.text);
+    }
+
+    public StageThemeDefinition GetStageThemeDefinition()
+    {
+        return themeRepo;
     }
 
     private void LoadStageProps(string themeName)

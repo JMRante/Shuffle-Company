@@ -39,7 +39,7 @@ public class CreatorCursor : MonoBehaviour
     void Start()
     {
         brush = new ChunkCell(1, 0);
-        brush.SetGeometryType(StageGeometryType.Square);
+        brush.cellDefinition = 0;
         eraseBrush = new ChunkCell(0, 0);
 
         creatorGridCollider = creatorGrid.GetComponent<Collider>();
