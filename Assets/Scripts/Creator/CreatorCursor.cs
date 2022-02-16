@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum CreatorOperationType
 {
@@ -57,7 +58,7 @@ public class CreatorCursor : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (creatorGridCollider.Raycast(ray, out hit, 500.0f))
+        if (creatorGridCollider.Raycast(ray, out hit, 500.0f) && !EventSystem.current.IsPointerOverGameObject())
         {
             creatorCursorRenderer.enabled = true;
             transform.position = Utility.Round(hit.point + (Vector3.up * 0.5f));
@@ -101,7 +102,7 @@ public class CreatorCursor : MonoBehaviour
 
         if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || wasLastOperationErase)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 switch(operationMode)
                 {
@@ -147,7 +148,7 @@ public class CreatorCursor : MonoBehaviour
 
         if (transform.position != lastModifiedCellPosition || lastModifiedCellCooldownTimer == 0f || !wasLastOperationErase)
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) && !EventSystem.current.IsPointerOverGameObject())
             {
                 switch (operationMode)
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum StageGeometryType
 {
@@ -116,7 +117,7 @@ public class StageRepository : MonoBehaviour
             LoadStageTexture(type, themeName);
         }
 
-        LoadStageCellDefinition(themeName);
+        LoadStageThemeDefinition(themeName);
         LoadStageProps(themeName);
     }
 
@@ -170,10 +171,26 @@ public class StageRepository : MonoBehaviour
         }
     }
 
-    private void LoadStageCellDefinition(string themeName)
+    private void LoadStageThemeDefinition(string themeName)
     {
         TextAsset definitionDataFile = Resources.Load<TextAsset>("Data/StageThemes/" + themeName);
         themeRepo = StageThemeDefinition.createFromJSON(definitionDataFile.text);
+
+        GameObject creatorDropdownObject = GameObject.Find("CellDropdown");
+
+        if (creatorDropdownObject != null)
+        {
+            List<string> cellDefinitionNames = new List<string>();
+
+            foreach (StageCellDefinition scd in themeRepo.stageCellDefinitions)
+            {
+                cellDefinitionNames.Add(scd.name);
+            }
+
+            Dropdown creatorDropdown = creatorDropdownObject.GetComponent<Dropdown>();
+            creatorDropdown.ClearOptions();
+            creatorDropdown.AddOptions(cellDefinitionNames);
+        }
     }
 
     public StageThemeDefinition GetStageThemeDefinition()
