@@ -26,7 +26,7 @@ public class StageChunks : MonoBehaviour
 
     public string stageTheme = "TestWorld1";
 
-    private StageRepository stageRepo;
+    public StageRepository stageRepo;
     private StageMeshCreator stageMeshCreator;
 
     void Start()

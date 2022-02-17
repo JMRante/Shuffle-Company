@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum CreatorOperationType
 {
@@ -193,5 +194,10 @@ public class CreatorCursor : MonoBehaviour
         }
 
         lastModifiedCellCooldownTimer = Mathf.Clamp(lastModifiedCellCooldownTimer - Time.deltaTime, 0, lastModifiedCellCooldown);
+    }
+
+    public void ChangeBrushCell(Dropdown change)
+    {
+        brush.cellDefinition = (byte) change.value;
     }
 }
