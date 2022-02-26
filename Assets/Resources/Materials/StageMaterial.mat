@@ -19,6 +19,22 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - MainAlbedo:
+        m_Texture: {fileID: 18700000, guid: e21663e53b02eaf47be6ed2e859cd69a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - MainNormal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - MainProps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - StageNormal:
+        m_Texture: {fileID: 18700000, guid: e747991589e9d1f449056488811d4e41, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2DArray_02808c98c845486498586c9ed9c7642d:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -271,8 +287,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - stage1024Albedo:
+        m_Texture: {fileID: 18700000, guid: 4871f23da6c2e7d4591d37dc5594c25c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - stage256Albedo:
         m_Texture: {fileID: 18700000, guid: ea5fc9d0bcbe9ab4e98bb9db6765f68f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - stage512Albedo:
+        m_Texture: {fileID: 18700000, guid: f0925a101f0aeb44a8b59d632b48882f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:

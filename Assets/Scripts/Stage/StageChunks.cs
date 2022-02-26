@@ -72,7 +72,7 @@ public class StageChunks : MonoBehaviour
         }
     }
 
-    public Vector3Int WorldPositionToChunkPosition(Vector3 position)
+    public static Vector3Int WorldPositionToChunkPosition(Vector3 position)
     {
         return new Vector3Int(
             Mathf.CeilToInt(position.x) % Chunk.CHUNK_WIDTH, 
@@ -80,7 +80,7 @@ public class StageChunks : MonoBehaviour
             Mathf.CeilToInt(position.z) % Chunk.CHUNK_DEPTH);
     }
 
-    public Vector3 ChunkPositionToWorldPosition(Vector3Int position, Vector3 chunkPosition)
+    public static Vector3 ChunkPositionToWorldPosition(Vector3Int position, Vector3 chunkPosition)
     {
         return new Vector3(
             (chunkPosition.x - Mathf.RoundToInt(Chunk.CHUNK_WIDTH / 2f)) + position.x, 

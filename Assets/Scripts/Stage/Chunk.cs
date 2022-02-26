@@ -54,7 +54,7 @@ public class Chunk : MonoBehaviour
     {
         if (position.x < 0 || position.x >= CHUNK_WIDTH || position.y < 0 || position.y >= CHUNK_HEIGHT || position.z < 0 || position.z >= CHUNK_DEPTH)
         {
-            Vector3 worldPosition = chunkManager.ChunkPositionToWorldPosition(position, transform.position);
+            Vector3 worldPosition = StageChunks.ChunkPositionToWorldPosition(position, transform.position);
             return chunkManager.GetChunkCell(worldPosition);
         }
         else

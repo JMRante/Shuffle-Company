@@ -7,21 +7,24 @@ public class StageCellDefinition
 {
     public string name;
 
-    public byte geometryType;
+    public int geometryType;
 
-    public byte textureDefinitionTop;
-    public byte textureDefinitionBottom;
-    public byte textureDefinitionLeft;
-    public byte textureDefinitionRight;
-    public byte textureDefinitionForward;
-    public byte textureDefinitionBack;
+    public StageTextureDefinition textureDefinitionTop;
+    public StageTextureDefinition textureDefinitionBottom;
+    public StageTextureDefinition textureDefinitionLeft;
+    public StageTextureDefinition textureDefinitionRight;
+    public StageTextureDefinition textureDefinitionForward;
+    public StageTextureDefinition textureDefinitionBack;
 
-    public byte edgeTop;
-    public byte edgeBottom;
-    public byte edgeLeft;
-    public byte edgeRight;
-    public byte edgeForward;
-    public byte edgeBack;
+    public bool acceptEdges;
+    public int edgePriority;
+
+    public StageTextureDefinition edgeTop;
+    public StageTextureDefinition edgeBottom;
+    public StageTextureDefinition edgeLeft;
+    public StageTextureDefinition edgeRight;
+    public StageTextureDefinition edgeForward;
+    public StageTextureDefinition edgeBack;
 
     public StageGeometryType GetGeometryType()
     {
@@ -30,6 +33,6 @@ public class StageCellDefinition
 
     public void SetGeometryType(StageGeometryType geometryType)
     {
-        this.geometryType = (byte)geometryType;
+        this.geometryType = (int)geometryType;
     }
 }

@@ -167,99 +167,105 @@ public class StageMeshCreator
     {
         StageCellDefinition cellDefinition = repo.GetStageThemeDefinition().stageCellDefinitions[cellDef.cellDefinition];
         StageGeometryType cellGeometryType = cellDefinition.GetGeometryType();
-        int layer = 0;
-        float textureIndex = 0;
+
+        // int layer = 0;
+
+        StageTextureDefinition textureDefinition = null;
         Mesh mesh = new Mesh();
 
         if (direction == Vector3Int.up)
         {
-            textureIndex = cellDefinition.textureDefinitionTop;
+            textureDefinition = cellDefinition.textureDefinitionTop;
         }
         else if (direction == Vector3Int.down)
         {
-            textureIndex = cellDefinition.textureDefinitionBottom;
+            textureDefinition = cellDefinition.textureDefinitionBottom;
         }
         else if (direction == Vector3Int.forward)
         {
-            textureIndex = cellDefinition.textureDefinitionForward;
+            textureDefinition = cellDefinition.textureDefinitionForward;
         }
         else if (direction == Vector3Int.back)
         {
-            textureIndex = cellDefinition.textureDefinitionBack;
+            textureDefinition = cellDefinition.textureDefinitionBack;
         }
         else if (direction == Vector3Int.right)
         {
-            textureIndex = cellDefinition.textureDefinitionRight;
+            textureDefinition = cellDefinition.textureDefinitionRight;
         }
         else if (direction == Vector3Int.left)
         {
-            textureIndex = cellDefinition.textureDefinitionLeft;
+            textureDefinition = cellDefinition.textureDefinitionLeft;
         }
 
-        List<Vector3> vertices = new List<Vector3>();
-        foreach (Vector3 vertex in meshPrototype.vertices)
+        if (textureDefinition != null)
         {
-            vertices.Add(vertex);
-        }
-        mesh.SetVertices(vertices);
+            float baseTextureIndex = textureDefinition.CalculateTextureIndex(cellPosition, chunk, direction);
+            float stageNormalIndex = repo.GetStageNormalTextureDefinition(cellGeometryType).CalculateTextureIndex(cellPosition, chunk, direction);
 
-        List<int> triangles = new List<int>();
-        foreach (int triangle in meshPrototype.triangles)
-        {
-            triangles.Add(triangle);
-        }
-        mesh.SetTriangles(triangles, 0);
+            List<Vector3> vertices = new List<Vector3>();
+            foreach (Vector3 vertex in meshPrototype.vertices)
+            {
+                vertices.Add(vertex);
+            }
+            mesh.SetVertices(vertices);
 
-        List<Vector2> uvs = new List<Vector2>();
-        foreach (Vector2 uv in meshPrototype.uv)
-        {
-            uvs.Add(uv);
-        }
-        mesh.SetUVs(0, uvs);
+            List<int> triangles = new List<int>();
+            foreach (int triangle in meshPrototype.triangles)
+            {
+                triangles.Add(triangle);
+            }
+            mesh.SetTriangles(triangles, 0);
 
-        List<Vector4> uvs2 = new List<Vector4>();
-        foreach (Vector2 uv in meshPrototype.uv)
-        {
-            uvs2.Add(new Vector4(textureIndex, 0f, 0f, 0f));
-        }
-        mesh.SetUVs(1, uvs2);
+            List<Vector2> uvs = new List<Vector2>();
+            foreach (Vector2 uv in meshPrototype.uv)
+            {
+                uvs.Add(uv);
+            }
+            mesh.SetUVs(0, uvs);
 
-        List<Vector4> uvs3 = new List<Vector4>();
-        foreach (Vector2 uv in meshPrototype.uv)
-        {
-            uvs3.Add(new Vector4(0f, 0f, 0f, (float) cellGeometryType));
-        }
-        mesh.SetUVs(2, uvs3);
+            List<Vector4> uvs2 = new List<Vector4>();
+            foreach (Vector2 uv in meshPrototype.uv)
+            {
+                uvs2.Add(new Vector4(baseTextureIndex, 0f, stageNormalIndex, 0f));
+            }
+            mesh.SetUVs(1, uvs2);
 
-        float stageNormalIndex = repo.CalculateStageNormalIndex(cellPosition, chunk, direction);
+            List<Vector4> uvs3 = new List<Vector4>();
+            foreach (Vector2 uv in meshPrototype.uv)
+            {
+                uvs3.Add(new Vector4(0f, 0f, 0f, 0f));
+            }
+            mesh.SetUVs(2, uvs3);
 
-        List<Vector4> uvs4 = new List<Vector4>();
-        foreach (Vector2 uv in meshPrototype.uv)
-        {
-            uvs4.Add(new Vector4(stageNormalIndex, 0f, 0f, 0f));
-        }
-        mesh.SetUVs(3, uvs4);
+            List<Vector4> uvs4 = new List<Vector4>();
+            foreach (Vector2 uv in meshPrototype.uv)
+            {
+                uvs4.Add(new Vector4(0f, 0f, 0f, 0f));
+            }
+            mesh.SetUVs(3, uvs4);
 
-        List<Vector3> normals = new List<Vector3>();
-        foreach (Vector3 normal in meshPrototype.normals)
-        {
-            normals.Add(normal);
-        }
-        mesh.SetNormals(normals);
+            List<Vector3> normals = new List<Vector3>();
+            foreach (Vector3 normal in meshPrototype.normals)
+            {
+                normals.Add(normal);
+            }
+            mesh.SetNormals(normals);
 
-        List<Vector4> tangents = new List<Vector4>();
-        foreach (Vector4 tangent in meshPrototype.tangents)
-        {
-            tangents.Add(tangent);
-        }
-        mesh.SetTangents(tangents);
+            List<Vector4> tangents = new List<Vector4>();
+            foreach (Vector4 tangent in meshPrototype.tangents)
+            {
+                tangents.Add(tangent);
+            }
+            mesh.SetTangents(tangents);
 
-        List<Color> colors = new List<Color>();
-        foreach (Color color in meshPrototype.colors)
-        {
-            colors.Add(color);
+            List<Color> colors = new List<Color>();
+            foreach (Color color in meshPrototype.colors)
+            {
+                colors.Add(color);
+            }
+            mesh.SetColors(colors);
         }
-        mesh.SetColors(colors);
 
         return mesh;
     }

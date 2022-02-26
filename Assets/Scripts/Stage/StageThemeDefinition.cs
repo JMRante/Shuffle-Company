@@ -7,6 +7,7 @@ public class StageThemeDefinition
 {
     public string name;
     public StageCellDefinition[] stageCellDefinitions;
+    public StageTextureDefinition[] stageDecalDefinitions;
 
     public static StageThemeDefinition createFromJSON(string jsonString)
     {

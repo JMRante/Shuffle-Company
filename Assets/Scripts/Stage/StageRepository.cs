@@ -19,15 +19,9 @@ public enum StageGeometryType
 
 public enum StageTextureSheetType
 {
-    stage256,
-    stage512,
-    stage1024,
-    stageBlob1,
-    stageBlob2,
-    stageBlob3,
-    stageBlob4,
-    stageEdge,
-    stageDecal
+    Albedo,
+    Props,
+    Normal
 }
 
 public class StageRepository : MonoBehaviour
@@ -37,61 +31,18 @@ public class StageRepository : MonoBehaviour
     private StageThemeDefinition themeRepo;
     private GameObject[] propRepo;
 
-    private static readonly Dictionary<int, int> stageNormalTable = new Dictionary<int, int>
+    private static readonly Dictionary<StageGeometryType, StageTextureDefinition> stageNormalOriginTable = new Dictionary<StageGeometryType, StageTextureDefinition>
     {
-        { 0, 0 },
-        { 4, 1 },
-        { 92, 2 },
-        { 124, 3 },
-        { 116, 4 },
-        { 80, 5 },
-
-        { 16, 8 },
-        { 20, 9 },
-        { 87, 10 },
-        { 223, 11 },
-        { 241, 12 },
-        { 21, 13 },
-        { 64, 14 },
-
-        { 29, 16 },
-        { 117, 17 },
-        { 85, 18 },
-        { 71, 19 },
-        { 221, 20 },
-        { 125, 21 },
-        { 112, 22 },
-
-        { 31, 24 },
-        { 253, 25 },
-        { 113, 26 },
-        { 28, 27 },
-        { 127, 28 },
-        { 247, 29 },
-        { 209, 30 },
-
-        { 23, 32 },
-        { 199, 33 },
-        { 213, 34 },
-        { 95, 35 },
-        { 255, 36 },
-        { 245, 37 },
-        { 81, 38 },
-
-        { 5, 40 },
-        { 84, 41 },
-        { 93, 42 },
-        { 119, 43 },
-        { 215, 44 },
-        { 193, 45 },
-        { 17, 46 },
-
-        { 1, 49 },
-        { 7, 50 },
-        { 197, 51 },
-        { 69, 52 },
-        { 68, 53 },
-        { 65, 54 }
+        { StageGeometryType.Square,       new StageTextureDefinition(0, 0, TexturePatternType.Blob) },
+        { StageGeometryType.SmallBevel,   new StageTextureDefinition(0, 8, TexturePatternType.Blob) },
+        { StageGeometryType.LargeBevel,   new StageTextureDefinition(0, 16, TexturePatternType.Blob) },
+        { StageGeometryType.SmallCurve,   new StageTextureDefinition(0, 24, TexturePatternType.Blob) },
+        { StageGeometryType.LargeCurve,   new StageTextureDefinition(8, 0, TexturePatternType.Blob) },
+        // { StageGeometryType.WeakJagged,   new StageTextureDefinition(8, 8, TexturePatternType.Blob) },
+        { StageGeometryType.WeakJagged,   new StageTextureDefinition(0, 0, TexturePatternType.Blob) },
+        { StageGeometryType.StrongJagged, new StageTextureDefinition(8, 16, TexturePatternType.Blob) },
+        { StageGeometryType.WeakWave,     new StageTextureDefinition(8, 24, TexturePatternType.Blob) },
+        { StageGeometryType.StrongWave,   new StageTextureDefinition(16, 0, TexturePatternType.Blob) }
     };
 
     void Start()
@@ -154,8 +105,8 @@ public class StageRepository : MonoBehaviour
 
     private void LoadStageTexture(StageTextureSheetType sheetType, string themeName)
     {
-        string name = Enum.GetName(typeof(StageTextureSheetType), sheetType);
-        Texture2DArray textureArray = Resources.Load<Texture2DArray>("Textures/StageTextures/" + themeName + "/" + name + "Albedo" + themeName);
+        string typeName = Enum.GetName(typeof(StageTextureSheetType), sheetType);
+        Texture2DArray textureArray = Resources.Load<Texture2DArray>("Textures/StageTextures/" + themeName + "/" + themeName + typeName);
         textureRepo[(int)sheetType] = textureArray;
     }
 
@@ -165,8 +116,7 @@ public class StageRepository : MonoBehaviour
         {
             for (int i = 0; i < textureRepo.Length; i++)
             {
-                Debug.Log(Enum.GetName(typeof(StageTextureSheetType), i) + "Albedo  = " + textureRepo[i]);
-                material.SetTexture(Enum.GetName(typeof(StageTextureSheetType), i) + "Albedo", textureRepo[i]);
+                material.SetTexture("Main" + Enum.GetName(typeof(StageTextureSheetType), i), textureRepo[i]);
             }
         }
     }
@@ -203,108 +153,8 @@ public class StageRepository : MonoBehaviour
 
     }
 
-    public int CalculateStageNormalIndex(Vector3Int cellPosition, Chunk chunk, Vector3Int direction)
+    public StageTextureDefinition GetStageNormalTextureDefinition(StageGeometryType stageGeometryType)
     {
-        Vector3Int north = Vector3Int.zero;
-        Vector3Int east = Vector3Int.zero;
-
-        if (direction == Vector3Int.up)
-        {
-            north = Vector3Int.forward;
-            east = Vector3Int.right;
-        }
-        else if (direction == Vector3Int.down)
-        {
-            north = Vector3Int.forward;
-            east = Vector3Int.right;
-        }
-        else if (direction == Vector3Int.forward)
-        {
-            north = Vector3Int.up;
-            east = Vector3Int.left;
-        }
-        else if (direction == Vector3Int.back)
-        {
-            north = Vector3Int.up;
-            east = Vector3Int.right;
-        }
-        else if (direction == Vector3Int.right)
-        {
-            north = Vector3Int.up;
-            east = Vector3Int.forward;
-        }
-        else if (direction == Vector3Int.left)
-        {
-            north = Vector3Int.up;
-            east = Vector3Int.back;
-        }
-
-        int stageNormalBlobIndex = 0;
-
-        bool n = chunk.GetChunkCell(cellPosition + north).IsFilled();
-        bool ne = chunk.GetChunkCell(cellPosition + north + east).IsFilled();
-        bool e = chunk.GetChunkCell(cellPosition + east).IsFilled();
-        bool se = chunk.GetChunkCell(cellPosition + -north + east).IsFilled();
-        bool s = chunk.GetChunkCell(cellPosition + -north).IsFilled();
-        bool sw = chunk.GetChunkCell(cellPosition + -north + -east).IsFilled();
-        bool w = chunk.GetChunkCell(cellPosition + -east).IsFilled();
-        bool nw = chunk.GetChunkCell(cellPosition + north + -east).IsFilled();
-
-        // N
-        if (n)
-        {
-            stageNormalBlobIndex += 1;
-        }
-
-        // NE
-        if (ne && n && e)
-        {
-            stageNormalBlobIndex += 2;
-        }
-
-        // E
-        if (e)
-        {
-            stageNormalBlobIndex += 4;
-        }
-
-        // SE
-        if (se && s && e)
-        {
-            stageNormalBlobIndex += 8;
-        }
-
-        // S
-        if (s)
-        {
-            stageNormalBlobIndex += 16;
-        }
-
-        // SW
-        if (sw && s && w)
-        {
-            stageNormalBlobIndex += 32;
-        }
-
-        // W
-        if (w)
-        {
-            stageNormalBlobIndex += 64;
-        }
-
-        // NW
-        if (nw && n && w)
-        {
-            stageNormalBlobIndex += 128;
-        }
-
-        if (stageNormalTable.ContainsKey(stageNormalBlobIndex))
-        {
-            return stageNormalTable[stageNormalBlobIndex];
-        }
-        else
-        {
-            return 0;
-        }
+        return stageNormalOriginTable[stageGeometryType];
     }
 }
