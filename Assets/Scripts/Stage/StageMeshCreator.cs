@@ -171,37 +171,44 @@ public class StageMeshCreator
         // int layer = 0;
 
         StageTextureDefinition textureDefinition = null;
+        StageTextureDefinition stageNormalTextureDefinition = null;
         Mesh mesh = new Mesh();
 
         if (direction == Vector3Int.up)
         {
             textureDefinition = cellDefinition.textureDefinitionTop;
+            stageNormalTextureDefinition = repo.GetStageNormalYTextureDefinition(cellGeometryType);
         }
         else if (direction == Vector3Int.down)
         {
             textureDefinition = cellDefinition.textureDefinitionBottom;
+            stageNormalTextureDefinition = repo.GetStageNormalYTextureDefinition(cellGeometryType);
         }
         else if (direction == Vector3Int.forward)
         {
             textureDefinition = cellDefinition.textureDefinitionForward;
+            stageNormalTextureDefinition = repo.GetStageNormalXZTextureDefinition(cellGeometryType);
         }
         else if (direction == Vector3Int.back)
         {
             textureDefinition = cellDefinition.textureDefinitionBack;
+            stageNormalTextureDefinition = repo.GetStageNormalXZTextureDefinition(cellGeometryType);
         }
         else if (direction == Vector3Int.right)
         {
             textureDefinition = cellDefinition.textureDefinitionRight;
+            stageNormalTextureDefinition = repo.GetStageNormalXZTextureDefinition(cellGeometryType);
         }
         else if (direction == Vector3Int.left)
         {
             textureDefinition = cellDefinition.textureDefinitionLeft;
+            stageNormalTextureDefinition = repo.GetStageNormalXZTextureDefinition(cellGeometryType);
         }
 
-        if (textureDefinition != null)
+        if (textureDefinition != null && stageNormalTextureDefinition != null)
         {
             float baseTextureIndex = textureDefinition.CalculateTextureIndex(cellPosition, chunk, direction);
-            float stageNormalIndex = repo.GetStageNormalTextureDefinition(cellGeometryType).CalculateTextureIndex(cellPosition, chunk, direction);
+            float stageNormalIndex = stageNormalTextureDefinition.CalculateTextureIndex(cellPosition, chunk, direction);
 
             List<Vector3> vertices = new List<Vector3>();
             foreach (Vector3 vertex in meshPrototype.vertices)

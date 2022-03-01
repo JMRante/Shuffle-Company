@@ -31,14 +31,26 @@ public class StageRepository : MonoBehaviour
     private StageThemeDefinition themeRepo;
     private GameObject[] propRepo;
 
-    private static readonly Dictionary<StageGeometryType, StageTextureDefinition> stageNormalOriginTable = new Dictionary<StageGeometryType, StageTextureDefinition>
+    private static readonly Dictionary<StageGeometryType, StageTextureDefinition> stageNormalYOriginTable = new Dictionary<StageGeometryType, StageTextureDefinition>
     {
         { StageGeometryType.Square,       new StageTextureDefinition(0, 0, TexturePatternType.Blob) },
         { StageGeometryType.SmallBevel,   new StageTextureDefinition(0, 8, TexturePatternType.Blob) },
         { StageGeometryType.LargeBevel,   new StageTextureDefinition(0, 16, TexturePatternType.Blob) },
         { StageGeometryType.SmallCurve,   new StageTextureDefinition(0, 24, TexturePatternType.Blob) },
         { StageGeometryType.LargeCurve,   new StageTextureDefinition(8, 0, TexturePatternType.Blob) },
-        // { StageGeometryType.WeakJagged,   new StageTextureDefinition(8, 8, TexturePatternType.Blob) },
+        { StageGeometryType.WeakJagged,   new StageTextureDefinition(8, 8, TexturePatternType.Blob) },
+        { StageGeometryType.StrongJagged, new StageTextureDefinition(8, 16, TexturePatternType.Blob) },
+        { StageGeometryType.WeakWave,     new StageTextureDefinition(8, 24, TexturePatternType.Blob) },
+        { StageGeometryType.StrongWave,   new StageTextureDefinition(16, 0, TexturePatternType.Blob) }
+    };
+
+    private static readonly Dictionary<StageGeometryType, StageTextureDefinition> stageNormalXZOriginTable = new Dictionary<StageGeometryType, StageTextureDefinition>
+    {
+        { StageGeometryType.Square,       new StageTextureDefinition(0, 0, TexturePatternType.Blob) },
+        { StageGeometryType.SmallBevel,   new StageTextureDefinition(0, 8, TexturePatternType.Blob) },
+        { StageGeometryType.LargeBevel,   new StageTextureDefinition(0, 16, TexturePatternType.Blob) },
+        { StageGeometryType.SmallCurve,   new StageTextureDefinition(0, 24, TexturePatternType.Blob) },
+        { StageGeometryType.LargeCurve,   new StageTextureDefinition(8, 0, TexturePatternType.Blob) },
         { StageGeometryType.WeakJagged,   new StageTextureDefinition(0, 0, TexturePatternType.Blob) },
         { StageGeometryType.StrongJagged, new StageTextureDefinition(8, 16, TexturePatternType.Blob) },
         { StageGeometryType.WeakWave,     new StageTextureDefinition(8, 24, TexturePatternType.Blob) },
@@ -153,8 +165,13 @@ public class StageRepository : MonoBehaviour
 
     }
 
-    public StageTextureDefinition GetStageNormalTextureDefinition(StageGeometryType stageGeometryType)
+    public StageTextureDefinition GetStageNormalYTextureDefinition(StageGeometryType stageGeometryType)
     {
-        return stageNormalOriginTable[stageGeometryType];
+        return stageNormalYOriginTable[stageGeometryType];
+    }
+
+    public StageTextureDefinition GetStageNormalXZTextureDefinition(StageGeometryType stageGeometryType)
+    {
+        return stageNormalXZOriginTable[stageGeometryType];
     }
 }
