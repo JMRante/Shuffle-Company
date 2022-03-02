@@ -100,6 +100,26 @@
             "edgeRight":                    { "x": 31, "y": 31, "pattern": 0 },
             "edgeForward":                  { "x": 31, "y": 31, "pattern": 0 },
             "edgeBack":                     { "x": 31, "y": 31, "pattern": 0 }
+        },
+        {
+            "name": "Real Stone",
+            "geometryType": 0,
+            "acceptEdges": true,
+            "edgePriority": 0,
+
+            "textureDefinitionTop":         { "x": 16, "y":  4, "pattern": 2 },
+            "textureDefinitionBottom":      { "x": 16, "y":  4, "pattern": 2 },
+            "textureDefinitionLeft":        { "x": 16, "y":  4, "pattern": 2 },
+            "textureDefinitionRight":       { "x": 16, "y":  4, "pattern": 2 },
+            "textureDefinitionForward":     { "x": 16, "y":  4, "pattern": 2 },
+            "textureDefinitionBack":        { "x": 16, "y":  4, "pattern": 2 },
+
+            "edgeTop":                      { "x": 31, "y": 31, "pattern": 0 },
+            "edgeBottom":                   { "x": 31, "y": 31, "pattern": 0 },
+            "edgeLeft":                     { "x": 31, "y": 31, "pattern": 0 },
+            "edgeRight":                    { "x": 31, "y": 31, "pattern": 0 },
+            "edgeForward":                  { "x": 31, "y": 31, "pattern": 0 },
+            "edgeBack":                     { "x": 31, "y": 31, "pattern": 0 }
         }
     ],
     "stageDecalDefinitions": []
