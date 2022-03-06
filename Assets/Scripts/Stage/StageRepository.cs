@@ -20,7 +20,10 @@ public enum StageGeometryType
 public enum StageTextureSheetType
 {
     Albedo,
-    Props,
+    Smooth,
+    Metal,
+    Height,
+    Emission,
     Normal
 }
 

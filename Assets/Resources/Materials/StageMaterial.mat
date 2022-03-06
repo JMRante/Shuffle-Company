@@ -23,12 +23,24 @@ Material:
         m_Texture: {fileID: 18700000, guid: e21663e53b02eaf47be6ed2e859cd69a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - MainHeight:
+        m_Texture: {fileID: 18700000, guid: 2d57d59034209524abdc2452a55306ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - MainMetal:
+        m_Texture: {fileID: 18700000, guid: 7d8c51771c88c74419ba2e3e62a16f51, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - MainNormal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 18700000, guid: e9af6d1dec4ade1429a700c3ad88f98b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - MainProps:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 18700000, guid: 2ada4572e23367c4d9fc075a878e5056, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - MainSmooth:
+        m_Texture: {fileID: 18700000, guid: 868cca07c7608f744baebcb59b9d3a21, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - StageNormal:

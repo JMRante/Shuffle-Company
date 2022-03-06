@@ -10,6 +10,9 @@ public class CreatorCamera : MonoBehaviour
     public Vector3 cameraStartPosition = Vector3.zero;
     public Vector3 cameraOffset = new Vector3(0f, 11f, -7f);
 
+    public Vector3 minimumBounds = new Vector3(-10f, 10f, -10f);
+    public Vector3 maximumBounds = new Vector3(StageChunks.TOTAL_CELL_WIDTH + 10f, StageChunks.TOTAL_CELL_HEIGHT + 20f, StageChunks.TOTAL_CELL_DEPTH + 10f);
+
     void Start()
     {
         transform.position = cameraStartPosition + cameraOffset;
@@ -48,5 +51,6 @@ public class CreatorCamera : MonoBehaviour
         }
 
         transform.position += translationVector.normalized * finalCameraSpeed;
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, minimumBounds.x, maximumBounds.x), Mathf.Clamp(transform.position.y, minimumBounds.y, maximumBounds.y), Mathf.Clamp(transform.position.z, minimumBounds.z, maximumBounds.z));
     }
 }
