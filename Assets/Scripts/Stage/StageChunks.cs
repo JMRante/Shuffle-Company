@@ -128,14 +128,12 @@ public class StageChunks : MonoBehaviour
         {
             Vector3Int chunkPosition = WorldPositionToChunkPosition(position);
             chunk.chunkData[chunkPosition.x, chunkPosition.y, chunkPosition.z] = brush;
-            chunk.GenerateMesh();
-            chunk.GenerateColliders();
+            chunk.isDirty = true;
 
             List<Chunk> surroundingChunks = GetChunksSurroundingPosition(position);
             foreach (Chunk surroundingChunk in surroundingChunks)
             {
-                surroundingChunk.GenerateMesh();
-                surroundingChunk.GenerateColliders();
+                surroundingChunk.isDirty = true;
             }
         }
     }
@@ -143,6 +141,28 @@ public class StageChunks : MonoBehaviour
     public void Erase(Vector3 position)
     {
         Draw(position, new ChunkCell(0, 0));
+    }
+
+    public void Refresh()
+    {
+        for (int z = 0; z < STAGE_DEPTH; z++)
+        {
+            for (int y = 0; y < STAGE_HEIGHT; y++)
+            {
+                for (int x = 0; x < STAGE_WIDTH; x++)
+                {
+                    Chunk chunk = chunks[x, y, z];
+
+                    if (chunk.isDirty)
+                    {
+                        chunk.GenerateMesh();
+                        chunk.GenerateColliders();
+
+                        chunk.isDirty = false;
+                    }
+                }
+            }
+        }
     }
 
     public List<Chunk> GetChunksSurroundingPosition(Vector3 position)

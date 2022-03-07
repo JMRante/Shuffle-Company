@@ -19,6 +19,8 @@ public class Chunk : MonoBehaviour
 
     public StageChunks chunkManager;
 
+    public bool isDirty;
+
     void Start()
     {
         chunkData = new ChunkCell[CHUNK_WIDTH, CHUNK_HEIGHT, CHUNK_DEPTH];
@@ -26,6 +28,8 @@ public class Chunk : MonoBehaviour
         meshFilter = GetComponentInChildren<MeshFilter>();
 
         model.transform.position = model.transform.position - new Vector3(CHUNK_WIDTH / 2f, CHUNK_HEIGHT / 2f, CHUNK_DEPTH / 2f) + new Vector3(0.5f, 0.5f, 0.5f);
+
+        isDirty = false;
     }
 
     public void GenerateMesh()

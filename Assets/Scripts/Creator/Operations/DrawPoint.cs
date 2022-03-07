@@ -22,10 +22,12 @@ public class DrawPoint : CreatorOperation
     {
         previousBrush = stageChunks.GetChunkCell(position);
         stageChunks.Draw(position, brush);
+        stageChunks.Refresh();
     }
 
     public override void reverse() 
     {
         stageChunks.Draw(position, previousBrush);
+        stageChunks.Refresh();
     }
 }

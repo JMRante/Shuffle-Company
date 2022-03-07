@@ -39,6 +39,8 @@ public class DrawBox : CreatorOperation
                 }
             }
         }
+
+        stageChunks.Refresh();
     }
 
     public override void reverse()
@@ -57,5 +59,7 @@ public class DrawBox : CreatorOperation
                 }
             }
         }
+
+        stageChunks.Refresh();
     }
 }
